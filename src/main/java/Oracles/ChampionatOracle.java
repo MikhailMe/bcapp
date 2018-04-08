@@ -25,11 +25,6 @@ public class ChampionatOracle {
     @NotNull
     private TournamentTable championatRuTouranamentTable;
 
-    private static final String NAME = "stat-block__name";
-    private static final String GAMES = "stat-block__name";
-    private static final String POINTS = "stat-block__points";
-    private static final String PLACE = "stat-block__num _colored _up1";
-
     private static final String FUCK_LETTER = "М";
     private static final String DATE_CLASS = "stat-block__date";
     private static final String TABLE_CLASS = "stat-block-table";
@@ -39,15 +34,9 @@ public class ChampionatOracle {
     private static final String LINK_TO_CHAMPIONAT_RU = "https://www.championat.com/football/_russiapl.html";
 
     {
-        this.currentTourNumber = getCurrentTourNumber();
+        this.currentTourNumber = 25;
         this.championatRuListOfGames = new ArrayList<>();
         this.championatRuTouranamentTable = new TournamentTable();
-    }
-
-
-    // FIXME: 07/04/18
-    private int getCurrentTourNumber() {
-        return 25;
     }
 
     private static LocalDate getTourDate(String[] dateParams) {
@@ -116,17 +105,13 @@ public class ChampionatOracle {
             // parse teams
             int counter = 1;
             Team homeTeam = new Team(results[counter]);
-            if (results[counter + 1].equals(FUCK_LETTER)) {
-                counter += 3;
-            } else {
-                counter += 2;
-            }
+            if (results[counter + 1].equals(FUCK_LETTER)) counter += 3;
+            else counter += 2;
             Team guestTeam = new Team(results[counter]);
             Pair<Team, Team> teams = new Pair<>(homeTeam, guestTeam);
             counter++;
-            if (results[counter].equals(FUCK_LETTER)) {
-                counter += 1;
-            }
+            // parse score
+            if (results[counter].equals(FUCK_LETTER)) counter += 1;
             int homeTeamGoals = Character.getNumericValue(results[counter].charAt(0));
             counter++;
             int guestTeamGoals = Character.getNumericValue(results[counter].charAt(0));
