@@ -1,35 +1,24 @@
 package Utils;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 public class Pair<First, Second> {
 
+    @Getter
+    @Setter
     @NotNull
     private First first;
+
+    @Getter
+    @Setter
     @NotNull
     private Second second;
 
     public Pair(@NotNull final First first,
                 @NotNull final Second second) {
         this.first = first;
-        this.second = second;
-    }
-
-    @NotNull
-    public First getFirst() {
-        return first;
-    }
-
-    public void setFirst(@NotNull First first) {
-        this.first = first;
-    }
-
-    @NotNull
-    public Second getSecond() {
-        return second;
-    }
-
-    public void setSecond(@NotNull Second second) {
         this.second = second;
     }
 
@@ -43,7 +32,7 @@ public class Pair<First, Second> {
 
     @Override
     public String toString() {
-        return first.toString() + " : " + second.toString();
+        return String.format("%-10s %-5s %s", first.toString(), ":", second.toString());
     }
 
 }

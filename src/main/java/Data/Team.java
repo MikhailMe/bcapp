@@ -1,13 +1,27 @@
 package Data;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Team {
 
+    @Getter
     private int points;
+
+    @Getter
+    @Setter
     private String name;
-    private int difference;
+
+    @Getter
+    @Setter
+    @NotNull
     private List<Player> players;
+
+    private int difference;
     private int amountOfScoredGoals;
     private int amountOfMissedGoals;
 
@@ -15,6 +29,7 @@ public class Team {
         this.name = name;
         this.amountOfScoredGoals = 0;
         this.amountOfMissedGoals = 0;
+        this.players = new ArrayList<>();
     }
 
     public Team(String name, List<Player> players) {
@@ -24,28 +39,8 @@ public class Team {
         this.amountOfMissedGoals = 0;
     }
 
-    public int getPoints() {
-        return points;
-    }
-
     public void addPoints(int points) {
         this.points += points;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<Player> players) {
-        this.players = players;
     }
 
     public void setGoals(int amountOfScoredGoals, int amountOfMissedGoals) {
@@ -57,6 +52,16 @@ public class Team {
         return amountOfScoredGoals - amountOfMissedGoals;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 19 * hash + points;
+        hash = 19 * hash + name.hashCode();
+        hash = 19 * hash + players.hashCode();
+        hash = 19 * hash + amountOfScoredGoals;
+        hash = 19 * hash + amountOfMissedGoals;
+        return hash;
+    }
 
     @Override
     public String toString() {

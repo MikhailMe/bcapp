@@ -12,12 +12,6 @@ public class TournamentTable {
     @NotNull
     private List<Integer> places;
     @NotNull
-    private List<Integer> wins;
-    @NotNull
-    private List<Integer> draws;
-    @NotNull
-    private List<Integer> looses;
-    @NotNull
     private List<Integer> points;
     @NotNull
     private List<Integer> amountOfGames;
@@ -25,40 +19,44 @@ public class TournamentTable {
     public TournamentTable() {
         this.teams = new ArrayList<>();
         this.places = new ArrayList<>();
-        this.wins = new ArrayList<>();
-        this.draws = new ArrayList<>();
-        this.looses = new ArrayList<>();
         this.points = new ArrayList<>();
         this.amountOfGames = new ArrayList<>();
     }
 
     public TournamentTable(@NotNull final List<Team> teams,
                            @NotNull final List<Integer> places,
-                           @NotNull final List<Integer> wins,
-                           @NotNull final List<Integer> draws,
-                           @NotNull final List<Integer> looses,
                            @NotNull final List<Integer> points,
                            @NotNull final List<Integer> amountOfGames) {
         this.teams = teams;
         this.places = places;
-        this.wins = wins;
-        this.draws = draws;
-        this.looses = looses;
         this.points = points;
         this.amountOfGames = amountOfGames;
     }
 
     @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 19 * hash + teams.hashCode();
+        hash = 19 * hash + places.hashCode();
+        hash = 19 * hash + points.hashCode();
+        hash = 19 * hash + amountOfGames.hashCode();
+        return hash;
+    }
+
+    @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
+        result.append(String.format("%-6s %-15s %-10s %-10s",
+                "место",
+                "команда",
+                "игры",
+                "очки")).append("\n");
         for (int i = 0; i < teams.size(); i++) {
             result.append(
-                    String.format("%-2d  %-15s %-10d %-10d %-10d %-10d %-10d", places.get(i),
+                    String.format("%-6d  %-15s %-10d %-10d",
+                            places.get(i),
                             teams.get(i),
                             amountOfGames.get(i),
-                            wins.get(i),
-                            draws.get(i),
-                            looses.get(i),
                             points.get(i)))
                     .append("\n");
         }

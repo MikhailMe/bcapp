@@ -1,10 +1,24 @@
 package Data;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Player {
 
+    @Setter
+    @Getter
     private int age;
+
+    @Setter
+    @Getter
     private Team team;
+
+    @Setter
+    @Getter
     private String name;
+
+    @Setter
+    @Getter
     private String surname;
 
     public Player(int age, Team team, String name, String surname) {
@@ -14,28 +28,14 @@ public class Player {
         this.surname = surname;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 19 * hash + age;
+        hash = 19 * hash + team.hashCode();
+        hash = 19 * hash + name.hashCode();
+        hash = 19 * hash + surname.hashCode();
+        return hash;
     }
 
     @Override
