@@ -53,16 +53,13 @@
             <artifactId>annotations</artifactId>
             <version>12.0</version>
         </dependency>
+        <!-- for work with JSON -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.web3j</groupId>
-            <artifactId>core</artifactId>
-            <version>3.2.0</version>
-        </dependency>
+        <!-- for parse HTML-documents -->
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
@@ -73,11 +70,13 @@
             <artifactId>hibernate-annotations</artifactId>
             <version>3.5.6-Final</version>
         </dependency>
+        <!-- for work with database -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.2.16.Final</version>
         </dependency>
+        <!-- for work with annotations -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

@@ -17,7 +17,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChampionatOracle {
+public class ChampionatOracle implements Parserable {
 
     private int currentTourNumber;
     @NotNull
@@ -25,7 +25,10 @@ public class ChampionatOracle {
     @NotNull
     private TournamentTable championatRuTouranamentTable;
 
-    private static final String FUCK_LETTER = "М";
+    private static final String SPACE = " ";
+    private static final String DELIMITER = ":";
+    private static final String SPAN_TAG = "span";
+    private static final String FUCKING_LETTER = "М";
     private static final String DATE_CLASS = "stat-block__date";
     private static final String TABLE_CLASS = "stat-block-table";
     private static final String TABLE_LINE = "stat-block-table__row";
@@ -34,7 +37,7 @@ public class ChampionatOracle {
     private static final String LINK_TO_CHAMPIONAT_RU = "https://www.championat.com/football/_russiapl.html";
 
     {
-        this.currentTourNumber = 25;
+        this.currentTourNumber = 26;
         this.championatRuListOfGames = new ArrayList<>();
         this.championatRuTouranamentTable = new TournamentTable();
     }
@@ -87,63 +90,10 @@ public class ChampionatOracle {
 
     private static Tour getTour(Element element) {
         Elements dateOfTour = element.getElementsByClass(DATE_CLASS);
-        String[] dateParams = dateOfTour.text().split(" ");
+        String[] dateParams = dateOfTour.text().split(SPACE);
         int tourNumber = Integer.parseInt(dateParams[3]);
         LocalDate tourDate = getTourDate(dateParams);
         return new Tour(tourNumber, tourDate);
-    }
-
-    private static List<Game> parseGamesLines(Elements gamesElements) {
-        List<Game> games = new ArrayList<>();
-        gamesElements.forEach(element -> {
-            String[] results = element.getElementsByTag("span").text().split(" ");
-            String[] time = results[0].split(":");
-            // parse time
-            LocalTime startTime = LocalTime.of(Integer.parseInt(time[0]), Integer.parseInt(time[1]));
-            LocalTime endTime = LocalTime.of(startTime.getHour() + 2, startTime.getMinute());
-            Pair<LocalTime, LocalTime> times = new Pair<>(startTime, endTime);
-            // parse teams
-            int counter = 1;
-            Team homeTeam = new Team(results[counter]);
-            if (results[counter + 1].equals(FUCK_LETTER)) counter += 3;
-            else counter += 2;
-            Team guestTeam = new Team(results[counter]);
-            Pair<Team, Team> teams = new Pair<>(homeTeam, guestTeam);
-            counter++;
-            // parse score
-            if (results[counter].equals(FUCK_LETTER)) counter += 1;
-            int homeTeamGoals = Character.getNumericValue(results[counter].charAt(0));
-            counter++;
-            int guestTeamGoals = Character.getNumericValue(results[counter].charAt(0));
-            Pair<Integer, Integer> goals = new Pair<>(homeTeamGoals, guestTeamGoals);
-            // build result
-            games.add(new Game(teams, goals, times));
-        });
-        return games;
-    }
-
-    private static TournamentTable parseTournamentTable(Elements tableElements) {
-        List<Team> teams = new ArrayList<>();
-        List<Integer> places = new ArrayList<>();
-        List<Integer> points = new ArrayList<>();
-        List<Integer> amountOfGames = new ArrayList<>();
-        Elements lines = tableElements.get(0).getElementsByClass(TABLE_LINE);
-        lines.forEach(line -> {
-            String[] results = line.text().split(" ");
-            int counter = 0;
-            places.add(Integer.parseInt(results[counter]));
-            counter++;
-            teams.add(new Team(results[counter]));
-            counter++;
-            if (results[counter].equals(FUCK_LETTER)) {
-                counter++;
-            }
-            amountOfGames.add(Integer.parseInt(results[counter]));
-            counter++;
-            points.add(Integer.parseInt(results[counter]));
-
-        });
-        return new TournamentTable(teams, places, points, amountOfGames);
     }
 
     public static void main(String[] args) throws IOException {
@@ -154,12 +104,67 @@ public class ChampionatOracle {
             Tour tour = getTour(element);
             if (tour.getTourNumber() == oracle.currentTourNumber) {
                 Elements gameElemnets = element.getElementsByClass(GAME_CLASS);
-                oracle.championatRuListOfGames.addAll(parseGamesLines(gameElemnets));
+                oracle.parseGamesLines(gameElemnets);
             }
         }
         Elements tableElements = document.getElementsByClass(TABLE_CLASS);
-        oracle.championatRuTouranamentTable = parseTournamentTable(tableElements);
+        oracle.parseTournamentTable(tableElements);
         System.out.println(oracle.toString());
+    }
+
+    @Override
+    public void parseGamesLines(Elements gamesElements) {
+        List<Game> games = new ArrayList<>();
+        gamesElements.forEach(element -> {
+            String[] results = element.getElementsByTag(SPAN_TAG).text().split(SPACE);
+            // parse time
+            String[] time = results[0].split(DELIMITER);
+            LocalTime startTime = LocalTime.of(Integer.parseInt(time[0]), Integer.parseInt(time[1]));
+            LocalTime endTime = LocalTime.of(startTime.getHour() + 2, startTime.getMinute());
+            Pair<LocalTime, LocalTime> times = new Pair<>(startTime, endTime);
+            // parse teams
+            int counter = 1;
+            Team homeTeam = new Team(results[counter]);
+            if (results[counter + 1].equals(FUCKING_LETTER)) counter += 3;
+            else counter += 2;
+            Team guestTeam = new Team(results[counter]);
+            Pair<Team, Team> teams = new Pair<>(homeTeam, guestTeam);
+            counter++;
+            // parse score
+            if (results[counter].equals(FUCKING_LETTER)) counter += 1;
+            int homeTeamGoals = Character.getNumericValue(results[counter].charAt(0));
+            counter++;
+            int guestTeamGoals = Character.getNumericValue(results[counter].charAt(0));
+            Pair<Integer, Integer> goals = new Pair<>(homeTeamGoals, guestTeamGoals);
+            // build result
+            games.add(new Game(teams, goals, times));
+        });
+        championatRuListOfGames.addAll(games);
+    }
+
+    @Override
+    public void parseTournamentTable(Elements tableElements) {
+        List<Team> teams = new ArrayList<>();
+        List<Integer> places = new ArrayList<>();
+        List<Integer> points = new ArrayList<>();
+        List<Integer> amountOfGames = new ArrayList<>();
+        Elements lines = tableElements.get(0).getElementsByClass(TABLE_LINE);
+        lines.forEach(line -> {
+            String[] results = line.text().split(SPACE);
+            int counter = 0;
+            places.add(Integer.parseInt(results[counter]));
+            counter++;
+            teams.add(new Team(results[counter]));
+            counter++;
+            if (results[counter].equals(FUCKING_LETTER)) {
+                counter++;
+            }
+            amountOfGames.add(Integer.parseInt(results[counter]));
+            counter++;
+            points.add(Integer.parseInt(results[counter]));
+
+        });
+        championatRuTouranamentTable = new TournamentTable(teams, places, points, amountOfGames);
     }
 
     @Override

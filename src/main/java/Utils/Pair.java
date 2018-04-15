@@ -30,6 +30,7 @@ public class Pair<First, Second> {
         return hash;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return String.format("%-10s %-5s %s", first.toString(), ":", second.toString());

@@ -21,9 +21,15 @@ public class Game {
 
     @Getter
     @Setter
-    @NotNull
     private Pair<LocalTime, LocalTime> times;
 
+    public Game(@NotNull Pair<Team, Team> teams,
+                @NotNull Pair<Integer, Integer> goals) {
+        this.teams = teams;
+        this.goals = goals;
+        this.times = null;
+
+    }
 
     public Game(@NotNull Pair<Team, Team> teams,
                 @NotNull Pair<Integer, Integer> goals,
@@ -37,9 +43,10 @@ public class Game {
     public String toString() {
         return teams.toString() +
                 "\n" +
-                goals.toString() +
+                goals.toString();
+                /* +
                 "\n" +
-                times.toString();
+                times.toString()*/
     }
 
     @Override
