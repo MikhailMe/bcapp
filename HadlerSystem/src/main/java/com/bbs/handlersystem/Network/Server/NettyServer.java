@@ -1,5 +1,6 @@
 package com.bbs.handlersystem.Network.Server;
 
+import com.bbs.handlersystem.Config.Config;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -9,7 +10,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public final class NettyServer {
 
-    private static final int PORT = 8080;
+    private static final int PORT = Config.PORT;
 
     public static void main(String[] args) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -19,7 +20,7 @@ public final class NettyServer {
                     .group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .childHandler(new NettyServerInitializer())
-                    .option(ChannelOption.SO_BACKLOG, 128)
+                    .option(ChannelOption.SO_BACKLOG, Config.BACKLOG)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
             ChannelFuture channelFuture = bootstrap.bind(PORT).sync();
             channelFuture.channel().closeFuture().sync();
@@ -28,5 +29,4 @@ public final class NettyServer {
             workerGroup.shutdownGracefully();
         }
     }
-
 }

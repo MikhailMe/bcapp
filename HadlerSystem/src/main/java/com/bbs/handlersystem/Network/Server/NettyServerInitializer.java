@@ -1,7 +1,5 @@
 package com.bbs.handlersystem.Network.Server;
 
-import com.bbs.handlersystem.Network.Encoding.Decoder;
-import com.bbs.handlersystem.Network.Encoding.Encoder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -16,8 +14,6 @@ public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = socketChannel.pipeline();
         pipeline.addLast(new StringDecoder());
         pipeline.addLast(new StringEncoder());
-        //pipeline.addLast(new Decoder());
-        //pipeline.addLast(new Encoder());
         pipeline.addLast(new NettyServerHandler());
     }
 }

@@ -30,11 +30,10 @@ public final class DBConnection {
 
     private static void connect() {
         try {
-            Config config = new Config();
-            String url = config.getURL();
-            String name = config.getDB_USER_NAME();
-            String pass = config.getDB_USER_PASSWORD();
-            Class.forName(config.getDRIVER_CLASS_NAME());
+            String url = Config.URL;
+            String name = Config.DB_USER_NAME;
+            String pass = Config.DB_USER_PASSWORD;
+            Class.forName(Config.DRIVER_CLASS_NAME);
             System.out.println("JDBC driver connected");
             connection = DriverManager.getConnection(url, name, pass);
             System.out.println("Store: connection successful");

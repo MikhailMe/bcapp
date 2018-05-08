@@ -1,5 +1,11 @@
 package com.bbs.handlersystem.Network.client;
 
+import com.bbs.handlersystem.Client.User;
+import com.bbs.handlersystem.Config.Config;
+import com.bbs.handlersystem.Network.Message.MessageType;
+import com.bbs.handlersystem.Utils.JsonMessage;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -7,13 +13,34 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-public final class Client {
+import java.util.Scanner;
+import java.util.concurrent.Executors;
 
-    private static final String HOST = "localhost";
-    private static final int PORT = 8080;
+public final class Client implements Runnable {
 
-    public static void main(String[] args) throws Exception {
+    private final ClientHandler clientHandler = new ClientHandler();
 
+    public static void main(String[] args) {
+        Client client = new Client();
+        client.startClient();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("write name: ");
+        String name = scanner.next();
+        System.out.println("write mobile number: ");
+        String mobile = scanner.next();
+        Gson builder = new GsonBuilder().setPrettyPrinting().create();
+        User user = new User(name, mobile);
+        JsonMessage jm = new JsonMessage(user, MessageType.MSG_DEFAULT);
+        String message = builder.toJson(jm);
+        client.writeMessage(message);
+    }
+
+    public synchronized void startClient() {
+        Executors.newFixedThreadPool(1).execute(this);
+    }
+
+    @Override
+    public void run() {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap bootstrap = new Bootstrap()
@@ -21,11 +48,17 @@ public final class Client {
                     .channel(NioSocketChannel.class)
                     .handler(new ClientInitializer())
                     .option(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture future = bootstrap.connect(HOST, PORT).sync();
+            ChannelFuture future = bootstrap.connect(Config.HOST, Config.PORT).sync();
             future.channel().closeFuture().sync();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             group.shutdownGracefully();
         }
     }
-}
 
+    public void writeMessage(String messageToSend) {
+        clientHandler.writeMessage(messageToSend);
+    }
+
+}

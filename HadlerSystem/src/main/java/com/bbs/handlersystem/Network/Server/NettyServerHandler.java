@@ -1,8 +1,9 @@
 package com.bbs.handlersystem.Network.Server;
 
 import com.bbs.handlersystem.Network.Message.MessageType;
-import com.bbs.handlersystem.Utils.JsonMessage;
 import com.google.gson.*;
+import io.netty.buffer.Unpooled;
+import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelHandler.Sharable;
@@ -40,12 +41,13 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             case MSG_SET_ORACLE_ACK:
                 break;
             case MSG_DEFAULT:
-                System.out.println("privetiki");
+                System.out.println(jsonString);
+                ctx.writeAndFlush(Unpooled.copiedBuffer("server", CharsetUtil.UTF_8));
                 break;
             default:
                 break;
         }
-        ctx.channel().writeAndFlush(new JsonMessage(object, MessageType.MSG_DEFAULT).toString());
+        //ctx.channel().writeAndFlush(new JsonMessage(object, MessageType.MSG_DEFAULT).toString());
 
         //JsonElement userElement = jsonTree.get("data");
         //User u = new Gson().fromJson(userElement, User.class);
