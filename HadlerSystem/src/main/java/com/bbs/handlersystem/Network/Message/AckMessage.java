@@ -15,7 +15,7 @@ public class AckMessage extends Message {
     private String confirmation;
 
     public AckMessage(String confirmation){
-        super(MessageType.MSG_ACK);
+        super(MessageType.MSG_GET_LIST_GAMES_ACK);
         this.confirmation = confirmation;
     }
 

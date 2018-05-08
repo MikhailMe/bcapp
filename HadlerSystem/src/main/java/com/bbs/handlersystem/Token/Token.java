@@ -2,6 +2,7 @@ package com.bbs.handlersystem.Token;
 
 import lombok.Getter;
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Token implements Tokenable {
@@ -20,4 +21,15 @@ public class Token implements Tokenable {
         token = 31 * token + System.currentTimeMillis() / new Random().nextLong();
         return token;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), token);
+    }
+
+    @Override
+    public String toString() {
+        return token;
+    }
+
 }

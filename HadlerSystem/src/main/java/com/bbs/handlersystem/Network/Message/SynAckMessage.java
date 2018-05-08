@@ -15,7 +15,7 @@ public class SynAckMessage extends Message{
     private String response;
 
     public SynAckMessage(String response) {
-        super(MessageType.MSG_SYN_ACK);
+        super(MessageType.MSG_GET_LIST_GAMES_SYN_ACK);
         this.response = response;
     }
 

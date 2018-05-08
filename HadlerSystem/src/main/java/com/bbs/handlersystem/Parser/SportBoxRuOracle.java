@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SportBoxOracle implements Parserable {
+public class SportBoxRuOracle implements Parserable {
 
     @NonNull
     private List<Game> sportBoxListOfLastGames;
@@ -58,7 +58,7 @@ public class SportBoxOracle implements Parserable {
     }
 
     public static void main(String[] args) throws IOException {
-        SportBoxOracle oracle = new SportBoxOracle();
+        SportBoxRuOracle oracle = new SportBoxRuOracle();
         Document document = Jsoup.connect(LINK_TO_SPORTBOX).get();
         Elements gamesElements = document.getElementsByClass(GAMES_CLASS);
         Elements tableElements = document.getElementsByClass(TABLE_CLASS).first().getElementsByTag(TABLE_TAG);

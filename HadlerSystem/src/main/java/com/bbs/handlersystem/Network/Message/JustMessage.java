@@ -15,7 +15,7 @@ public class JustMessage extends Message {
     private String message;
 
     public JustMessage(String message) {
-        super(MessageType.MSG_ACK);
+        super(MessageType.MSG_DEFAULT);
         this.message = message;
     }
 

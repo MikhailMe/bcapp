@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.util.Objects;
+
 // TODO: всё запихать в базку
 
 public class User {
@@ -15,25 +17,37 @@ public class User {
 
     @Getter
     @Setter
+    @NonNull
+    private String mobileNumber;
+
+    @Getter
+    @Setter
+    @NonNull
     private boolean hasToken;
 
     @Getter
     @Setter
+    @NonNull
     private boolean isOracle;
 
-    public User(@NonNull final String nickname) {
-        this.nickname = nickname;
+    public User() {
         this.hasToken = false;
         this.isOracle = false;
+        this.nickname = null;
+        this.mobileNumber = null;
+    }
+
+    public User(@NonNull final String nickname,
+                @NonNull final String mobileNumber) {
+        this.hasToken = false;
+        this.isOracle = false;
+        this.nickname = nickname;
+        this.mobileNumber = mobileNumber;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 31 * hash + nickname.hashCode();
-        hash = 31 * hash + (hasToken ? 0 : 1);
-        hash = 31 * hash + (isOracle ? 0 : 1);
-        return hash;
+        return Objects.hash(super.hashCode(), nickname, mobileNumber, hasToken, isOracle);
     }
 
     @Override

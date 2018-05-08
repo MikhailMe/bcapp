@@ -15,7 +15,7 @@ public class SynMessage extends Message {
     private String request;
 
     public SynMessage(String response) {
-        super(MessageType.MSG_SYN);
+        super(MessageType.MSG_GET_LIST_GAMES_SYN);
         this.request = response;
     }
 

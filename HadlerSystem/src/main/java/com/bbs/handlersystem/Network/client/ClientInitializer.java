@@ -1,4 +1,5 @@
-package com.bbs.handlersystem.Network.Server;
+package com.bbs.handlersystem.Network.client;
+
 
 import com.bbs.handlersystem.Network.Encoding.Decoder;
 import com.bbs.handlersystem.Network.Encoding.Encoder;
@@ -8,16 +9,15 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
-public class NettyServerInitializer extends ChannelInitializer<SocketChannel> {
+public class ClientInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
-    protected void initChannel(SocketChannel socketChannel) {
-        System.out.println("New client connected: " + socketChannel.localAddress());
-        ChannelPipeline pipeline = socketChannel.pipeline();
+    protected void initChannel(SocketChannel channel) {
+        ChannelPipeline pipeline = channel.pipeline();
         pipeline.addLast(new StringDecoder());
         pipeline.addLast(new StringEncoder());
         //pipeline.addLast(new Decoder());
         //pipeline.addLast(new Encoder());
-        pipeline.addLast(new NettyServerHandler());
+        pipeline.addLast(new ClientHandler());
     }
 }

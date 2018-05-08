@@ -1,4 +1,4 @@
-package com.bbs.handlersystem.Network.Models;
+package com.bbs.handlersystem.Network.MessageModels;
 
 import lombok.Getter;
 import lombok.NonNull;
