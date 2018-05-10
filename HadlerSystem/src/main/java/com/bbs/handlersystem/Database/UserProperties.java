@@ -1,4 +1,7 @@
 package com.bbs.handlersystem.Database;
 
-public class Changes {
+public enum UserProperties {
+
+    TOKEN,
+    ORACLE;
 }

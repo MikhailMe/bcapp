@@ -5,12 +5,12 @@ import lombok.NonNull;
 
 import java.util.List;
 
-public class ListModel {
+public class ListOfGamesModel extends MessageModel{
 
     @Getter
     private List<String> listOfGames;
 
-    public ListModel(@NonNull final List<String> listOfGames) {
+    public ListOfGamesModel(@NonNull final List<String> listOfGames) {
         this.listOfGames = listOfGames;
     }
 }

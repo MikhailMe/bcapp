@@ -1,4 +1,4 @@
 package com.bbs.handlersystem.Network.MessageModels;
 
-public class RequestOracleModel {
+public class RequestOracleModel extends MessageModel {
 }

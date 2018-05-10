@@ -6,11 +6,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public final class DBConnection {
+public final class StoreConnection {
 
     private static Connection connection;
 
-    public static Connection getConnection() {
+    static Connection getConnection() {
         if (connection == null) {
             connect();
         }
@@ -33,7 +33,6 @@ public final class DBConnection {
             String url = Config.URL;
             String name = Config.DB_USER_NAME;
             String pass = Config.DB_USER_PASSWORD;
-            Class.forName(Config.DRIVER_CLASS_NAME);
             System.out.println("JDBC driver connected");
             connection = DriverManager.getConnection(url, name, pass);
             System.out.println("Store: connection successful");

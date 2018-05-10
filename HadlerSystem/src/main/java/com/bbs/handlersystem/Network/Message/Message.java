@@ -19,14 +19,11 @@ public abstract class Message implements Externalizable {
 
     private static long idCounter = 0;
 
-    public Message() {
-    }
-
     protected Message(MessageType type) {
         this(idCounter++, type);
     }
 
-    protected Message(long id, MessageType type) {
+    private Message(long id, MessageType type) {
         this.id = id;
         this.type = type;
     }

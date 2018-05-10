@@ -5,20 +5,19 @@ public enum MessageType {
     // for testing, simple message
     MSG_DEFAULT,
 
+    // for adding user to database
+    MSG_ADD_USER,
+
     // for take client information
-    MSG_GET_CLIENT_INFO_SYN,
-    MSG_GET_CLIENT_INFO_ACK,
+    MSG_GET_CLIENT_INFO,
 
     // for get to client list of games
-    MSG_GET_LIST_GAMES_SYN,
-    MSG_GET_LIST_GAMES_SYN_ACK,
-    MSG_GET_LIST_GAMES_ACK,
+    MSG_GET_LIST_GAMES,
 
     // for send bet transaction
-    MSG_TAKE_TRANSACTION_SYN,
-    MSG_TAKE_TRANSACTION_ACK,
+    MSG_TAKE_TRANSACTION,
 
-    // for send request about oracle
-    MSG_SET_ORACLE_SYN,
-    MSG_SET_ORACLE_ACK;
+    // for oracles
+    MSG_REQUEST_ORACLE,
+    MSG_RESPONSE_ORACLE;
 }

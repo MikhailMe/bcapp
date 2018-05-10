@@ -23,16 +23,6 @@ public final class Client implements Runnable {
     public static void main(String[] args) {
         Client client = new Client();
         client.startClient();
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("write name: ");
-        String name = scanner.next();
-        System.out.println("write mobile number: ");
-        String mobile = scanner.next();
-        Gson builder = new GsonBuilder().setPrettyPrinting().create();
-        User user = new User(name, mobile);
-        JsonMessage jm = new JsonMessage(user, MessageType.MSG_DEFAULT);
-        String message = builder.toJson(jm);
-        client.writeMessage(message);
     }
 
     public synchronized void startClient() {
@@ -47,7 +37,10 @@ public final class Client implements Runnable {
                     .group(group)
                     .channel(NioSocketChannel.class)
                     .handler(new ClientInitializer())
-                    .option(ChannelOption.SO_KEEPALIVE, true);
+                    .option(ChannelOption.TCP_NODELAY, true)
+                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    .option(ChannelOption.SO_REUSEADDR, true)
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 100);
             ChannelFuture future = bootstrap.connect(Config.HOST, Config.PORT).sync();
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {

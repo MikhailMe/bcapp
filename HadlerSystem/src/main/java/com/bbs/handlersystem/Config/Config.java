@@ -14,7 +14,6 @@ public final class Config {
     private static final String CONFIG_NAME = "config.ini";
     private static final String DB_USER_NAME_KEY = "DB_USER_NAME";
     private static final String DB_USER_PASSWORD_KEY = "DB_USER_PASSWORD";
-    private static final String DRIVER_CLASS_NAME_KEY = "DRIVER_CLASS_NAME";
 
     public static int PORT;
     public static String URL;
@@ -22,7 +21,6 @@ public final class Config {
     public static int BACKLOG;
     public static String DB_USER_NAME;
     public static String DB_USER_PASSWORD;
-    public static String DRIVER_CLASS_NAME;
 
     static {
         Properties properties = new Properties();
@@ -38,6 +36,5 @@ public final class Config {
         PORT = Integer.parseInt(properties.getProperty(PORT_KEY));
         BACKLOG = Integer.parseInt(properties.getProperty(BACKLOG_KEY));
         DB_USER_PASSWORD = properties.getProperty(DB_USER_PASSWORD_KEY);
-        DRIVER_CLASS_NAME = properties.getProperty(DRIVER_CLASS_NAME_KEY);
     }
 }

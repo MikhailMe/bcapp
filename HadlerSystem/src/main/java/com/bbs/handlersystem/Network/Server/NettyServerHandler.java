@@ -1,5 +1,8 @@
 package com.bbs.handlersystem.Network.Server;
 
+import com.bbs.handlersystem.Client.User;
+import com.bbs.handlersystem.Database.UserProperties;
+import com.bbs.handlersystem.Database.Store;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.google.gson.*;
 import io.netty.buffer.Unpooled;
@@ -9,11 +12,19 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+import java.sql.SQLException;
+
 @Sharable
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
+    private Store store;
+
+    NettyServerHandler(Store store) {
+        this.store = store;
+    }
+
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object object) {
+    public void channelRead(ChannelHandlerContext ctx, Object object) throws SQLException {
         String jsonString = (String) object;
         JsonElement jsonRoot = new JsonParser().parse(jsonString);
         JsonObject jsonTree = jsonRoot.getAsJsonObject();
@@ -21,37 +32,25 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         String stringType = messageType.toString();
         stringType = stringType.substring(1, stringType.length() - 1);
         MessageType type = MessageType.valueOf(stringType);
+        String messageToSend = null;
         switch (type) {
-            case MSG_GET_CLIENT_INFO_SYN:
-                break;
-            case MSG_GET_CLIENT_INFO_ACK:
-                break;
-            case MSG_GET_LIST_GAMES_SYN:
-                break;
-            case MSG_GET_LIST_GAMES_SYN_ACK:
-                break;
-            case MSG_GET_LIST_GAMES_ACK:
-                break;
-            case MSG_TAKE_TRANSACTION_SYN:
-                break;
-            case MSG_TAKE_TRANSACTION_ACK:
-                break;
-            case MSG_SET_ORACLE_SYN:
-                break;
-            case MSG_SET_ORACLE_ACK:
-                break;
-            case MSG_DEFAULT:
-                System.out.println(jsonString);
-                ctx.writeAndFlush(Unpooled.copiedBuffer("server", CharsetUtil.UTF_8));
+            case MSG_ADD_USER:
+                // get user object from json
+                JsonElement userElement = jsonTree.get("data");
+                User user = new Gson().fromJson(userElement, User.class);
+                store.addUser(user);
+                messageToSend = "just adding user to database";
+
+                // ***example*** - here we don't need messageToSend, cause we just adding user to database!
+                // make message to send
+                //messageToSend = MessageMaker.getAddUserMessage(user);
                 break;
             default:
+                messageToSend = "default";
                 break;
         }
-        //ctx.channel().writeAndFlush(new JsonMessage(object, MessageType.MSG_DEFAULT).toString());
 
-        //JsonElement userElement = jsonTree.get("data");
-        //User u = new Gson().fromJson(userElement, User.class);
-
+        ctx.writeAndFlush(Unpooled.copiedBuffer(messageToSend, CharsetUtil.UTF_8));
         ReferenceCountUtil.release(object);
     }
 
