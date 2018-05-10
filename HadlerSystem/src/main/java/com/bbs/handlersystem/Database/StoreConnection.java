@@ -10,7 +10,7 @@ public final class StoreConnection {
 
     private static Connection connection;
 
-    static Connection getConnection() {
+    public static Connection getConnection() {
         if (connection == null) {
             connect();
         }

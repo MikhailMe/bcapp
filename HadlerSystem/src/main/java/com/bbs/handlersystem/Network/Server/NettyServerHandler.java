@@ -3,8 +3,7 @@ package com.bbs.handlersystem.Network.Server;
 import com.bbs.handlersystem.Client.Account;
 import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Client.Wallet;
-import com.bbs.handlersystem.Database.UserProperties;
-import com.bbs.handlersystem.Database.Store;
+import com.bbs.handlersystem.Database.StoreImpl.MainStore;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.google.gson.*;
 import io.netty.buffer.Unpooled;
@@ -19,12 +18,6 @@ import java.sql.SQLException;
 @Sharable
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
-    private Store store;
-
-    NettyServerHandler(Store store) {
-        this.store = store;
-    }
-
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object object) throws SQLException {
         String jsonString = (String) object;
@@ -34,7 +27,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         String stringType = messageType.toString();
         stringType = stringType.substring(1, stringType.length() - 1);
         MessageType type = MessageType.valueOf(stringType);
-        String messageToSend = null;
+        String messageToSend;
         switch (type) {
             case MSG_ADD_USER:
                 // get user object from json
@@ -43,7 +36,11 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 User user = new Gson().fromJson(userElement, User.class);
                 Wallet wallet = new Wallet(user);
                 Account account = new Account(wallet);
-                
+
+                MainStore.userStore.add(user);
+                MainStore.walletStore.add(wallet);
+                MainStore.accountStore.add(account);
+
                 messageToSend = "just adding user to database";
 
                 // ***example*** - here we don't need messageToSend, cause we just adding user to database!
