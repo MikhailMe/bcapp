@@ -6,8 +6,6 @@ import lombok.Setter;
 
 import java.util.Objects;
 
-// TODO: всё запихать в базку
-
 public class User {
 
     @Getter
@@ -29,13 +27,6 @@ public class User {
     @Setter
     @NonNull
     private boolean isOracle;
-
-    public User() {
-        this.hasToken = false;
-        this.isOracle = false;
-        this.nickname = null;
-        this.mobileNumber = null;
-    }
 
     public User(@NonNull final String nickname,
                 @NonNull final String mobileNumber) {

@@ -4,11 +4,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-// TODO: всё запихать в базку
-
 public class Wallet {
-
-    private static final String NO_PERMISSION = "No permission";
 
     @Getter
     @Setter
@@ -20,17 +16,14 @@ public class Wallet {
     @NonNull
     private long balance;
 
-    Wallet(@NonNull final User user) {
+    public Wallet(@NonNull final User user) {
         this.user = user;
         this.balance = 0;
     }
 
-    public void increaseBy(@NonNull final long income) {
-        balance += income;
-    }
-
-    public void decreaseBy(@NonNull final long expense) {
-        balance -= expense;
+    public void changeBalance(@NonNull final long value,
+                              @NonNull final boolean isAdd) {
+        balance = isAdd ? (balance += value) : (balance -= value);
     }
 
     @NonNull

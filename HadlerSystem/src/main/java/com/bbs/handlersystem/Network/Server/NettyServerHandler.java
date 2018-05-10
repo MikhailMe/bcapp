@@ -1,6 +1,8 @@
 package com.bbs.handlersystem.Network.Server;
 
+import com.bbs.handlersystem.Client.Account;
 import com.bbs.handlersystem.Client.User;
+import com.bbs.handlersystem.Client.Wallet;
 import com.bbs.handlersystem.Database.UserProperties;
 import com.bbs.handlersystem.Database.Store;
 import com.bbs.handlersystem.Network.Message.MessageType;
@@ -37,8 +39,11 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             case MSG_ADD_USER:
                 // get user object from json
                 JsonElement userElement = jsonTree.get("data");
+
                 User user = new Gson().fromJson(userElement, User.class);
-                store.addUser(user);
+                Wallet wallet = new Wallet(user);
+                Account account = new Account(wallet);
+                
                 messageToSend = "just adding user to database";
 
                 // ***example*** - here we don't need messageToSend, cause we just adding user to database!

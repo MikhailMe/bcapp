@@ -8,13 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: всё запихать в базку
-
 public class Account {
-
-    @Getter
-    @NonNull
-    private User user;
 
     @Getter
     @NonNull
@@ -35,15 +29,8 @@ public class Account {
         this.listOfVisitDates = new ArrayList<>();
     }
 
-    public Account() {
-        this.user = null;
-        this.wallet = null;
-        this.currentVisit = null;
-    }
-
-    public Account(@NonNull User user) {
-        this.user = user;
-        this.wallet = new Wallet(user);
+    public Account(@NonNull Wallet wallet) {
+        this.wallet = wallet;
         this.currentVisit = LocalDate.now();
         this.listOfVisitDates.add(currentVisit);
     }
@@ -51,7 +38,6 @@ public class Account {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 31 * hash + user.hashCode();
         hash = 31 * hash + wallet.hashCode();
         hash = 31 * hash + currentVisit.hashCode();
         hash = 31 * hash + listOfUserBets.hashCode();
@@ -61,7 +47,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return user.toString() + currentVisit.toString();
+        return wallet.getUser().toString() + currentVisit.toString();
     }
 
 }
