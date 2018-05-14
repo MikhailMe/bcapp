@@ -1,12 +1,19 @@
 package com.bbs.handlersystem.Network.Message;
 
 import com.bbs.handlersystem.Client.User;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class MessageMaker {
 
-    public static String getAddUserMessage(User user) {
+    private static Gson gson;
 
-        return null;
+    static {
+        gson = new GsonBuilder().setPrettyPrinting().create();
+    }
+
+    public static String getAddUserMessage(User user) {
+        return gson.toJson(user);
     }
 
     public static String getClientInfoMessage() {

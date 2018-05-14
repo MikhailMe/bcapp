@@ -2,8 +2,9 @@ package com.bbs.handlersystem.Network.client;
 
 import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Config.Config;
+import com.bbs.handlersystem.Network.Message.Message;
 import com.bbs.handlersystem.Network.Message.MessageType;
-import com.bbs.handlersystem.Utils.JsonMessage;
+import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.netty.bootstrap.Bootstrap;
@@ -15,12 +16,14 @@ import java.util.Scanner;
 
 public final class Client implements Runnable {
 
-    private ChannelFuture future;
+    private Gson builder;
+    private Channel channel;
     private EventLoopGroup group;
     private Bootstrap clientBootstrap;
 
     @Override
     public void run() {
+        builder = new GsonBuilder().setPrettyPrinting().create();
         group = new NioEventLoopGroup();
         clientBootstrap = new Bootstrap()
                 .group(group)
@@ -30,25 +33,17 @@ public final class Client implements Runnable {
                 .option(ChannelOption.SO_KEEPALIVE, true)
                 .option(ChannelOption.SO_REUSEADDR, true)
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 100);
-        try {
-            clientBootstrap.connect(Config.HOST, Config.PORT).sync().channel().closeFuture().sync();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            Thread.currentThread().interrupt();
-            group.shutdownGracefully();
-        }
     }
 
     // TODO : how close client ??????
     public void closeClient() {
-        closeChannel(future.channel());
+        closeChannel(channel);
     }
 
     // TODO: i think is not good solution
-    public void sendMessage() {
-        future = openChannel();
-        future.channel().writeAndFlush(getRequestInfoMessage());
+    public void sendMessage() throws InterruptedException {
+        channel = openChannel();
+        channel.writeAndFlush(getRequestInfoMessage());
     }
 
     private String getUserAddMessage() {
@@ -57,28 +52,23 @@ public final class Client implements Runnable {
         String name = scanner.next();
         System.out.println("write mobile number: ");
         String mobile = scanner.next();
-        Gson builder = new GsonBuilder().setPrettyPrinting().create();
+        //Gson builder = new GsonBuilder().setPrettyPrinting().create();
         User user = new User(name, mobile);
-        JsonMessage jm = new JsonMessage(user, MessageType.MSG_ADD_USER);
-        return builder.toJson(jm);
+        JsonMessage jm = new JsonMessage<>(user, MessageType.MSG_ADD_USER);
+        return jm.toJson();
+        //return builder.toJson(jm);
     }
 
-    // TODO: make me
     private String getRequestInfoMessage() {
-        String request = "get list of games";
-        JsonMessage jm = new JsonMessage(request, MessageType.MSG_REQUEST_CLIENT_INFO);
-        // FIXME
-        return jm.toString();
+        String string = "get list of games";
+        Request request = new Request(string);
+        JsonMessage jm = new JsonMessage<>(request, MessageType.MSG_REQUEST_CLIENT_INFO);
+        return jm.toJson();
+        //return builder.toJson(jm);
     }
 
-    private ChannelFuture openChannel() {
-        ChannelFuture future = null;
-        try {
-            future = clientBootstrap.connect(Config.HOST, Config.PORT).sync();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return future;
+    private Channel openChannel() throws InterruptedException {
+        return clientBootstrap.connect(Config.HOST, Config.PORT).sync().channel();
     }
 
     private void closeChannel(Channel channel) {

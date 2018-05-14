@@ -10,11 +10,11 @@ import com.bbs.handlersystem.Database.StoreImpl.AccountStoreImpl;
 import com.bbs.handlersystem.Database.StoreImpl.UserStoreImpl;
 import com.bbs.handlersystem.Database.StoreImpl.WalletStoreImpl;
 import com.bbs.handlersystem.Utils.RandomGenerator;
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class StoreTests {
 

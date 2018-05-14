@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Cli {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         Client client = new Client();
         client.run();
@@ -13,7 +13,6 @@ public class Cli {
             client.sendMessage();
             System.out.println("Go ?");
         } while (!new Scanner(System.in).next().equals("n"));
-
-        client.closeClient();
     }
+
 }

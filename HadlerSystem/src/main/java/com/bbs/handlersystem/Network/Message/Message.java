@@ -1,6 +1,8 @@
 package com.bbs.handlersystem.Network.Message;
 
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -9,27 +11,38 @@ import java.io.ObjectOutput;
 import java.util.Locale;
 import java.util.Objects;
 
-public abstract class Message implements Externalizable {
+public abstract class Message<T> implements Externalizable {
 
     @Getter
     private long id;
 
     @Getter
+    @Setter
+    @NonNull
+    private T data;
+
+    @Getter
+    @Setter
+    @NonNull
     private MessageType type;
 
     private static long idCounter = 0;
 
-    protected Message(MessageType type) {
-        this(idCounter++, type);
+    Message(@NonNull final T data,
+            @NonNull final MessageType type) {
+        this(idCounter++, data, type);
     }
 
-    private Message(long id, MessageType type) {
+    private Message(@NonNull long id,
+                    @NonNull T data,
+                    @NonNull MessageType type) {
         this.id = id;
+        this.data = data;
         this.type = type;
     }
 
     @Override
-    public boolean equals(Object other) {
+    public boolean equals(@NonNull Object other) {
         if (this == other)
             return true;
         if (!(other instanceof Message))
