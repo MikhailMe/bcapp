@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Game {
 
@@ -52,11 +53,7 @@ public class Game {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 19 * hash + teams.hashCode();
-        hash = 19 * hash + goals.hashCode();
-        hash = 19 * hash + times.hashCode();
-        return hash;
+        return Objects.hash(super.hashCode(),teams, goals, times);
     }
 
 }

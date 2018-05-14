@@ -14,5 +14,6 @@ public class Cli {
             System.out.println("Go ?");
         } while (!new Scanner(System.in).next().equals("n"));
 
+        client.closeClient();
     }
 }

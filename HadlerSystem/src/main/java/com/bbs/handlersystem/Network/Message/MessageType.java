@@ -9,10 +9,11 @@ public enum MessageType {
     MSG_ADD_USER,
 
     // for take client information
-    MSG_GET_CLIENT_INFO,
+    MSG_REQUEST_CLIENT_INFO,
+    MSG_RESPONSE_CLIENT_INFO,
 
     // for get to client list of games
-    MSG_GET_LIST_GAMES,
+    MSG_GET_LIST_OF_GAMES,
 
     // for send bet transaction
     MSG_TAKE_TRANSACTION,

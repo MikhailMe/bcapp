@@ -3,6 +3,7 @@ package com.bbs.handlersystem.Network.Server;
 import com.bbs.handlersystem.Client.Account;
 import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Client.Wallet;
+import com.bbs.handlersystem.Data.Game;
 import com.bbs.handlersystem.Database.StoreImpl.MainStore;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.google.gson.*;
@@ -14,6 +15,7 @@ import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Sharable
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
@@ -29,6 +31,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         MessageType type = MessageType.valueOf(stringType);
         String messageToSend;
         switch (type) {
+
             case MSG_ADD_USER:
                 // get user object from json
                 JsonElement userElement = jsonTree.get("data");
@@ -46,6 +49,16 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 // ***example*** - here we don't need messageToSend, cause we just adding user to database!
                 // make message to send
                 //messageToSend = MessageMaker.getAddUserMessage(user);
+                break;
+            case MSG_GET_LIST_OF_GAMES:
+                JsonElement requestListOfGames = jsonTree.get("data");
+
+                //List<Game> listOfGames = getListOfGames();
+
+                //listOfGames.forEach(game -> MainStore.gameStore.add(game));
+
+
+                messageToSend = "list of games";
                 break;
             default:
                 messageToSend = "default";

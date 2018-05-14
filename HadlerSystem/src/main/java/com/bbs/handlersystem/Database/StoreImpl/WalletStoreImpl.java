@@ -5,14 +5,19 @@ import com.bbs.handlersystem.Database.Store.WalletStore;
 import com.bbs.handlersystem.Database.StoreConnection;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class WalletStoreImpl implements WalletStore {
 
-    private static final String ADD_WALLET_QUERY = "INSERT INTO wallets (user_id, balance) VALUES (?, ?)";
-    private static final String GET_WALLET_ID = "SELECT id FROM  wallets WHERE user_id = ?";
+    private static long size = 0;
+    private static final String GET_WALLET_ID_QUERY = "SELECT id FROM  wallets WHERE user_id = ?";
     private static final String CHANGE_BALANCE_QUERY = "UPDATE wallets SET balance = ? WHERE id = ?";
+    private static final String ADD_WALLET_QUERY = "INSERT INTO wallets (user_id, balance) VALUES (?, ?)";
+
+    @Override
+    public long size() {
+        return size;
+    }
 
     @Override
     public void add(Wallet wallet) throws SQLException {
@@ -21,19 +26,15 @@ public class WalletStoreImpl implements WalletStore {
         preparedStatement.setLong(1, new UserStoreImpl().getId(userNickname));
         preparedStatement.setLong(2, wallet.getBalance());
         preparedStatement.execute();
+        size++;
     }
 
     @Override
     public long getId(String nickname) throws SQLException {
-        PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_WALLET_ID);
+        PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_WALLET_ID_QUERY);
         preparedStatement.setLong(1, new UserStoreImpl().getId(nickname));
         preparedStatement.execute();
-        ResultSet resultSet = preparedStatement.getResultSet();
-        long walletId = -1L;
-        if (resultSet.next()) {
-            walletId = resultSet.getLong(COLUMN_ID);
-        }
-        return walletId;
+        return getIdFromResultSet(preparedStatement.getResultSet());
     }
 
     @Override
