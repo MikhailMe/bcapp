@@ -4,12 +4,13 @@ import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Database.Store.UserStore;
 import com.bbs.handlersystem.Database.StoreConnection;
 import com.bbs.handlersystem.Database.UserProperties;
+import lombok.NonNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserStoreImpl implements UserStore {
+public final class UserStoreImpl implements UserStore {
 
     private static long size = 0;
     private static final String GET_USER_ID = "SELECT id FROM users WHERE nickname = ?";
@@ -25,7 +26,7 @@ public class UserStoreImpl implements UserStore {
     }
 
     @Override
-    public void add(User user) throws SQLException {
+    public void add(@NonNull final User user) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(ADD_USER_QUERY);
         preparedStatement.setString(1, user.getNickname());
         preparedStatement.setBoolean(2, user.isHasToken());
@@ -36,7 +37,7 @@ public class UserStoreImpl implements UserStore {
     }
 
     @Override
-    public User getById(long id) throws SQLException {
+    public User getById(final long id) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_USER_BY_ID);
         preparedStatement.setLong(1, id);
         preparedStatement.execute();
@@ -51,7 +52,7 @@ public class UserStoreImpl implements UserStore {
     }
 
     @Override
-    public long getId(String nickname) throws SQLException {
+    public long getId(@NonNull final String nickname) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_USER_ID);
         preparedStatement.setString(1, nickname);
         preparedStatement.execute();
@@ -59,7 +60,7 @@ public class UserStoreImpl implements UserStore {
     }
 
     @Override
-    public String getMobileNumber(long id) throws SQLException {
+    public String getMobileNumber(final long id) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_NUMBER_BY_ID_QUERY);
         preparedStatement.setLong(1, id);
         preparedStatement.execute();
@@ -72,7 +73,9 @@ public class UserStoreImpl implements UserStore {
     }
 
     @Override
-    public void changeUserProperties(UserProperties type, String nickname, boolean value) throws SQLException {
+    public void changeUserProperties(@NonNull final UserProperties type,
+                                     @NonNull final String nickname,
+                                     final boolean value) throws SQLException {
         boolean isToken = type.equals(UserProperties.TOKEN);
         PreparedStatement preparedStatement =
                 StoreConnection.getConnection().prepareStatement(isToken ? SET_USER_TOKEN : SET_USER_ORACLE);

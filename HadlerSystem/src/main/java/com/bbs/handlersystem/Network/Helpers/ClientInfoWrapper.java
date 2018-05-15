@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.Objects;
 
-public class ClientInfoWrapper {
+public final class ClientInfoWrapper {
 
     private static final String HAVE_A = " have a ";
 
@@ -17,10 +17,10 @@ public class ClientInfoWrapper {
 
     @Getter
     @Setter
-    @NonNull
     private long balance;
 
-    public ClientInfoWrapper(String name, long balance) {
+    public ClientInfoWrapper(@NonNull final String name,
+                             final long balance) {
         this.name = name;
         this.balance = balance;
     }

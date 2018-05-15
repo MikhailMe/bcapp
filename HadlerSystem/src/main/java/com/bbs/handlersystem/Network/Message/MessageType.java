@@ -13,7 +13,8 @@ public enum MessageType {
     MSG_RESPONSE_CLIENT_INFO,
 
     // for get to client list of games
-    MSG_GET_LIST_OF_GAMES,
+    MSG_REQUEST_LIST_OF_GAMES,
+    MSG_RESPONSE_LIST_OF_GAMES,
 
     // for send bet transaction
     MSG_TAKE_TRANSACTION,

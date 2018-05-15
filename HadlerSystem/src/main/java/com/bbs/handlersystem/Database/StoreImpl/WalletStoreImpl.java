@@ -4,12 +4,13 @@ import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Client.Wallet;
 import com.bbs.handlersystem.Database.Store.WalletStore;
 import com.bbs.handlersystem.Database.StoreConnection;
+import lombok.NonNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class WalletStoreImpl implements WalletStore {
+public final class WalletStoreImpl implements WalletStore {
 
     private static long size = 0;
 
@@ -25,7 +26,7 @@ public class WalletStoreImpl implements WalletStore {
     }
 
     @Override
-    public long getBalance(long user_id) throws SQLException {
+    public long getBalance(final long user_id) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_BALANCE_QUERY);
         preparedStatement.setLong(1, user_id);
         preparedStatement.execute();
@@ -38,7 +39,7 @@ public class WalletStoreImpl implements WalletStore {
     }
 
     @Override
-    public void add(Wallet wallet) throws SQLException {
+    public void add(@NonNull final Wallet wallet) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(ADD_WALLET_QUERY);
         String userNickname = wallet.getUser().getNickname();
         preparedStatement.setLong(1, new UserStoreImpl().getId(userNickname));
@@ -48,7 +49,7 @@ public class WalletStoreImpl implements WalletStore {
     }
 
     @Override
-    public Wallet getById(long id) throws SQLException {
+    public Wallet getById(final long id) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_WALLET_BY_ID);
         preparedStatement.setLong(1, id);
         preparedStatement.execute();
@@ -66,7 +67,7 @@ public class WalletStoreImpl implements WalletStore {
     }
 
     @Override
-    public long getId(String nickname) throws SQLException {
+    public long getId(@NonNull final String nickname) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_WALLET_ID_QUERY);
         preparedStatement.setLong(1, new UserStoreImpl().getId(nickname));
         preparedStatement.execute();
@@ -74,7 +75,9 @@ public class WalletStoreImpl implements WalletStore {
     }
 
     @Override
-    public void changeBalance(long walletId, long value, boolean isAdd) throws SQLException {
+    public void changeBalance(final long walletId,
+                              final long value,
+                              final boolean isAdd) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(CHANGE_BALANCE_QUERY);
         preparedStatement.setLong(1, isAdd ? value : -value);
         preparedStatement.execute();

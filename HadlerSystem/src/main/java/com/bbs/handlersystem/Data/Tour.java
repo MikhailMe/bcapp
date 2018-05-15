@@ -5,8 +5,9 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
-public class Tour {
+public final class Tour {
 
     @Getter
     @Setter
@@ -16,14 +17,19 @@ public class Tour {
     @Setter
     private LocalDate tourDate;
 
-    public Tour(int tourNumber) {
+    public Tour(final int tourNumber) {
         this.tourNumber = tourNumber;
     }
 
-    public Tour(int tourNumber,
-                @NonNull LocalDate tourDate) {
+    public Tour(final int tourNumber,
+                @NonNull final LocalDate tourDate) {
         this.tourNumber = tourNumber;
         this.tourDate = tourDate;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), tourNumber, tourDate);
     }
 
     @Override

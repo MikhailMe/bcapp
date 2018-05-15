@@ -51,10 +51,8 @@ public class SportBoxRuOracle implements Parserable {
         Pair<Integer, Integer> goals = new Pair<>(homeTeamGoals, guestTeamGoals);
         // FIXME parse time !!!
         // parse times
-        LocalTime startTime = LocalTime.of(19, 0);
-        LocalTime endTime = LocalTime.of(21, 0);
-        Pair<LocalTime, LocalTime> times = new Pair<>(startTime, endTime);
-        return new Game(teams, goals, times);
+        LocalTime time = LocalTime.of(19, 0);;
+        return new Game(teams, goals, time);
     }
 
     public static void main(String[] args) throws IOException {

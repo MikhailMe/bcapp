@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.time.LocalTime;
 import java.util.Objects;
 
-public class Game {
+public final class Game {
 
     @Getter
     @Setter
@@ -24,20 +24,25 @@ public class Game {
     @Setter
     private LocalTime time;
 
-    public Game(@NonNull Pair<Team, Team> teams) {
+    public Game(@NonNull final Pair<Team, Team> teams) {
         this.teams = teams;
     }
 
-    public Game(@NonNull Pair<Team, Team> teams,
-                @NonNull Pair<Integer, Integer> goals) {
+    public Game(@NonNull final Pair<Team, Team> teams,
+                @NonNull final LocalTime time) {
+        this.teams = teams;
+        this.time = time;
+    }
+
+    public Game(@NonNull final Pair<Team, Team> teams,
+                @NonNull final Pair<Integer, Integer> goals) {
         this.teams = teams;
         this.goals = goals;
-
     }
 
-    public Game(@NonNull Pair<Team, Team> teams,
-                @NonNull Pair<Integer, Integer> goals,
-                @NonNull LocalTime time) {
+    public Game(@NonNull final Pair<Team, Team> teams,
+                @NonNull final Pair<Integer, Integer> goals,
+                @NonNull final LocalTime time) {
         this.teams = teams;
         this.goals = goals;
         this.time = time;

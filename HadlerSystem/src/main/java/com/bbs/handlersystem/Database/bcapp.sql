@@ -1,4 +1,4 @@
--- bcapp
+-- bcapprole doesn't exist postgres
 -- mikhail
 -- mikhail
 
@@ -20,7 +20,6 @@ CREATE TABLE IF NOT exists wallets (
 
 CREATE TABLE IF NOT exists accounts (
   id            bigserial primary key,
-  user_id       bigint not null references users (id),
   wallet_id     BIGINT not null references wallets (id),
   current_visit date   not null
 );
@@ -71,9 +70,6 @@ CREATE TABLE IF NOT EXISTS bets (
 ALTER TABLE users
   ADD COLUMN IF NOT EXISTS mobile_number VARCHAR(15);
 
-ALTER TABLE accounts
-  DROP COLUMN IF EXISTS user_id;
-
 ALTER TABLE coefficients
     RENAME team1_win TO team1;
 
@@ -81,3 +77,14 @@ ALTER TABLE coefficients
     RENAME  team2_win TO team2;
 
 --endregion
+
+
+/*
+drop table users cascade;
+drop table wallets cascade;
+drop table accounts cascade;
+drop table teams cascade;
+drop table games cascade;
+drop table coefficients cascade;
+drop table bets cascade;
+*/

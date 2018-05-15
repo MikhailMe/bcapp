@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.Objects;
 
-public class User {
+public final class User {
 
     @Getter
     @Setter
@@ -20,12 +20,10 @@ public class User {
 
     @Getter
     @Setter
-    @NonNull
     private boolean hasToken;
 
     @Getter
     @Setter
-    @NonNull
     private boolean isOracle;
 
     public User(@NonNull final String nickname,

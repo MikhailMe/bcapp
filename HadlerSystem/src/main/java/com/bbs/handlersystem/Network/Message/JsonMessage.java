@@ -8,6 +8,7 @@ import java.util.Objects;
 
 public final class JsonMessage<T> extends Message<T> {
 
+    @NonNull
     private static Gson builder;
 
     static {
@@ -19,12 +20,13 @@ public final class JsonMessage<T> extends Message<T> {
         super(data, type);
     }
 
+    @NonNull
     public String toJson() {
         return new GsonBuilder().setPrettyPrinting().create().toJson(this);
     }
 
     // TODO: why i exist
-    public String fromJson(Class clazz) {
+    public String fromJson() {
         return builder.fromJson(getData().toString(), this.getClass().getGenericSuperclass());
     }
 

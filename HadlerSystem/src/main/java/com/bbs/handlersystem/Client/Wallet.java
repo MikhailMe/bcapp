@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-public class Wallet {
+import java.util.Objects;
+
+public final class Wallet {
 
     @Getter
     @Setter
@@ -13,7 +15,6 @@ public class Wallet {
 
     @Getter
     @Setter
-    @NonNull
     private long balance;
 
     public Wallet(@NonNull final User user) {
@@ -21,8 +22,8 @@ public class Wallet {
         this.balance = 0;
     }
 
-    public void changeBalance(@NonNull final long value,
-                              @NonNull final boolean isAdd) {
+    public void changeBalance(final long value,
+                              final boolean isAdd) {
         balance = isAdd ? (balance += value) : (balance -= value);
     }
 
@@ -34,7 +35,7 @@ public class Wallet {
 
     @Override
     public int hashCode() {
-        return (int) (balance ^ (balance >>> 32));
+        return Objects.hash(super.hashCode(), user, balance);
     }
 
     @Override

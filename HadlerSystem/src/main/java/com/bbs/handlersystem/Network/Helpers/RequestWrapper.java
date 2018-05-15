@@ -6,14 +6,14 @@ import lombok.Setter;
 
 import java.util.Objects;
 
-public class RequestWrapper {
+public final class RequestWrapper {
 
     @Getter
     @Setter
     @NonNull
     private String request;
 
-    public RequestWrapper(String request) {
+    public RequestWrapper(@NonNull final String request) {
         this.request = request;
     }
 

@@ -7,8 +7,9 @@ import lombok.NonNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class Account {
+public final class Account {
 
     @Getter
     @NonNull
@@ -29,7 +30,7 @@ public class Account {
         this.listOfVisitDates = new ArrayList<>();
     }
 
-    public Account(@NonNull Wallet wallet) {
+    public Account(@NonNull final Wallet wallet) {
         this.wallet = wallet;
         this.currentVisit = LocalDate.now();
         this.listOfVisitDates.add(currentVisit);
@@ -37,12 +38,7 @@ public class Account {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 31 * hash + wallet.hashCode();
-        hash = 31 * hash + currentVisit.hashCode();
-        hash = 31 * hash + listOfUserBets.hashCode();
-        hash = 31 * hash + listOfVisitDates.hashCode();
-        return hash;
+        return Objects.hash(super.hashCode(), wallet, currentVisit, listOfUserBets, listOfVisitDates);
     }
 
     @Override

@@ -17,7 +17,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChampionatRuParser implements Parserable {
+public final class ChampionatRuParser implements Parserable {
 
     private int currentTourNumber;
     @NonNull
@@ -118,10 +118,8 @@ public class ChampionatRuParser implements Parserable {
         gamesElements.forEach(element -> {
             String[] results = element.getElementsByTag(SPAN_TAG).text().split(SPACE);
             // parse time
-            String[] time = results[0].split(DELIMITER);
-            LocalTime startTime = LocalTime.of(Integer.parseInt(time[0]), Integer.parseInt(time[1]));
-            LocalTime endTime = LocalTime.of(startTime.getHour() + 2, startTime.getMinute());
-            Pair<LocalTime, LocalTime> times = new Pair<>(startTime, endTime);
+            String[] times = results[0].split(DELIMITER);
+            LocalTime time = LocalTime.of(Integer.parseInt(times[0]), Integer.parseInt(times[1]));
             // parse teams
             int counter = 1;
             Team homeTeam = new Team(results[counter]);
@@ -137,7 +135,7 @@ public class ChampionatRuParser implements Parserable {
             int guestTeamGoals = Character.getNumericValue(results[counter].charAt(0));
             Pair<Integer, Integer> goals = new Pair<>(homeTeamGoals, guestTeamGoals);
             // build result
-            games.add(new Game(teams, goals, times));
+            games.add(new Game(teams, goals, time));
         });
         championatRuListOfGames.addAll(games);
     }

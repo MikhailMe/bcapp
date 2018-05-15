@@ -5,6 +5,7 @@ import com.bbs.handlersystem.Data.Team;
 import com.bbs.handlersystem.Database.Store.GameStore;
 import com.bbs.handlersystem.Database.StoreConnection;
 import com.bbs.handlersystem.Utils.Pair;
+import lombok.NonNull;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 
-public class GameStoreImpl implements GameStore {
+public final class GameStoreImpl implements GameStore {
 
     private static long size = 0;
     private static final String GET_GAME_BY_ID = "SELECT team1, team2, game_date FROM games WHERE id = ?";
@@ -27,7 +28,7 @@ public class GameStoreImpl implements GameStore {
     }
 
     @Override
-    public void add(Game game) throws SQLException {
+    public void add(@NonNull final Game game) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(ADD_GAME_QUERY);
         Pair<Team, Team> teams = game.getTeams();
         preparedStatement.setString(1, teams.getFirst().toString());
@@ -38,7 +39,7 @@ public class GameStoreImpl implements GameStore {
     }
 
     @Override
-    public Game getById(long id) throws SQLException {
+    public Game getById(final long id) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_GAME_BY_ID);
         preparedStatement.setLong(1, id);
         preparedStatement.execute();
@@ -59,7 +60,7 @@ public class GameStoreImpl implements GameStore {
 
     // pattern for @param nickname: "team1 team2"
     @Override
-    public long getId(String nickname) throws SQLException {
+    public long getId(@NonNull final String nickname) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_GAME_ID_QUERY);
         String[] teams = nickname.split(" ");
         preparedStatement.setString(1, teams[0]);

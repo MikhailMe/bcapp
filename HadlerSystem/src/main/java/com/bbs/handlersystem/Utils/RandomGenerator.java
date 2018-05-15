@@ -1,9 +1,11 @@
 package com.bbs.handlersystem.Utils;
 
+import lombok.NonNull;
+
 import java.util.Locale;
 import java.util.Random;
 
-public class RandomGenerator {
+public final class RandomGenerator {
 
     private static final double DELIMITER = 0.5d;
     private static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -13,7 +15,8 @@ public class RandomGenerator {
         return new Random().nextInt(10) + 1;
     }
 
-    public static String randomString(int length) {
+    @NonNull
+    public static String randomString(final int length) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; ++i) {
             if (new Random().nextDouble() > DELIMITER) {
@@ -25,7 +28,8 @@ public class RandomGenerator {
         return sb.toString();
     }
 
-    public static String randomDigitsString(int length) {
+    @NonNull
+    public static String randomDigitsString(final int length) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
             sb.append(randInt());

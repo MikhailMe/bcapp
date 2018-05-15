@@ -12,8 +12,6 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-import java.util.Scanner;
-
 public final class Client implements Runnable {
 
     private Gson builder;
@@ -41,32 +39,30 @@ public final class Client implements Runnable {
     }
 
     // TODO: i think is not good solution
-    public void sendMessage() throws InterruptedException {
+    public void sendMessage(String name, String mobileNumber) throws InterruptedException {
         channel = openChannel();
-        channel.writeAndFlush(getRequestClientInfo());
+        channel.writeAndFlush(getUserAddMessage(name, mobileNumber));
     }
 
-    private String getUserAddMessage() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("write name: ");
-        String name = scanner.next();
-        System.out.println("write mobile number: ");
-        String mobile = scanner.next();
-        User user = new User(name, mobile);
+    // for adding user to database
+    private String getUserAddMessage(String name, String mobileNumber) {
+        User user = new User(name, mobileNumber);
         JsonMessage jm = new JsonMessage<>(user, MessageType.MSG_ADD_USER);
         return jm.toJson();
     }
 
+    // for get
     private String getRequestClientInfo() {
         RequestWrapper requestWrapper = new RequestWrapper("");
         JsonMessage jm = new JsonMessage<>(requestWrapper, MessageType.MSG_REQUEST_CLIENT_INFO);
         return jm.toJson();
     }
 
-    private String getRequestInfoMessage() {
+    // for get list lis of games
+    private String getListOfGames() {
         String string = "get list of games";
         RequestWrapper request = new RequestWrapper(string);
-        JsonMessage jm = new JsonMessage<>(request, MessageType.MSG_REQUEST_CLIENT_INFO);
+        JsonMessage jm = new JsonMessage<>(request, MessageType.MSG_REQUEST_LIST_OF_GAMES);
         return jm.toJson();
     }
 

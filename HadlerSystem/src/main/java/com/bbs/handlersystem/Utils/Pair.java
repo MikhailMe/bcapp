@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-public class Pair<First, Second> {
+import java.util.Objects;
+
+public final class Pair<First, Second> {
 
     @Getter
     @Setter
@@ -24,10 +26,7 @@ public class Pair<First, Second> {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 31 * hash + first.hashCode();
-        hash = 31 * hash + second.hashCode();
-        return hash;
+        return Objects.hash(super.hashCode(), first, second);
     }
 
     @Override

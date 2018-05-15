@@ -4,8 +4,9 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class TournamentTable {
+public final class TournamentTable {
 
     @NonNull
     private List<Team> teams;
@@ -35,12 +36,7 @@ public class TournamentTable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 19 * hash + teams.hashCode();
-        hash = 19 * hash + places.hashCode();
-        hash = 19 * hash + points.hashCode();
-        hash = 19 * hash + amountOfGames.hashCode();
-        return hash;
+        return Objects.hash(super.hashCode(), teams, places, points, amountOfGames);
     }
 
     @Override

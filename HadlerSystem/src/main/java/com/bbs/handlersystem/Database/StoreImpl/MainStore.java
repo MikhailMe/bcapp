@@ -5,7 +5,7 @@ import com.bbs.handlersystem.Database.Store.GameStore;
 import com.bbs.handlersystem.Database.Store.UserStore;
 import com.bbs.handlersystem.Database.Store.WalletStore;
 
-public class MainStore {
+public final class MainStore {
 
     public static GameStore gameStore;
     public static UserStore userStore;

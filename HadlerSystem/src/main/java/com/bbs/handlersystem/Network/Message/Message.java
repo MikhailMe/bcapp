@@ -33,7 +33,7 @@ public abstract class Message<T> implements Externalizable {
         this(idCounter++, data, type);
     }
 
-    private Message(@NonNull long id,
+    private Message(long id,
                     @NonNull T data,
                     @NonNull MessageType type) {
         this.id = id;
