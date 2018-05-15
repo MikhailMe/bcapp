@@ -1,9 +1,10 @@
-package com.bbs.handlersystem.Parser;
+package com.bbs.handlersystem.Parser.Parsers;
 
 import org.jsoup.select.Elements;
 
-public interface Parserable {
+public interface BaseParser {
 
     void parseGamesLines(Elements gamesElements);
+
     void parseTournamentTable(Elements tableElements);
 }

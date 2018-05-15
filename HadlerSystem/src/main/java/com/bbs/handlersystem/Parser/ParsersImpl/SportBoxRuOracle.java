@@ -1,8 +1,9 @@
-package com.bbs.handlersystem.Parser;
+package com.bbs.handlersystem.Parser.ParsersImpl;
 
 import com.bbs.handlersystem.Data.Game;
 import com.bbs.handlersystem.Data.Team;
 import com.bbs.handlersystem.Data.TournamentTable;
+import com.bbs.handlersystem.Parser.Parsers.SportBoxRuParser;
 import com.bbs.handlersystem.Utils.Pair;
 import lombok.NonNull;
 import org.jsoup.Jsoup;
@@ -15,28 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class SportBoxRuOracle implements Parserable {
+public final class SportBoxRuOracle implements SportBoxRuParser {
 
     @NonNull
     private List<Game> sportBoxListOfLastGames;
     @NonNull
     private TournamentTable sportBoxTouranamentTable;
 
-    private static final int TIME = 4;
-    private static final String SPACE = " ";
-    private static final String DELIMITER = "-";
-    private static final String TABLE_TAG = "tr";
-    private static final String GAMES_CLASS = "games";
-    private static final String LIVE_TRANSLATION = "LIVE";
-    private static final String TABLE_CLASS = "global-table show-t";
-    private static final String LINK_TO_SPORTBOX = "https://news.sportbox.ru/Vidy_sporta/Futbol/Russia/premier_league";
-
     {
         this.sportBoxListOfLastGames = new ArrayList<>();
         this.sportBoxTouranamentTable = new TournamentTable();
     }
 
-    private static Game parseGameLine(String text) {
+    private static Game parseGameLine(@NonNull final String text) {
         String[] tokens = text.split(SPACE);
         if (tokens[0].equals(LIVE_TRANSLATION) || tokens[1].length() == TIME) {
             return null;
@@ -66,7 +58,7 @@ public class SportBoxRuOracle implements Parserable {
     }
 
     @Override
-    public void parseGamesLines(Elements gamesElements) {
+    public void parseGamesLines(@NonNull final Elements gamesElements) {
         List<Game> games = new ArrayList<>();
         gamesElements.forEach(game -> games.add(parseGameLine(game.text())));
         games.removeIf(Objects::isNull);
@@ -74,7 +66,7 @@ public class SportBoxRuOracle implements Parserable {
     }
 
     @Override
-    public void parseTournamentTable(Elements tableElements) {
+    public void parseTournamentTable(@NonNull final Elements tableElements) {
         List<Team> listOfTeams = new ArrayList<>();
         List<Integer> listOfPlaces = new ArrayList<>();
         List<Integer> listOfPoints = new ArrayList<>();
@@ -97,10 +89,7 @@ public class SportBoxRuOracle implements Parserable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 19 * hash + sportBoxListOfLastGames.hashCode();
-        hash = 19 * hash + sportBoxTouranamentTable.hashCode();
-        return hash;
+        return Objects.hash(super.hashCode(), sportBoxListOfLastGames, sportBoxTouranamentTable);
     }
 
     @Override

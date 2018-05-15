@@ -1,8 +1,9 @@
-package com.bbs.handlersystem.Parser;
+package com.bbs.handlersystem.Parser.ParsersImpl;
 
 import com.bbs.handlersystem.Data.Game;
 import com.bbs.handlersystem.Data.Team;
 import com.bbs.handlersystem.Data.TournamentTable;
+import com.bbs.handlersystem.Parser.Parsers.SportsRuParser;
 import com.bbs.handlersystem.Utils.Pair;
 import lombok.NonNull;
 import org.jsoup.Jsoup;
@@ -12,24 +13,15 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class SportsRuOracle implements Parserable {
+public final class SportsRuParserImpl implements SportsRuParser {
 
     @NonNull
     private List<Game> sportsRuListOfGames;
+
     @NonNull
     private TournamentTable sportsRuTouranamentTable;
-
-    private static final String SPACE = " ";
-    private static final String CKA = "СКА";
-    private static final String GAMES_TAG = "li";
-    private static final String TABLE_TAG = "tr";
-    private static final String ARSENAL = "Арсенал";
-    private static final String FINISHED_STATUS = "завершен";
-    private static final String GAMES_CLASS = "accordion__body";
-    private static final String TABLE_CLASS = "stat-table table sortable-table";
-    private static final String LINK_TO_SPORTS_RU = "https://www.sports.ru/rfpl/";
-    private static final String LINK_TO_SPORTS_RU_TABLE = "https://www.sports.ru/rfpl/table/";
 
     {
         sportsRuListOfGames = new ArrayList<>();
@@ -37,7 +29,7 @@ public class SportsRuOracle implements Parserable {
     }
 
     public static void main(String[] args) throws IOException {
-        SportsRuOracle oracle = new SportsRuOracle();
+        SportsRuParserImpl oracle = new SportsRuParserImpl();
         Document gamesDocument = Jsoup.connect(LINK_TO_SPORTS_RU).get();
         Elements gamesElements = gamesDocument.getElementsByClass(GAMES_CLASS);
         Document tableDocument = Jsoup.connect(LINK_TO_SPORTS_RU_TABLE).get();
@@ -48,7 +40,7 @@ public class SportsRuOracle implements Parserable {
     }
 
     @Override
-    public void parseGamesLines(Elements gamesElements) {
+    public void parseGamesLines(@NonNull final Elements gamesElements) {
         List<Game> gamesList = new ArrayList<>();
         Elements games = gamesElements.get(0).getElementsByTag(GAMES_TAG);
         games.forEach(el -> {
@@ -84,7 +76,7 @@ public class SportsRuOracle implements Parserable {
     }
 
     @Override
-    public void parseTournamentTable(Elements tableElements) {
+    public void parseTournamentTable(@NonNull final Elements tableElements) {
         List<Team> listOfTeams = new ArrayList<>();
         List<Integer> listOfPlaces = new ArrayList<>();
         List<Integer> listOfPoints = new ArrayList<>();
@@ -95,7 +87,7 @@ public class SportsRuOracle implements Parserable {
             listOfPlaces.add(Integer.parseInt(tokens[0]));
             String teamName = tokens[1];
             if (teamName.equals(CKA) || teamName.equals(ARSENAL)) {
-                counter = 1 ;
+                counter = 1;
             }
             Team team = new Team(teamName);
             int points = Integer.parseInt(tokens[8 + counter]);
@@ -111,10 +103,7 @@ public class SportsRuOracle implements Parserable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 19 * hash + sportsRuListOfGames.hashCode();
-        hash = 19 * hash + sportsRuTouranamentTable.hashCode();
-        return hash;
+        return Objects.hash(super.hashCode(), sportsRuListOfGames, sportsRuTouranamentTable);
     }
 
     @Override

@@ -1,9 +1,10 @@
-package com.bbs.handlersystem.Parser;
+package com.bbs.handlersystem.Parser.ParsersImpl;
 
 import com.bbs.handlersystem.Data.Game;
 import com.bbs.handlersystem.Data.Team;
 import com.bbs.handlersystem.Data.Tour;
 import com.bbs.handlersystem.Data.TournamentTable;
+import com.bbs.handlersystem.Parser.Parsers.ChampionatRuParser;
 import com.bbs.handlersystem.Utils.Pair;
 import lombok.NonNull;
 import org.jsoup.Jsoup;
@@ -16,8 +17,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public final class ChampionatRuParser implements Parserable {
+public final class ChampionatRuParserImpl implements ChampionatRuParser {
 
     private int currentTourNumber;
     @NonNull
@@ -25,24 +27,13 @@ public final class ChampionatRuParser implements Parserable {
     @NonNull
     private TournamentTable championatRuTouranamentTable;
 
-    private static final String SPACE = " ";
-    private static final String DELIMITER = ":";
-    private static final String SPAN_TAG = "span";
-    private static final String FUCKING_LETTER = "М";
-    private static final String DATE_CLASS = "stat-block__date";
-    private static final String TABLE_CLASS = "stat-block-table";
-    private static final String TABLE_LINE = "stat-block-table__row";
-    private static final String TOUR_CLASS = "stat-block-calendar__item";
-    private static final String GAME_CLASS = "stat-block-calendar__event _result";
-    private static final String LINK_TO_CHAMPIONAT_RU = "https://www.championat.com/football/_russiapl.html";
-
     {
         this.currentTourNumber = 26;
         this.championatRuListOfGames = new ArrayList<>();
         this.championatRuTouranamentTable = new TournamentTable();
     }
 
-    private static LocalDate getTourDate(String[] dateParams) {
+    private static LocalDate getTourDate(@NonNull final String[] dateParams) {
         int day = Integer.parseInt(dateParams[0]);
         int year = Integer.parseInt(dateParams[2].substring(0, dateParams[2].length() - 1));
         int month = 0;
@@ -88,7 +79,7 @@ public final class ChampionatRuParser implements Parserable {
 
     }
 
-    private static Tour getTour(Element element) {
+    private static Tour getTour(@NonNull final Element element) {
         Elements dateOfTour = element.getElementsByClass(DATE_CLASS);
         String[] dateParams = dateOfTour.text().split(SPACE);
         int tourNumber = Integer.parseInt(dateParams[3]);
@@ -97,7 +88,7 @@ public final class ChampionatRuParser implements Parserable {
     }
 
     public static void main(String[] args) throws IOException {
-        ChampionatRuParser oracle = new ChampionatRuParser();
+        ChampionatRuParserImpl oracle = new ChampionatRuParserImpl();
         Document document = Jsoup.connect(LINK_TO_CHAMPIONAT_RU).get();
         Elements toursElements = document.getElementsByClass(TOUR_CLASS);
         for (Element element : toursElements) {
@@ -113,7 +104,7 @@ public final class ChampionatRuParser implements Parserable {
     }
 
     @Override
-    public void parseGamesLines(Elements gamesElements) {
+    public void parseGamesLines(@NonNull final Elements gamesElements) {
         List<Game> games = new ArrayList<>();
         gamesElements.forEach(element -> {
             String[] results = element.getElementsByTag(SPAN_TAG).text().split(SPACE);
@@ -141,7 +132,7 @@ public final class ChampionatRuParser implements Parserable {
     }
 
     @Override
-    public void parseTournamentTable(Elements tableElements) {
+    public void parseTournamentTable(@NonNull final Elements tableElements) {
         List<Team> teams = new ArrayList<>();
         List<Integer> places = new ArrayList<>();
         List<Integer> points = new ArrayList<>();
@@ -167,10 +158,7 @@ public final class ChampionatRuParser implements Parserable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 19 * hash + championatRuListOfGames.hashCode();
-        hash = 19 * hash + championatRuTouranamentTable.hashCode();
-        return hash;
+        return Objects.hash(super.hashCode(), currentTourNumber, championatRuListOfGames, championatRuTouranamentTable);
     }
 
     @Override
