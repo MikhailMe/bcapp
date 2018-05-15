@@ -2,7 +2,7 @@ package com.bbs.handlersystem.Network.client;
 
 import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Config.Config;
-import com.bbs.handlersystem.Network.Message.Message;
+import com.bbs.handlersystem.Network.Helpers.RequestWrapper;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.google.gson.Gson;
@@ -43,7 +43,7 @@ public final class Client implements Runnable {
     // TODO: i think is not good solution
     public void sendMessage() throws InterruptedException {
         channel = openChannel();
-        channel.writeAndFlush(getRequestInfoMessage());
+        channel.writeAndFlush(getRequestClientInfo());
     }
 
     private String getUserAddMessage() {
@@ -52,19 +52,22 @@ public final class Client implements Runnable {
         String name = scanner.next();
         System.out.println("write mobile number: ");
         String mobile = scanner.next();
-        //Gson builder = new GsonBuilder().setPrettyPrinting().create();
         User user = new User(name, mobile);
         JsonMessage jm = new JsonMessage<>(user, MessageType.MSG_ADD_USER);
         return jm.toJson();
-        //return builder.toJson(jm);
+    }
+
+    private String getRequestClientInfo() {
+        RequestWrapper requestWrapper = new RequestWrapper("");
+        JsonMessage jm = new JsonMessage<>(requestWrapper, MessageType.MSG_REQUEST_CLIENT_INFO);
+        return jm.toJson();
     }
 
     private String getRequestInfoMessage() {
         String string = "get list of games";
-        Request request = new Request(string);
+        RequestWrapper request = new RequestWrapper(string);
         JsonMessage jm = new JsonMessage<>(request, MessageType.MSG_REQUEST_CLIENT_INFO);
         return jm.toJson();
-        //return builder.toJson(jm);
     }
 
     private Channel openChannel() throws InterruptedException {

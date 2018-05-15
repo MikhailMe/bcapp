@@ -4,6 +4,8 @@ import com.bbs.handlersystem.Client.Account;
 import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Client.Wallet;
 import com.bbs.handlersystem.Database.StoreImpl.MainStore;
+import com.bbs.handlersystem.Network.Helpers.ClientInfoWrapper;
+import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.bbs.handlersystem.Network.Message.MessageMaker;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.google.gson.*;
@@ -25,7 +27,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object object) throws SQLException {
         String jsonString = (String) object;
-        System.out.println(jsonString);
         JsonElement jsonRoot = new JsonParser().parse(jsonString);
         JsonObject jsonTree = jsonRoot.getAsJsonObject();
         JsonElement messageType = jsonTree.get(TYPE);
@@ -48,24 +49,20 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 messageToSend = "just adding user to database";
                 break;
             case MSG_REQUEST_CLIENT_INFO:
-                JsonElement requestClientInfo = jsonTree.get(DATA);
-                messageToSend = requestClientInfo.toString();//"request client info";
+                // we has name
+                String name = "alewa";
+                long userId = MainStore.userStore.getId(name);
+                long balance = MainStore.walletStore.getBalance(userId);
+                ClientInfoWrapper clientInfoWrapper = new ClientInfoWrapper(name, balance);
+                JsonMessage jm = new JsonMessage<>(clientInfoWrapper, MessageType.MSG_RESPONSE_CLIENT_INFO);
+                messageToSend = jm.toJson();
                 break;
             case MSG_GET_LIST_OF_GAMES:
+                // TODO
                 JsonElement requestListOfGames = jsonTree.get(DATA);
-                //List<Game> listOfGames = getListOfGames();
-                /*listOfGames.forEach(game -> {
-                    try {
-                        MainStore.gameStore.add(game);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                });*/
                 messageToSend = MessageMaker.getListOfGamesMessage();
                 break;
             default:
-                // ***example*** - here we don't need messageToSend, cause we just adding user to database!
-                // make message to send
                 //messageToSend = MessageMaker.getAddUserMessage(user);
                 messageToSend = "default";
                 break;

@@ -22,22 +22,30 @@ public class Game {
 
     @Getter
     @Setter
-    private Pair<LocalTime, LocalTime> times;
+    private LocalTime time;
+
+    public Game(@NonNull Pair<Team, Team> teams) {
+        this.teams = teams;
+    }
 
     public Game(@NonNull Pair<Team, Team> teams,
                 @NonNull Pair<Integer, Integer> goals) {
         this.teams = teams;
         this.goals = goals;
-        this.times = null;
 
     }
 
     public Game(@NonNull Pair<Team, Team> teams,
                 @NonNull Pair<Integer, Integer> goals,
-                @NonNull Pair<LocalTime, LocalTime> times) {
+                @NonNull LocalTime time) {
         this.teams = teams;
         this.goals = goals;
-        this.times = times;
+        this.time = time;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), teams, goals, time);
     }
 
     // FIXME
@@ -49,11 +57,6 @@ public class Game {
                 /* +
                 "\n" +
                 times.toString()*/
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(),teams, goals, times);
     }
 
 }

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 public interface UserStore extends Store<User> {
 
+    String getMobileNumber(long id) throws SQLException;
+
     void changeUserProperties(UserProperties type, String nickname, boolean value) throws SQLException;
 
 }
