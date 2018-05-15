@@ -53,7 +53,6 @@ public final class Game {
         return Objects.hash(super.hashCode(), teams, goals, timestamp);
     }
 
-    // FIXME
     @Override
     public String toString() {
         return teams.toString() +

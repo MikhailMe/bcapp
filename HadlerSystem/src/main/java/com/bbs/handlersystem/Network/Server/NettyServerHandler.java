@@ -5,8 +5,9 @@ import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Client.Wallet;
 import com.bbs.handlersystem.Data.Game;
 import com.bbs.handlersystem.Database.StoreImpl.MainStore;
-import com.bbs.handlersystem.Network.Helpers.ClientInfoWrapper;
-import com.bbs.handlersystem.Network.Helpers.ListOfGamesWrapper;
+import com.bbs.handlersystem.Network.Wrappers.ClientInfoWrapper;
+import com.bbs.handlersystem.Network.Wrappers.GameMessage;
+import com.bbs.handlersystem.Network.Wrappers.ListOfGamesWrapper;
 import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.bbs.handlersystem.Utils.Helper;
@@ -62,8 +63,9 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 break;
             case MSG_REQUEST_LIST_OF_GAMES:
                 // TODO: write real parser for get list of games
-                List<Game> games = Helper.getListOfGames();
-                ListOfGamesWrapper listOfGames = new ListOfGamesWrapper(games);
+                List<Game> games = Helper.createListOfGames(10);
+                List<GameMessage> listOfGames = Helper.getListGameMessages(games);
+                //ListOfGamesWrapper listOfGames = new ListOfGamesWrapper(games);
                 JsonMessage listOfGamesMessage = new JsonMessage<>(listOfGames, MessageType.MSG_RESPONSE_LIST_OF_GAMES);
                 messageToSend = listOfGamesMessage.toJson();
                 break;

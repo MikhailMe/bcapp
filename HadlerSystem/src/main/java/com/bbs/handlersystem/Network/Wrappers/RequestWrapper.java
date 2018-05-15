@@ -1,4 +1,4 @@
-package com.bbs.handlersystem.Network.Helpers;
+package com.bbs.handlersystem.Network.Wrappers;
 
 import lombok.Getter;
 import lombok.NonNull;

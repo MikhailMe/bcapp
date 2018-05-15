@@ -2,7 +2,7 @@ package com.bbs.handlersystem.Network.client;
 
 import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Config.Config;
-import com.bbs.handlersystem.Network.Helpers.RequestWrapper;
+import com.bbs.handlersystem.Network.Wrappers.RequestWrapper;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.bbs.handlersystem.Network.Message.JsonMessage;
 import io.netty.bootstrap.Bootstrap;
