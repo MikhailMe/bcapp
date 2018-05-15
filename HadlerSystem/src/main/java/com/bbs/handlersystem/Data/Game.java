@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
-import java.time.LocalTime;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 public final class Game {
@@ -22,16 +22,16 @@ public final class Game {
 
     @Getter
     @Setter
-    private LocalTime time;
+    private Timestamp timestamp;
 
     public Game(@NonNull final Pair<Team, Team> teams) {
         this.teams = teams;
     }
 
     public Game(@NonNull final Pair<Team, Team> teams,
-                @NonNull final LocalTime time) {
+                @NonNull final Timestamp timestamp) {
         this.teams = teams;
-        this.time = time;
+        this.timestamp = timestamp;
     }
 
     public Game(@NonNull final Pair<Team, Team> teams,
@@ -42,15 +42,15 @@ public final class Game {
 
     public Game(@NonNull final Pair<Team, Team> teams,
                 @NonNull final Pair<Integer, Integer> goals,
-                @NonNull final LocalTime time) {
+                @NonNull final Timestamp timestamp) {
         this.teams = teams;
         this.goals = goals;
-        this.time = time;
+        this.timestamp = timestamp;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), teams, goals, time);
+        return Objects.hash(super.hashCode(), teams, goals, timestamp);
     }
 
     // FIXME
@@ -58,10 +58,9 @@ public final class Game {
     public String toString() {
         return teams.toString() +
                 "\n" +
-                goals.toString();
-                /* +
+                goals.toString() +
                 "\n" +
-                times.toString()*/
+                timestamp.toString();
     }
 
 }

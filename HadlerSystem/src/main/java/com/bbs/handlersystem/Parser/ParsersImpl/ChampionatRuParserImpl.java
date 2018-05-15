@@ -13,6 +13,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -110,7 +111,9 @@ public final class ChampionatRuParserImpl implements ChampionatRuParser {
             String[] results = element.getElementsByTag(SPAN_TAG).text().split(SPACE);
             // parse time
             String[] times = results[0].split(DELIMITER);
-            LocalTime time = LocalTime.of(Integer.parseInt(times[0]), Integer.parseInt(times[1]));
+            // FIXME
+            Timestamp time = new Timestamp(System.currentTimeMillis());
+            //LocalTime time = LocalTime.of(Integer.parseInt(times[0]), Integer.parseInt(times[1]));
             // parse teams
             int counter = 1;
             Team homeTeam = new Team(results[counter]);

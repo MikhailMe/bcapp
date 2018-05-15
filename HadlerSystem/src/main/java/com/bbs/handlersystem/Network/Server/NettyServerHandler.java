@@ -3,10 +3,13 @@ package com.bbs.handlersystem.Network.Server;
 import com.bbs.handlersystem.Client.Account;
 import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Client.Wallet;
+import com.bbs.handlersystem.Data.Game;
 import com.bbs.handlersystem.Database.StoreImpl.MainStore;
 import com.bbs.handlersystem.Network.Helpers.ClientInfoWrapper;
+import com.bbs.handlersystem.Network.Helpers.ListOfGamesWrapper;
 import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.bbs.handlersystem.Network.Message.MessageType;
+import com.bbs.handlersystem.Utils.Helper;
 import com.google.gson.*;
 import io.netty.buffer.Unpooled;
 import io.netty.util.CharsetUtil;
@@ -16,6 +19,7 @@ import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Sharable
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
@@ -36,17 +40,17 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         String messageToSend = "";
         switch (type) {
             case MSG_ADD_USER:
-                // get user object from json
                 JsonElement userElement = jsonTree.get(DATA);
-                // creating objects
+
                 User user = new Gson().fromJson(userElement, User.class);
                 Wallet wallet = new Wallet(user);
                 Account account = new Account(wallet);
-                // putting objects to stores
+
                 MainStore.userStore.add(user);
                 MainStore.walletStore.add(wallet);
                 MainStore.accountStore.add(account);
-                messageToSend = user.toString() + " successfully added to database";
+
+                messageToSend = "User \"" + user.toString() + "\" successfully added to database";
                 break;
             case MSG_REQUEST_CLIENT_INFO:
                 String name = "alewa";
@@ -57,12 +61,11 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 messageToSend = clientInfoMessage.toJson();
                 break;
             case MSG_REQUEST_LIST_OF_GAMES:
-                // TODO
-                //JsonElement requestListOfGames = jsonTree.get(DATA);
-                //List<Game> games = getListOfGames();
-                //ListOfGamesWrapper listOfGames = new ListOfGamesWrapper(games);
-                //JsonMessage listOfGamesMessage = new JsonMessage<>(listOfGames, MessageType.MSG_RESPONSE_LIST_OF_GAMES);
-                //messageToSend = listOfGamesMessage.toJson();
+                // TODO: write real parser for get list of games
+                List<Game> games = Helper.getListOfGames();
+                ListOfGamesWrapper listOfGames = new ListOfGamesWrapper(games);
+                JsonMessage listOfGamesMessage = new JsonMessage<>(listOfGames, MessageType.MSG_RESPONSE_LIST_OF_GAMES);
+                messageToSend = listOfGamesMessage.toJson();
                 break;
             default:
                 messageToSend = "default";

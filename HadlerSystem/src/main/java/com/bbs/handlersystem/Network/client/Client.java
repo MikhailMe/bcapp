@@ -5,23 +5,25 @@ import com.bbs.handlersystem.Config.Config;
 import com.bbs.handlersystem.Network.Helpers.RequestWrapper;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.bbs.handlersystem.Network.Message.JsonMessage;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import lombok.NonNull;
 
 public final class Client implements Runnable {
 
-    private Gson builder;
+    @NonNull
     private Channel channel;
+
+    @NonNull
     private EventLoopGroup group;
+
+    @NonNull
     private Bootstrap clientBootstrap;
 
     @Override
     public void run() {
-        builder = new GsonBuilder().setPrettyPrinting().create();
         group = new NioEventLoopGroup();
         clientBootstrap = new Bootstrap()
                 .group(group)
@@ -39,9 +41,21 @@ public final class Client implements Runnable {
     }
 
     // TODO: i think is not good solution
-    public void sendMessage(String name, String mobileNumber) throws InterruptedException {
+    public void sendUserAddMessage(String name, String mobileNumber) throws InterruptedException {
         channel = openChannel();
         channel.writeAndFlush(getUserAddMessage(name, mobileNumber));
+    }
+
+    // TODO: i think is not good solution
+    public void sendRequestClientInfoMessage() throws InterruptedException {
+        channel = openChannel();
+        channel.writeAndFlush(getRequestClientInfo());
+    }
+
+    // TODO: i think is not good solution
+    public void sendRequestListOfGamesMessage() throws InterruptedException {
+        channel = openChannel();
+        channel.writeAndFlush(getListOfGames());
     }
 
     // for adding user to database
@@ -51,17 +65,16 @@ public final class Client implements Runnable {
         return jm.toJson();
     }
 
-    // for get
+    // for get client information (name, balance, listOfBets, listOfVisits, currentVisit)
     private String getRequestClientInfo() {
-        RequestWrapper requestWrapper = new RequestWrapper("");
+        RequestWrapper requestWrapper = new RequestWrapper("get client info");
         JsonMessage jm = new JsonMessage<>(requestWrapper, MessageType.MSG_REQUEST_CLIENT_INFO);
         return jm.toJson();
     }
 
     // for get list lis of games
     private String getListOfGames() {
-        String string = "get list of games";
-        RequestWrapper request = new RequestWrapper(string);
+        RequestWrapper request = new RequestWrapper("get list of games");
         JsonMessage jm = new JsonMessage<>(request, MessageType.MSG_REQUEST_LIST_OF_GAMES);
         return jm.toJson();
     }

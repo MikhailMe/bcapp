@@ -6,7 +6,6 @@ import com.bbs.handlersystem.Database.Store.AccountStore;
 import com.bbs.handlersystem.Database.StoreConnection;
 import lombok.NonNull;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,7 +28,7 @@ public final class AccountStoreImpl implements AccountStore {
         String nickname = account.getWallet().getUser().getNickname();
         long walletId = new WalletStoreImpl().getId(nickname);
         preparedStatement.setLong(1, walletId);
-        preparedStatement.setDate(2, Date.valueOf(account.getCurrentVisit()));
+        preparedStatement.setTimestamp(2, account.getCurrentVisit());
         preparedStatement.execute();
         size++;
     }

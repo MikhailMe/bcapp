@@ -4,7 +4,8 @@ import com.bbs.handlersystem.Bet.Bet;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,13 +18,13 @@ public final class Account {
 
     @Getter
     @NonNull
-    private LocalDate currentVisit;
+    private Timestamp currentVisit;
 
     @Getter
     private List<Bet> listOfUserBets;
 
     @Getter
-    private List<LocalDate> listOfVisitDates;
+    private List<Timestamp> listOfVisitDates;
 
     {
         this.listOfUserBets = new ArrayList<>();
@@ -32,7 +33,7 @@ public final class Account {
 
     public Account(@NonNull final Wallet wallet) {
         this.wallet = wallet;
-        this.currentVisit = LocalDate.now();
+        this.currentVisit = new Timestamp(System.currentTimeMillis());
         this.listOfVisitDates.add(currentVisit);
     }
 
@@ -44,6 +45,10 @@ public final class Account {
     @Override
     public String toString() {
         return wallet.getUser().toString() + currentVisit.toString();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(LocalDateTime.now());
     }
 
 }

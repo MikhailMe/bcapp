@@ -20,8 +20,8 @@ CREATE TABLE IF NOT exists wallets (
 
 CREATE TABLE IF NOT exists accounts (
   id            bigserial primary key,
-  wallet_id     BIGINT not null references wallets (id),
-  current_visit date   not null
+  wallet_id     BIGINT    not null references wallets (id),
+  current_visit timestamp not null
 );
 
 --endregion
@@ -35,9 +35,9 @@ CREATE TABLE IF NOT EXISTS teams (
 -- to add database
 CREATE TABLE IF NOT EXISTS games (
   id        bigserial primary key,
-  team1     bigint                   not null references teams (id),
-  team2     bigint                   not null references teams (id),
-  game_date timestamp with time zone not null
+  team1     bigint    not null references teams (id),
+  team2     bigint    not null references teams (id),
+  game_date timestamp not null
 );
 
 --region ========================= Core =========================
@@ -71,16 +71,16 @@ ALTER TABLE users
   ADD COLUMN IF NOT EXISTS mobile_number VARCHAR(15);
 
 ALTER TABLE coefficients
-    RENAME team1_win TO team1;
+  RENAME team1_win TO team1;
 
 ALTER TABLE coefficients
-    RENAME  team2_win TO team2;
+  RENAME team2_win TO team2;
 
 --endregion
 
 
-/*
-drop table users cascade;
+
+/*drop table users cascade;
 drop table wallets cascade;
 drop table accounts cascade;
 drop table teams cascade;

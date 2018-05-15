@@ -7,10 +7,7 @@ import com.bbs.handlersystem.Database.StoreConnection;
 import com.bbs.handlersystem.Utils.Pair;
 import lombok.NonNull;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Time;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -33,7 +30,7 @@ public final class GameStoreImpl implements GameStore {
         Pair<Team, Team> teams = game.getTeams();
         preparedStatement.setString(1, teams.getFirst().toString());
         preparedStatement.setString(2, teams.getSecond().toString());
-        preparedStatement.setTime(3, Time.valueOf(game.getTime()));
+        preparedStatement.setTimestamp(3, game.getTimestamp());
         preparedStatement.execute();
         size++;
     }
@@ -46,15 +43,15 @@ public final class GameStoreImpl implements GameStore {
         ResultSet resultSet = preparedStatement.getResultSet();
         Team team1 = null;
         Team team2 = null;
-        Time time = null;
+        Timestamp timestamp = null;
         if (resultSet.next()) {
             team1 = new Team(resultSet.getString(COLUMN_TEAM1));
             team2 = new Team(resultSet.getString(COLUMN_TEAM2));
-            time = resultSet.getTime(COLUMN_GAME_DATE);
+            timestamp = resultSet.getTimestamp(COLUMN_GAME_DATE);
         }
         Pair<Team, Team> teams = new Pair<>(Objects.requireNonNull(team1), Objects.requireNonNull(team2));
         Game game = new Game(teams);
-        game.setTime(time.toLocalTime());
+        game.setTimestamp(timestamp);
         return game;
     }
 

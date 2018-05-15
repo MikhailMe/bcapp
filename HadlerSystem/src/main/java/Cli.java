@@ -10,11 +10,12 @@ public class Cli {
         client.run();
         Scanner scanner = new Scanner(System.in);
         do {
-            System.out.println("write name: ");
+            client.sendRequestListOfGamesMessage();
+            /*System.out.println("write name: ");
             String name = scanner.next();
             System.out.println("write mobile number: ");
             String mobileNumber = scanner.next();
-            client.sendMessage(name, mobileNumber);
+            client.sendUserAddMessage(name, mobileNumber);*/
             System.out.println("One more time ?");
         } while (!new Scanner(System.in).next().equals("n"));
     }

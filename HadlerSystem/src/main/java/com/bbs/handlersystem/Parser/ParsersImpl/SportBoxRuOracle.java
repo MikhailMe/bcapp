@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,8 +44,8 @@ public final class SportBoxRuOracle implements SportBoxRuParser {
         Pair<Integer, Integer> goals = new Pair<>(homeTeamGoals, guestTeamGoals);
         // FIXME parse time !!!
         // parse times
-        LocalTime time = LocalTime.of(19, 0);;
-        return new Game(teams, goals, time);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        return new Game(teams, goals, timestamp);
     }
 
     public static void main(String[] args) throws IOException {
