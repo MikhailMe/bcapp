@@ -1,4 +1,13 @@
 package com.bbs.handlersystem.Transaction;
 
-public class TransactionManager {
+public final class TransactionManager {
+
+    public static boolean isValidBetTransaction(Transaction transaction) {
+        return true;
+    }
+
+    public static boolean isValidTokenTransaction(Transaction transaction) {
+        return true;
+    }
+
 }

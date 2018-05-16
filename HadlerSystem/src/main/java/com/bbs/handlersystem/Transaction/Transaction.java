@@ -1,7 +1,6 @@
 package com.bbs.handlersystem.Transaction;
 
 import com.bbs.handlersystem.Client.User;
-import com.bbs.handlersystem.Validator.Validator;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -20,7 +19,10 @@ public abstract class Transaction {
     @NonNull
     protected Timestamp timestamp;
 
-    protected boolean isValid() {
-        return Validator.isValid(this);
+    public Transaction(@NonNull final User user,
+                       @NonNull final Timestamp timestamp) {
+        this.user = user;
+        this.timestamp = timestamp;
     }
+
 }

@@ -4,7 +4,7 @@ import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Network.ContentMessage.ContentOfTransactionMessage;
 import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.bbs.handlersystem.Network.Message.MessageType;
-import com.bbs.handlersystem.Network.ContentMessage.ContentOfRequestMessage;
+import com.bbs.handlersystem.Network.ContentMessage.ContentOfSimpleMessage;
 import lombok.NonNull;
 
 import java.sql.Timestamp;
@@ -21,26 +21,32 @@ public class MessageSender {
 
     // for get client information (name, balance, listOfBets, listOfVisits, currentVisit)
     static String getRequestClientInfo() {
-        ContentOfRequestMessage contentOfRequestMessage = new ContentOfRequestMessage("get client info");
-        JsonMessage jm = new JsonMessage<>(contentOfRequestMessage, MessageType.MSG_REQUEST_CLIENT_INFO);
+        ContentOfSimpleMessage contentOfSimpleMessage = new ContentOfSimpleMessage("get client info");
+        JsonMessage jm = new JsonMessage<>(contentOfSimpleMessage, MessageType.MSG_REQUEST_CLIENT_INFO);
         return jm.toJson();
     }
 
     // for get list lis of games
     static String getListOfGames() {
-        ContentOfRequestMessage request = new ContentOfRequestMessage("get list of games");
+        ContentOfSimpleMessage request = new ContentOfSimpleMessage("get list of games");
         JsonMessage jm = new JsonMessage<>(request, MessageType.MSG_REQUEST_LIST_OF_GAMES);
         return jm.toJson();
     }
 
-    // for get transaction information
-    static String getTransaction(final int gameId,
-                                 final int cashToBet,
-                                 final int coefficient,
-                                 @NonNull final Timestamp timestamp) {
+    // for get bet transaction information
+    static String getBetTransaction(final int gameId,
+                                    final int cashToBet,
+                                    final int coefficient,
+                                    @NonNull final Timestamp timestamp) {
         ContentOfTransactionMessage transactionMessage = new ContentOfTransactionMessage(gameId, cashToBet, coefficient, timestamp);
-        JsonMessage jm = new JsonMessage<>(transactionMessage, MessageType.MSG_TAKE_TRANSACTION);
+        JsonMessage jm = new JsonMessage<>(transactionMessage, MessageType.MSG_REQUEST_TRANSACTION);
         return jm.toJson();
+    }
+
+    // for get token transaction information
+    // TODO
+    static String getTokenTransaction() {
+        return "TODO";
     }
 
 }

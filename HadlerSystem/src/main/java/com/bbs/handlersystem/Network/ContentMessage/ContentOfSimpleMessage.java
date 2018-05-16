@@ -6,25 +6,25 @@ import lombok.Setter;
 
 import java.util.Objects;
 
-public final class ContentOfRequestMessage {
+public final class ContentOfSimpleMessage {
 
     @Getter
     @Setter
     @NonNull
-    private String request;
+    private String text;
 
-    public ContentOfRequestMessage(@NonNull final String request) {
-        this.request = request;
+    public ContentOfSimpleMessage(@NonNull final String text) {
+        this.text = text;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), request);
+        return Objects.hash(super.hashCode(), text);
     }
 
     @Override
     public String toString() {
-        return request;
+        return text;
     }
 
 }

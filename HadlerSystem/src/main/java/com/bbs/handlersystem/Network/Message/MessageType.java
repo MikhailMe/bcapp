@@ -17,7 +17,8 @@ public enum MessageType {
     MSG_RESPONSE_LIST_OF_GAMES,
 
     // for send bet transaction
-    MSG_TAKE_TRANSACTION,
+    MSG_REQUEST_TRANSACTION,
+    MSG_RESPONSE_TRANSACTION,
 
     // for oracles
     MSG_REQUEST_ORACLE,

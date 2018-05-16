@@ -1,7 +1,6 @@
 package com.bbs.handlersystem.Network.client;
 
 import com.bbs.handlersystem.Config.Config;
-import com.bbs.handlersystem.Network.Message.Message;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -55,14 +54,18 @@ public final class Client implements Runnable {
         channel.writeAndFlush(MessageSender.getListOfGames());
     }
 
-    public void sendTransactionMessage(final int gameId,
-                                       final int cashToBet,
-                                       final int coefficient,
-                                       @NonNull final Timestamp timestamp) throws InterruptedException {
+    public void sendBetTransactionMessage(final int gameId,
+                                          final int cashToBet,
+                                          final int coefficient,
+                                          @NonNull final Timestamp timestamp) throws InterruptedException {
         channel = openChannel();
-        channel.writeAndFlush(MessageSender.getTransaction(gameId, cashToBet, coefficient, timestamp));
+        channel.writeAndFlush(MessageSender.getBetTransaction(gameId, cashToBet, coefficient, timestamp));
     }
 
+    // TODO
+    public void sendTokenTransactionMessage() {
+
+    }
 
     private Channel openChannel() throws InterruptedException {
         return clientBootstrap.connect(Config.HOST, Config.PORT).sync().channel();

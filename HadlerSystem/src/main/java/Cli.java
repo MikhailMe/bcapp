@@ -14,8 +14,9 @@ public class Cli {
             System.out.println("1: add user to database");
             System.out.println("2: request to get client information");
             System.out.println("3: request to get list of games");
-            System.out.println("4: send transaction");
-            System.out.println("5: exit");
+            System.out.println("4: send bet transaction");
+            System.out.println("5: send token transaction");
+            System.out.println("6: exit");
             switch (scanner.nextInt()) {
                 case 1:
                     System.out.println("write name: ");
@@ -38,9 +39,12 @@ public class Cli {
                     // get coefficient from list of games
                     int coefficient = 10;
                     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                    client.sendTransactionMessage(gameId, cashToBet, coefficient, timestamp);
+                    client.sendBetTransactionMessage(gameId, cashToBet, coefficient, timestamp);
                     break;
                 case 5:
+                    // TODO
+                    return;
+                case 6:
                     System.out.println("Goodbuy");
                     client.closeClient();
                     return;

@@ -7,11 +7,13 @@ import com.bbs.handlersystem.Data.Game;
 import com.bbs.handlersystem.Database.StoreImpl.MainStore;
 import com.bbs.handlersystem.Network.ContentMessage.ContentOfClientInfoMessage;
 import com.bbs.handlersystem.Network.ContentMessage.ContentOfGameMessage;
+import com.bbs.handlersystem.Network.ContentMessage.ContentOfSimpleMessage;
 import com.bbs.handlersystem.Network.ContentMessage.ContentOfTransactionMessage;
 import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.bbs.handlersystem.Transaction.BetTransaction;
 import com.bbs.handlersystem.Transaction.Transaction;
+import com.bbs.handlersystem.Transaction.TransactionManager;
 import com.bbs.handlersystem.Utils.Helper;
 import com.google.gson.*;
 import io.netty.buffer.Unpooled;
@@ -44,15 +46,12 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         switch (type) {
             case MSG_ADD_USER:
                 JsonElement userElement = jsonTree.get(DATA);
-
                 User user = new Gson().fromJson(userElement, User.class);
                 Wallet wallet = new Wallet(user);
                 Account account = new Account(wallet);
-
                 MainStore.userStore.add(user);
                 MainStore.walletStore.add(wallet);
                 MainStore.accountStore.add(account);
-
                 messageToSend = "User \"" + user.toString() + "\" successfully added to database";
                 break;
             case MSG_REQUEST_CLIENT_INFO:
@@ -70,16 +69,30 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 JsonMessage listOfGamesMessage = new JsonMessage<>(listOfGames, MessageType.MSG_RESPONSE_LIST_OF_GAMES);
                 messageToSend = listOfGamesMessage.toJson();
                 break;
-            case MSG_TAKE_TRANSACTION:
+            case MSG_REQUEST_TRANSACTION:
                 JsonElement transactionElement = jsonTree.get(DATA);
                 ContentOfTransactionMessage transactionInfo =
                         new Gson().fromJson(transactionElement, ContentOfTransactionMessage.class);
-                System.out.println(transactionInfo);
-                Transaction transaction = new BetTransaction();
-                //MainStore.betStore.add(transaction);
 
+                Transaction betTransaction = new BetTransaction(
+                        transactionInfo.getGameId(),
+                        transactionInfo.getCashToBet(),
+                        transactionInfo.getCoefficient(),
+                        MainStore.userStore.getById(0),
+                        transactionInfo.getTimestamp()
+                );
 
-                messageToSend = "take a transaction";
+                boolean isValid = TransactionManager.isValidBetTransaction(betTransaction);
+                String decision;
+                if (isValid) {
+                    //MainStore.betStore.add(transaction);
+                    decision = "transaction accepted";
+                } else {
+                    decision = "transaction failure";
+                }
+                ContentOfSimpleMessage response = new ContentOfSimpleMessage(decision);
+                JsonMessage responseOnBetTransaction = new JsonMessage<>(response, MessageType.MSG_RESPONSE_TRANSACTION);
+                messageToSend = responseOnBetTransaction.toJson();
                 break;
             default:
                 messageToSend = "default";
