@@ -1,4 +1,4 @@
-package com.bbs.handlersystem.Network.Wrappers;
+package com.bbs.handlersystem.Network.ContentMessage;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import java.util.Objects;
 
-public final class ClientInfoWrapper {
+public final class ContentOfClientInfoMessage {
 
     private static final String HAVE_A = " have a ";
 
@@ -19,8 +19,8 @@ public final class ClientInfoWrapper {
     @Setter
     private long balance;
 
-    public ClientInfoWrapper(@NonNull final String name,
-                             final long balance) {
+    public ContentOfClientInfoMessage(@NonNull final String name,
+                                      final long balance) {
         this.name = name;
         this.balance = balance;
     }

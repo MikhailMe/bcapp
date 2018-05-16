@@ -1,15 +1,14 @@
 package com.bbs.handlersystem.Network.client;
 
-import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Config.Config;
-import com.bbs.handlersystem.Network.Wrappers.RequestWrapper;
-import com.bbs.handlersystem.Network.Message.MessageType;
-import com.bbs.handlersystem.Network.Message.JsonMessage;
+import com.bbs.handlersystem.Network.Message.Message;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import lombok.NonNull;
+
+import java.sql.Timestamp;
 
 public final class Client implements Runnable {
 
@@ -40,44 +39,30 @@ public final class Client implements Runnable {
         closeChannel(channel);
     }
 
-    // TODO: i think is not good solution
-    public void sendUserAddMessage(String name, String mobileNumber) throws InterruptedException {
+    public void sendUserAddMessage(@NonNull final String name,
+                                   @NonNull final String mobileNumber) throws InterruptedException {
         channel = openChannel();
-        channel.writeAndFlush(getUserAddMessage(name, mobileNumber));
+        channel.writeAndFlush(MessageSender.getUserAddMessage(name, mobileNumber));
     }
 
-    // TODO: i think is not good solution
     public void sendRequestClientInfoMessage() throws InterruptedException {
         channel = openChannel();
-        channel.writeAndFlush(getRequestClientInfo());
+        channel.writeAndFlush(MessageSender.getRequestClientInfo());
     }
 
-    // TODO: i think is not good solution
     public void sendRequestListOfGamesMessage() throws InterruptedException {
         channel = openChannel();
-        channel.writeAndFlush(getListOfGames());
+        channel.writeAndFlush(MessageSender.getListOfGames());
     }
 
-    // for adding user to database
-    private String getUserAddMessage(String name, String mobileNumber) {
-        User user = new User(name, mobileNumber);
-        JsonMessage jm = new JsonMessage<>(user, MessageType.MSG_ADD_USER);
-        return jm.toJson();
+    public void sendTransactionMessage(final int gameId,
+                                       final int cashToBet,
+                                       final int coefficient,
+                                       @NonNull final Timestamp timestamp) throws InterruptedException {
+        channel = openChannel();
+        channel.writeAndFlush(MessageSender.getTransaction(gameId, cashToBet, coefficient, timestamp));
     }
 
-    // for get client information (name, balance, listOfBets, listOfVisits, currentVisit)
-    private String getRequestClientInfo() {
-        RequestWrapper requestWrapper = new RequestWrapper("get client info");
-        JsonMessage jm = new JsonMessage<>(requestWrapper, MessageType.MSG_REQUEST_CLIENT_INFO);
-        return jm.toJson();
-    }
-
-    // for get list lis of games
-    private String getListOfGames() {
-        RequestWrapper request = new RequestWrapper("get list of games");
-        JsonMessage jm = new JsonMessage<>(request, MessageType.MSG_REQUEST_LIST_OF_GAMES);
-        return jm.toJson();
-    }
 
     private Channel openChannel() throws InterruptedException {
         return clientBootstrap.connect(Config.HOST, Config.PORT).sync().channel();

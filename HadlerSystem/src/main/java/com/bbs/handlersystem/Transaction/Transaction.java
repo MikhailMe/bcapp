@@ -1,15 +1,26 @@
 package com.bbs.handlersystem.Transaction;
 
+import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Validator.Validator;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
-import java.time.LocalTime;
+import java.sql.Timestamp;
 
 public abstract class Transaction {
 
-    private long id;
-    private LocalTime time;
+    @Getter
+    @Setter
+    @NonNull
+    protected User user;
 
-    public boolean isValid() {
+    @Getter
+    @Setter
+    @NonNull
+    protected Timestamp timestamp;
+
+    protected boolean isValid() {
         return Validator.isValid(this);
     }
 }

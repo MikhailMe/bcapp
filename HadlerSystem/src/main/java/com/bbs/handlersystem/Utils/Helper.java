@@ -2,7 +2,7 @@ package com.bbs.handlersystem.Utils;
 
 import com.bbs.handlersystem.Data.Game;
 import com.bbs.handlersystem.Data.Team;
-import com.bbs.handlersystem.Network.Wrappers.GameMessage;
+import com.bbs.handlersystem.Network.ContentMessage.ContentOfGameMessage;
 import lombok.NonNull;
 
 import java.sql.Timestamp;
@@ -38,13 +38,13 @@ public final class Helper {
     }
 
     @NonNull
-    public static List<GameMessage> getListGameMessages(List<Game> games) {
-        List<GameMessage> gameMessages = new ArrayList<>(games.size());
+    public static List<ContentOfGameMessage> getListGameMessages(List<Game> games) {
+        List<ContentOfGameMessage> gameMessages = new ArrayList<>(games.size());
         games.forEach(game ->  {
             String team1 = game.getTeams().getFirst().toString();
             String team2 = game.getTeams().getSecond().toString();
             Timestamp timestamp = game.getTimestamp();
-            gameMessages.add(new GameMessage(team1, team2, timestamp));
+            gameMessages.add(new ContentOfGameMessage(team1, team2, timestamp));
         });
         return gameMessages;
     }

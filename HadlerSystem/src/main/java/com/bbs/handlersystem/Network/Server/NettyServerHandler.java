@@ -5,11 +5,13 @@ import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Client.Wallet;
 import com.bbs.handlersystem.Data.Game;
 import com.bbs.handlersystem.Database.StoreImpl.MainStore;
-import com.bbs.handlersystem.Network.Wrappers.ClientInfoWrapper;
-import com.bbs.handlersystem.Network.Wrappers.GameMessage;
-import com.bbs.handlersystem.Network.Wrappers.ListOfGamesWrapper;
+import com.bbs.handlersystem.Network.ContentMessage.ContentOfClientInfoMessage;
+import com.bbs.handlersystem.Network.ContentMessage.ContentOfGameMessage;
+import com.bbs.handlersystem.Network.ContentMessage.ContentOfTransactionMessage;
 import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.bbs.handlersystem.Network.Message.MessageType;
+import com.bbs.handlersystem.Transaction.BetTransaction;
+import com.bbs.handlersystem.Transaction.Transaction;
 import com.bbs.handlersystem.Utils.Helper;
 import com.google.gson.*;
 import io.netty.buffer.Unpooled;
@@ -57,17 +59,27 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 String name = "alewa";
                 long userId = MainStore.userStore.getId(name);
                 long balance = MainStore.walletStore.getBalance(userId);
-                ClientInfoWrapper clientInfoWrapper = new ClientInfoWrapper(name, balance);
-                JsonMessage clientInfoMessage = new JsonMessage<>(clientInfoWrapper, MessageType.MSG_RESPONSE_CLIENT_INFO);
+                ContentOfClientInfoMessage clientInfo = new ContentOfClientInfoMessage(name, balance);
+                JsonMessage clientInfoMessage = new JsonMessage<>(clientInfo, MessageType.MSG_RESPONSE_CLIENT_INFO);
                 messageToSend = clientInfoMessage.toJson();
                 break;
             case MSG_REQUEST_LIST_OF_GAMES:
                 // TODO: write real parser for get list of games
-                List<Game> games = Helper.createListOfGames(10);
-                List<GameMessage> listOfGames = Helper.getListGameMessages(games);
-                //ListOfGamesWrapper listOfGames = new ListOfGamesWrapper(games);
+                List<Game> games = Helper.createListOfGames(8);
+                List<ContentOfGameMessage> listOfGames = Helper.getListGameMessages(games);
                 JsonMessage listOfGamesMessage = new JsonMessage<>(listOfGames, MessageType.MSG_RESPONSE_LIST_OF_GAMES);
                 messageToSend = listOfGamesMessage.toJson();
+                break;
+            case MSG_TAKE_TRANSACTION:
+                JsonElement transactionElement = jsonTree.get(DATA);
+                ContentOfTransactionMessage transactionInfo =
+                        new Gson().fromJson(transactionElement, ContentOfTransactionMessage.class);
+                System.out.println(transactionInfo);
+                Transaction transaction = new BetTransaction();
+                //MainStore.betStore.add(transaction);
+
+
+                messageToSend = "take a transaction";
                 break;
             default:
                 messageToSend = "default";

@@ -1,4 +1,4 @@
-package com.bbs.handlersystem.Network.Wrappers;
+package com.bbs.handlersystem.Network.ContentMessage;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -6,14 +6,14 @@ import lombok.Setter;
 
 import java.util.Objects;
 
-public final class RequestWrapper {
+public final class ContentOfRequestMessage {
 
     @Getter
     @Setter
     @NonNull
     private String request;
 
-    public RequestWrapper(@NonNull final String request) {
+    public ContentOfRequestMessage(@NonNull final String request) {
         this.request = request;
     }
 

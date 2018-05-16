@@ -1,4 +1,4 @@
-package com.bbs.handlersystem.Network.Wrappers;
+package com.bbs.handlersystem.Network.ContentMessage;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class GameMessage {
+public class ContentOfGameMessage {
 
     @Getter
     @Setter
@@ -24,9 +24,9 @@ public class GameMessage {
     @NonNull
     private Timestamp timestamp;
 
-    public GameMessage(@NonNull final String team1,
-                       @NonNull final String team2,
-                       @NonNull final Timestamp timestamp) {
+    public ContentOfGameMessage(@NonNull final String team1,
+                                @NonNull final String team2,
+                                @NonNull final Timestamp timestamp) {
         this.team1 = team1;
         this.team2 = team2;
         this.timestamp = timestamp;
