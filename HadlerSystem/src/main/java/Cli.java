@@ -1,11 +1,15 @@
+import com.bbs.handlersystem.Client.User;
+import com.bbs.handlersystem.Coefficients.Coefficient;
+import com.bbs.handlersystem.Database.StoreImpl.MainStore;
 import com.bbs.handlersystem.Network.client.Client;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Scanner;
 
 public class Cli {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, SQLException {
         Client client = new Client();
         client.run();
         Scanner scanner = new Scanner(System.in);
@@ -37,9 +41,10 @@ public class Cli {
                     System.out.println("write cash to bet: ");
                     int cashToBet = scanner.nextInt();
                     // get coefficient from list of games
-                    int coefficient = 10;
+                    Coefficient coefficient = new Coefficient(10);
+                    User user = MainStore.userStore.getById(1);
                     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                    client.sendBetTransactionMessage(gameId, cashToBet, coefficient, timestamp);
+                    client.sendBetTransactionMessage(gameId, cashToBet, user, timestamp, coefficient);
                     break;
                 case 5:
                     // TODO

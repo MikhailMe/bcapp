@@ -1,5 +1,6 @@
 package com.bbs.handlersystem.Network.Server;
 
+import com.bbs.handlersystem.Client.Bet;
 import com.bbs.handlersystem.Client.Account;
 import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Client.Wallet;
@@ -8,7 +9,6 @@ import com.bbs.handlersystem.Database.StoreImpl.MainStore;
 import com.bbs.handlersystem.Network.ContentMessage.ContentOfClientInfoMessage;
 import com.bbs.handlersystem.Network.ContentMessage.ContentOfGameMessage;
 import com.bbs.handlersystem.Network.ContentMessage.ContentOfSimpleMessage;
-import com.bbs.handlersystem.Network.ContentMessage.ContentOfTransactionMessage;
 import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.bbs.handlersystem.Transaction.BetTransaction;
@@ -70,22 +70,22 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 messageToSend = listOfGamesMessage.toJson();
                 break;
             case MSG_REQUEST_TRANSACTION:
-                JsonElement transactionElement = jsonTree.get(DATA);
-                ContentOfTransactionMessage transactionInfo =
-                        new Gson().fromJson(transactionElement, ContentOfTransactionMessage.class);
+                JsonElement betElement = jsonTree.get(DATA);
+                Bet betInfo = new Gson().fromJson(betElement, Bet.class);
 
                 Transaction betTransaction = new BetTransaction(
-                        transactionInfo.getGameId(),
-                        transactionInfo.getCashToBet(),
-                        transactionInfo.getCoefficient(),
-                        MainStore.userStore.getById(0),
-                        transactionInfo.getTimestamp()
+                        betInfo.getGameId(),
+                        betInfo.getCashToBet(),
+                        betInfo.getUser(),
+                        betInfo.getTimestamp(),
+                        betInfo.getCoefficient()
                 );
 
                 boolean isValid = TransactionManager.isValidBetTransaction(betTransaction);
                 String decision;
                 if (isValid) {
-                    //MainStore.betStore.add(transaction);
+                    MainStore.betStore.add(betInfo);
+                    MainStore.transactionStore.add(betTransaction);
                     decision = "transaction accepted";
                 } else {
                     decision = "transaction failure";

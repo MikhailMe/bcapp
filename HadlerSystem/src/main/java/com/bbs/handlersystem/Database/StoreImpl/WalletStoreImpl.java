@@ -14,12 +14,6 @@ public final class WalletStoreImpl implements WalletStore {
 
     private static long size = 0;
 
-    private static final String GET_BALANCE_QUERY = "SELECT balance FROM wallets WHERE user_id = ?";
-    private static final String GET_WALLET_ID_QUERY = "SELECT id FROM  wallets WHERE user_id = ?";
-    private static final String CHANGE_BALANCE_QUERY = "UPDATE wallets SET balance = ? WHERE id = ?";
-    private static final String GET_WALLET_BY_ID = "SELECT user_id, balance FROM wallets WHERE id = ?";
-    private static final String ADD_WALLET_QUERY = "INSERT INTO wallets (user_id, balance) VALUES (?, ?)";
-
     @Override
     public long size() {
         return size;

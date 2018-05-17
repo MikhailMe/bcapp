@@ -13,12 +13,6 @@ import java.sql.SQLException;
 public final class UserStoreImpl implements UserStore {
 
     private static long size = 0;
-    private static final String GET_USER_ID = "SELECT id FROM users WHERE nickname = ?";
-    private static final String SET_USER_TOKEN = "UPDATE users SET has_token = ? WHERE nickname = ?";
-    private static final String SET_USER_ORACLE = "UPDATE users SET is_oracle = ? WHERE nickname = ?";
-    private static final String GET_NUMBER_BY_ID_QUERY = "SELECT mobile_number FROM users WHERE id = ?";
-    private static final String GET_USER_BY_ID = "SELECT nickname, mobile_number FROM users WHERE id = ?";
-    private static final String ADD_USER_QUERY = "INSERT INTO users (nickname, has_token, is_oracle, mobile_number) VALUES (?, ?, ?, ?)";
 
     @Override
     public long size() {

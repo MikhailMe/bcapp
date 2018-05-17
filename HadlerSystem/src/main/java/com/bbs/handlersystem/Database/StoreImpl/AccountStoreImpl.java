@@ -13,9 +13,6 @@ import java.sql.SQLException;
 public final class AccountStoreImpl implements AccountStore {
 
     private static long size = 0;
-    private static final String GET_ACCOUNT_QUERY = "SELECT id FROM accounts WHERE wallet_id = ?";
-    private static final String GET_ACCOUNT_BY_ID_QUERY = "SELECT wallet_id FROM accounts WHERE id = ?";
-    private static final String ADD_ACCOUNT_QUERY = "INSERT INTO accounts (wallet_id, current_visit) VALUES (?, ?)";
 
     @Override
     public long size() {

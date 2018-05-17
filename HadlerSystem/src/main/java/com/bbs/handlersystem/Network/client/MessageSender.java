@@ -1,7 +1,8 @@
 package com.bbs.handlersystem.Network.client;
 
+import com.bbs.handlersystem.Client.Bet;
 import com.bbs.handlersystem.Client.User;
-import com.bbs.handlersystem.Network.ContentMessage.ContentOfTransactionMessage;
+import com.bbs.handlersystem.Coefficients.Coefficient;
 import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.bbs.handlersystem.Network.ContentMessage.ContentOfSimpleMessage;
@@ -36,10 +37,11 @@ public class MessageSender {
     // for get bet transaction information
     static String getBetTransaction(final int gameId,
                                     final int cashToBet,
-                                    final int coefficient,
-                                    @NonNull final Timestamp timestamp) {
-        ContentOfTransactionMessage transactionMessage = new ContentOfTransactionMessage(gameId, cashToBet, coefficient, timestamp);
-        JsonMessage jm = new JsonMessage<>(transactionMessage, MessageType.MSG_REQUEST_TRANSACTION);
+                                    @NonNull final User user,
+                                    @NonNull final Timestamp timestamp,
+                                    @NonNull final Coefficient coefficient) {
+        Bet bet = new Bet(gameId, cashToBet, user, timestamp, coefficient);
+        JsonMessage jm = new JsonMessage<>(bet, MessageType.MSG_REQUEST_TRANSACTION);
         return jm.toJson();
     }
 

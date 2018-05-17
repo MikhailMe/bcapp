@@ -7,6 +7,13 @@ import java.sql.SQLException;
 
 public interface UserStore extends Store<User> {
 
+    String GET_USER_ID = "SELECT id FROM users WHERE nickname = ?";
+    String SET_USER_TOKEN = "UPDATE users SET has_token = ? WHERE nickname = ?";
+    String SET_USER_ORACLE = "UPDATE users SET is_oracle = ? WHERE nickname = ?";
+    String GET_NUMBER_BY_ID_QUERY = "SELECT mobile_number FROM users WHERE id = ?";
+    String GET_USER_BY_ID = "SELECT nickname, mobile_number FROM users WHERE id = ?";
+    String ADD_USER_QUERY = "INSERT INTO users (nickname, has_token, is_oracle, mobile_number) VALUES (?, ?, ?, ?)";
+
     String getMobileNumber(long id) throws SQLException;
 
     void changeUserProperties(UserProperties type, String nickname, boolean value) throws SQLException;

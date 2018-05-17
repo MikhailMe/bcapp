@@ -1,5 +1,7 @@
 package com.bbs.handlersystem.Network.client;
 
+import com.bbs.handlersystem.Client.User;
+import com.bbs.handlersystem.Coefficients.Coefficient;
 import com.bbs.handlersystem.Config.Config;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -56,10 +58,12 @@ public final class Client implements Runnable {
 
     public void sendBetTransactionMessage(final int gameId,
                                           final int cashToBet,
-                                          final int coefficient,
-                                          @NonNull final Timestamp timestamp) throws InterruptedException {
+                                          @NonNull final User user,
+                                          @NonNull final Timestamp timestamp,
+                                          @NonNull final Coefficient coefficient)
+            throws InterruptedException {
         channel = openChannel();
-        channel.writeAndFlush(MessageSender.getBetTransaction(gameId, cashToBet, coefficient, timestamp));
+        channel.writeAndFlush(MessageSender.getBetTransaction(gameId, cashToBet, user, timestamp, coefficient));
     }
 
     // TODO

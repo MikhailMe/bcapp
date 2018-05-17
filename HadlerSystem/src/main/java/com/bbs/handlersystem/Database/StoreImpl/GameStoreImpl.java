@@ -8,16 +8,11 @@ import com.bbs.handlersystem.Utils.Pair;
 import lombok.NonNull;
 
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Objects;
 
 public final class GameStoreImpl implements GameStore {
 
     private static long size = 0;
-    private static final String GET_GAME_BY_ID = "SELECT team1, team2, game_date FROM games WHERE id = ?";
-    private static final String ADD_GAME_QUERY = "INSERT INTO games (team1, team2, game_date) VALUES  (?, ?, ?)";
-    private static final String GET_GAME_ID_QUERY = "SELECT id FROM  games WHERE games.team1 = ? AND games.team2 = ?";
 
     @Override
     public long size() {

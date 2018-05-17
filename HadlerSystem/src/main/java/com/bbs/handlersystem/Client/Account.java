@@ -1,6 +1,5 @@
 package com.bbs.handlersystem.Client;
 
-import com.bbs.handlersystem.Bet.Bet;
 import lombok.Getter;
 import lombok.NonNull;
 
