@@ -45,9 +45,9 @@ public final class AccountStoreImpl implements AccountStore {
     }
 
     @Override
-    public long getId(@NonNull final String nickname) throws SQLException {
+    public long getId(@NonNull final String string) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_ACCOUNT_QUERY);
-        long walletId = new WalletStoreImpl().getId(nickname);
+        long walletId = new WalletStoreImpl().getId(string);
         preparedStatement.setLong(1, walletId);
         preparedStatement.execute();
         return getIdFromResultSet(preparedStatement.getResultSet());

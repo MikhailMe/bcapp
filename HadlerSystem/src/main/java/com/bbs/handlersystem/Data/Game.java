@@ -17,11 +17,6 @@ public final class Game {
 
     @Getter
     @Setter
-    @NonNull
-    private Pair<Integer, Integer> goals;
-
-    @Getter
-    @Setter
     private Timestamp timestamp;
 
     public Game(@NonNull final Pair<Team, Team> teams) {
@@ -34,30 +29,14 @@ public final class Game {
         this.timestamp = timestamp;
     }
 
-    public Game(@NonNull final Pair<Team, Team> teams,
-                @NonNull final Pair<Integer, Integer> goals) {
-        this.teams = teams;
-        this.goals = goals;
-    }
-
-    public Game(@NonNull final Pair<Team, Team> teams,
-                @NonNull final Pair<Integer, Integer> goals,
-                @NonNull final Timestamp timestamp) {
-        this.teams = teams;
-        this.goals = goals;
-        this.timestamp = timestamp;
-    }
-
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), teams, goals, timestamp);
+        return Objects.hash(super.hashCode(), teams, timestamp);
     }
 
     @Override
     public String toString() {
         return teams.toString() +
-                "\n" +
-                goals.toString() +
                 "\n" +
                 timestamp.toString();
     }

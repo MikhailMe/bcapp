@@ -40,11 +40,11 @@ public final class SportBoxRuOracle implements SportBoxRuParser {
         // parse goals
         int homeTeamGoals = Character.getNumericValue(tokens[1].charAt(0));
         int guestTeamGoals = Character.getNumericValue(tokens[1].charAt(2));
-        Pair<Integer, Integer> goals = new Pair<>(homeTeamGoals, guestTeamGoals);
+        //Pair<Integer, Integer> goals = new Pair<>(homeTeamGoals, guestTeamGoals);
         // FIXME parse time !!!
         // parse times
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        return new Game(teams, goals, timestamp);
+        return new Game(teams, timestamp);
     }
 
     public static void main(String[] args) throws IOException {

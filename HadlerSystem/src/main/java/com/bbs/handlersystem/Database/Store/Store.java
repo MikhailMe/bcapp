@@ -10,9 +10,15 @@ public interface Store<T> {
     String COLUMN_TEAM2 = "team2";
     String COLUMN_USER_ID = "user_id";
     String COLUMN_BALANCE = "balance";
+    String COLUMN_GAME_ID = "game_id";
+    String COLUMN_COEF = "coefficient";
+    String COLUMN_BET_DATE = "bet_date";
     String COLUMN_NICKNAME = "nickname";
     String COLUMN_WALLET_ID = "wallet_id";
     String COLUMN_GAME_DATE = "game_date";
+    String COLUMN_CASH_TO_BET = "cash_to_bet";
+    String COLUMN_GOALS_TEAM1 = "goals_team1";
+    String COLUMN_GOALS_TEAM2 = "goals_team2";
     String COLUMN_MOBILE_NUM = "mobile_number";
 
     long size();
@@ -21,7 +27,7 @@ public interface Store<T> {
 
     T getById(long id) throws SQLException;
 
-    long getId(String nickname) throws SQLException;
+    long getId(String string) throws SQLException;
 
     default long getIdFromResultSet(ResultSet resultSet) throws SQLException {
         long id = -1L;

@@ -9,7 +9,6 @@ public final class MainStore {
     public static UserStore userStore;
     public static WalletStore walletStore;
     public static AccountStore accountStore;
-    public static TransactionStore transactionStore;
 
     static {
         betStore = new BetStoreImpl();
@@ -17,7 +16,6 @@ public final class MainStore {
         userStore = new UserStoreImpl();
         walletStore = new WalletStoreImpl();
         accountStore = new AccountStoreImpl();
-        transactionStore = new TransactionStoreImpl();
     }
 
 }

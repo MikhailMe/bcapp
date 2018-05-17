@@ -9,9 +9,13 @@ public final class Coefficient {
 
     @Getter
     @Setter
-    private int coef;
+    private float coef;
 
-    public Coefficient(int coef) {
+    public Coefficient() {
+        this.coef = -1.0f;
+    }
+
+    public Coefficient(final float coef) {
         this.coef = coef;
     }
 

@@ -32,7 +32,7 @@ public final class UserStoreImpl implements UserStore {
 
     @Override
     public User getById(final long id) throws SQLException {
-        PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_USER_BY_ID);
+        PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_USER_BY_ID_QUERY);
         preparedStatement.setLong(1, id);
         preparedStatement.execute();
         ResultSet resultSet = preparedStatement.getResultSet();
@@ -46,9 +46,9 @@ public final class UserStoreImpl implements UserStore {
     }
 
     @Override
-    public long getId(@NonNull final String nickname) throws SQLException {
-        PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_USER_ID);
-        preparedStatement.setString(1, nickname);
+    public long getId(@NonNull final String string) throws SQLException {
+        PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_USER_ID_QUERY);
+        preparedStatement.setString(1, string);
         preparedStatement.execute();
         return getIdFromResultSet(preparedStatement.getResultSet());
     }
@@ -72,7 +72,7 @@ public final class UserStoreImpl implements UserStore {
                                      final boolean value) throws SQLException {
         boolean isToken = type.equals(UserProperties.TOKEN);
         PreparedStatement preparedStatement =
-                StoreConnection.getConnection().prepareStatement(isToken ? SET_USER_TOKEN : SET_USER_ORACLE);
+                StoreConnection.getConnection().prepareStatement(isToken ? SET_USER_TOKEN_QUERY : SET_USER_ORACLE_QUERY);
         preparedStatement.setBoolean(1, value);
         preparedStatement.setString(2, nickname);
         preparedStatement.execute();

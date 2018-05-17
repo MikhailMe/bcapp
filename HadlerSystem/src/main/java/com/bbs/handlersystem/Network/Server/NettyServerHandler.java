@@ -13,8 +13,8 @@ import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.bbs.handlersystem.Network.Message.MessageType;
 import com.bbs.handlersystem.Transaction.BetTransaction;
 import com.bbs.handlersystem.Transaction.Transaction;
-import com.bbs.handlersystem.Transaction.TransactionManager;
 import com.bbs.handlersystem.Utils.Helper;
+import com.bbs.handlersystem.Validator.Validator;
 import com.google.gson.*;
 import io.netty.buffer.Unpooled;
 import io.netty.util.CharsetUtil;
@@ -65,6 +65,15 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             case MSG_REQUEST_LIST_OF_GAMES:
                 // TODO: write real parser for get list of games
                 List<Game> games = Helper.createListOfGames(8);
+
+                games.forEach(game -> {
+                    try {
+                        MainStore.gameStore.add(game);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                });
+
                 List<ContentOfGameMessage> listOfGames = Helper.getListGameMessages(games);
                 JsonMessage listOfGamesMessage = new JsonMessage<>(listOfGames, MessageType.MSG_RESPONSE_LIST_OF_GAMES);
                 messageToSend = listOfGamesMessage.toJson();
@@ -81,11 +90,10 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                         betInfo.getCoefficient()
                 );
 
-                boolean isValid = TransactionManager.isValidBetTransaction(betTransaction);
+                boolean isValid = Validator.isValidBetTransaction(betTransaction);
                 String decision;
                 if (isValid) {
                     MainStore.betStore.add(betInfo);
-                    MainStore.transactionStore.add(betTransaction);
                     decision = "transaction accepted";
                 } else {
                     decision = "transaction failure";

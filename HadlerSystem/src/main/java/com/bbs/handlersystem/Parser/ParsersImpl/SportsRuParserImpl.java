@@ -58,7 +58,7 @@ public final class SportsRuParserImpl implements SportsRuParser {
                 counter++;
                 int homeTeamGoals = Integer.parseInt(results[counter++]);
                 int guestTeamGoals = Integer.parseInt(results[++counter]);
-                Pair<Integer, Integer> goals = new Pair<>(homeTeamGoals, guestTeamGoals);
+                //Pair<Integer, Integer> goals = new Pair<>(homeTeamGoals, guestTeamGoals);
                 counter++;
                 if (results[counter].equals(CKA) || results[counter].equals(ARSENAL)) {
                     name = results[counter] + results[++counter];
@@ -69,7 +69,7 @@ public final class SportsRuParserImpl implements SportsRuParser {
                 Pair<Team, Team> teams = new Pair<>(homeTeam, guestTeam);
                 // FIXME
                 //Pair<LocalTime, LocalTime> times = null;
-                gamesList.add(new Game(teams, goals));
+                gamesList.add(new Game(teams));
             }
         });
         sportsRuListOfGames = gamesList;

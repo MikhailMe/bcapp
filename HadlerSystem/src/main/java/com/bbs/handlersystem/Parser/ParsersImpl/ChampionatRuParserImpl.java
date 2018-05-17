@@ -127,9 +127,9 @@ public final class ChampionatRuParserImpl implements ChampionatRuParser {
             int homeTeamGoals = Character.getNumericValue(results[counter].charAt(0));
             counter++;
             int guestTeamGoals = Character.getNumericValue(results[counter].charAt(0));
-            Pair<Integer, Integer> goals = new Pair<>(homeTeamGoals, guestTeamGoals);
+            //Pair<Integer, Integer> goals = new Pair<>(homeTeamGoals, guestTeamGoals);
             // build result
-            games.add(new Game(teams, goals, time));
+            games.add(new Game(teams, time));
         });
         championatRuListOfGames.addAll(games);
     }

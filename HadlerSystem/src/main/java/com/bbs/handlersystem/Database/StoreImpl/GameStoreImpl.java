@@ -52,9 +52,9 @@ public final class GameStoreImpl implements GameStore {
 
     // pattern for @param nickname: "team1 team2"
     @Override
-    public long getId(@NonNull final String nickname) throws SQLException {
+    public long getId(@NonNull final String string) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_GAME_ID_QUERY);
-        String[] teams = nickname.split(" ");
+        String[] teams = string.split(" ");
         preparedStatement.setString(1, teams[0]);
         preparedStatement.setString(2, teams[1]);
         preparedStatement.execute();

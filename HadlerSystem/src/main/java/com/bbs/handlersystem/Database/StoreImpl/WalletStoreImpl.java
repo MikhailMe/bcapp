@@ -61,9 +61,9 @@ public final class WalletStoreImpl implements WalletStore {
     }
 
     @Override
-    public long getId(@NonNull final String nickname) throws SQLException {
+    public long getId(@NonNull final String string) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_WALLET_ID_QUERY);
-        preparedStatement.setLong(1, new UserStoreImpl().getId(nickname));
+        preparedStatement.setLong(1, new UserStoreImpl().getId(string));
         preparedStatement.execute();
         return getIdFromResultSet(preparedStatement.getResultSet());
     }
