@@ -6,4 +6,5 @@
     <color name="main_background_color">#333444</color>
     <color name="main_text_color">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="red">#FFB000</color>
 </resources>

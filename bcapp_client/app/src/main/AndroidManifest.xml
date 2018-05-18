@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.AuthorizationActivity"
+            android:name=".Activities.BetActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,7 +22,7 @@
         <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.BetPreviewActivity" />
         <activity android:name=".Activities.OracleActivity" />
-        <activity android:name=".Activities.BetActivity"></activity>
+        <activity android:name=".Activities.AuthorizationActivity" />
     </application>
 
 </manifest>
