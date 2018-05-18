@@ -59,15 +59,15 @@ public class StoreTests {
 
     private void generateNames() {
         log.info("started generating names");
-        name1 = RandomGenerator.randomString(LENGTH);
-        name2 = RandomGenerator.randomString(LENGTH);
+        name1 = RandomGenerator.createRandomString(LENGTH);
+        name2 = RandomGenerator.createRandomString(LENGTH);
         log.info("finished generating names");
     }
 
     private void generateMobileNumbers() {
         log.info("started generating mobile numbers");
-        mobileNumber1 = RandomGenerator.randomDigitsString(LENGTH);
-        mobileNumber2 = RandomGenerator.randomDigitsString(LENGTH);
+        mobileNumber1 = RandomGenerator.createRandomDigitsString(LENGTH);
+        mobileNumber2 = RandomGenerator.createRandomDigitsString(LENGTH);
         log.info("finished generating mobile numbers");
     }
 

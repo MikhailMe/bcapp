@@ -13,6 +13,7 @@ public class Cli {
         Client client = new Client();
         client.run();
         Scanner scanner = new Scanner(System.in);
+        String name = "";
         while (true) {
             System.out.println("Enter number:");
             System.out.println("1: add user to database");
@@ -24,13 +25,13 @@ public class Cli {
             switch (scanner.nextInt()) {
                 case 1:
                     System.out.println("write name: ");
-                    String name = scanner.next();
+                    name = scanner.next();
                     System.out.println("write mobile number: ");
                     String mobileNumber = scanner.next();
                     client.sendUserAddMessage(name, mobileNumber);
                     break;
                 case 2:
-                    client.sendRequestClientInfoMessage();
+                    client.sendRequestClientInfoMessage(name);
                     break;
                 case 3:
                     client.sendRequestListOfGamesMessage();
@@ -47,7 +48,9 @@ public class Cli {
                     client.sendBetTransactionMessage(gameId, cashToBet, user, timestamp, coefficient);
                     break;
                 case 5:
-                    // TODO
+                    System.out.println("Do you want be an oracle ? y/n");
+                    String oracle = scanner.next();
+                    client.sendTokenTransactionMessage(oracle);
                     return;
                 case 6:
                     System.out.println("Goodbuy");

@@ -46,9 +46,9 @@ public final class Client implements Runnable {
         channel.writeAndFlush(MessageSender.getUserAddMessage(name, mobileNumber));
     }
 
-    public void sendRequestClientInfoMessage() throws InterruptedException {
+    public void sendRequestClientInfoMessage(String name) throws InterruptedException {
         channel = openChannel();
-        channel.writeAndFlush(MessageSender.getRequestClientInfo());
+        channel.writeAndFlush(MessageSender.getRequestClientInfo(name));
     }
 
     public void sendRequestListOfGamesMessage() throws InterruptedException {
@@ -66,9 +66,9 @@ public final class Client implements Runnable {
         channel.writeAndFlush(MessageSender.getBetTransaction(gameId, cashToBet, user, timestamp, coefficient));
     }
 
-    // TODO
-    public void sendTokenTransactionMessage() {
-
+    public void sendTokenTransactionMessage(@NonNull final String oracle) throws InterruptedException {
+        channel = openChannel();
+        channel.writeAndFlush(MessageSender.getTokenTransaction(oracle));
     }
 
     private Channel openChannel() throws InterruptedException {

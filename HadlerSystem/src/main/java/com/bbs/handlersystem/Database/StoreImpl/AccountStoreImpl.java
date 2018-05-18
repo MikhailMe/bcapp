@@ -20,7 +20,7 @@ public final class AccountStoreImpl implements AccountStore {
     }
 
     @Override
-    public void add(@NonNull final Account account) throws SQLException {
+    public long add(@NonNull final Account account) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(ADD_ACCOUNT_QUERY);
         String nickname = account.getWallet().getUser().getNickname();
         long walletId = new WalletStoreImpl().getId(nickname);
@@ -28,6 +28,7 @@ public final class AccountStoreImpl implements AccountStore {
         preparedStatement.setTimestamp(2, account.getCurrentVisit());
         preparedStatement.execute();
         size++;
+        return size;
     }
 
     @Override

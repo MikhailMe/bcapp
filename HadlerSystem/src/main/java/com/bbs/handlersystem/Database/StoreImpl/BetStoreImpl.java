@@ -22,7 +22,7 @@ public final class BetStoreImpl implements BetStore {
     }
 
     @Override
-    public void add(Bet bet) throws SQLException {
+    public long add(Bet bet) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(ADD_BET_QUERY);
         preparedStatement.setInt(1, bet.getGameId());
         preparedStatement.setInt(2, bet.getCashToBet());
@@ -32,6 +32,7 @@ public final class BetStoreImpl implements BetStore {
         preparedStatement.setFloat(5, bet.getCoefficient().getCoef());
         preparedStatement.execute();
         size++;
+        return size;
     }
 
     @Override

@@ -20,7 +20,7 @@ public final class GameStoreImpl implements GameStore {
     }
 
     @Override
-    public void add(@NonNull final Game game) throws SQLException {
+    public long add(@NonNull final Game game) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(ADD_GAME_QUERY);
         Pair<Team, Team> teams = game.getTeams();
         preparedStatement.setString(1, teams.getFirst().toString());
@@ -28,6 +28,7 @@ public final class GameStoreImpl implements GameStore {
         preparedStatement.setTimestamp(3, game.getTimestamp());
         preparedStatement.execute();
         size++;
+        return size;
     }
 
     @Override

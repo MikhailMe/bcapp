@@ -33,13 +33,14 @@ public final class WalletStoreImpl implements WalletStore {
     }
 
     @Override
-    public void add(@NonNull final Wallet wallet) throws SQLException {
+    public long add(@NonNull final Wallet wallet) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(ADD_WALLET_QUERY);
         String userNickname = wallet.getUser().getNickname();
         preparedStatement.setLong(1, new UserStoreImpl().getId(userNickname));
         preparedStatement.setLong(2, wallet.getBalance());
         preparedStatement.execute();
         size++;
+        return size;
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.bbs.handlersystem.Network.ContentMessage.ContentOfGameMessage;
 import com.bbs.handlersystem.Network.ContentMessage.ContentOfSimpleMessage;
 import com.bbs.handlersystem.Network.Message.JsonMessage;
 import com.bbs.handlersystem.Network.Message.MessageType;
+import com.bbs.handlersystem.Token.Token;
 import com.bbs.handlersystem.Transaction.BetTransaction;
 import com.bbs.handlersystem.Transaction.Transaction;
 import com.bbs.handlersystem.Utils.Helper;
@@ -30,7 +31,10 @@ import java.util.List;
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     private static final String DATA = "data";
+    private static final String TEXT = "text";
     private static final String TYPE = "type";
+    private static final String NICKNAME = "nickname";
+    private static final String MOBILE_NUMBER = "mobileNumber";
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object object) throws SQLException {
@@ -41,21 +45,24 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         String stringType = messageType.toString();
         stringType = stringType.substring(1, stringType.length() - 1);
         MessageType type = MessageType.valueOf(stringType);
-        // TODO: don't forget remove me
-        String messageToSend = "";
+        String messageToSend;
         switch (type) {
             case MSG_ADD_USER:
                 JsonElement userElement = jsonTree.get(DATA);
-                User user = new Gson().fromJson(userElement, User.class);
+                JsonObject userObject = userElement.getAsJsonObject();
+                String nickname = userObject.get(NICKNAME).toString();
+                String mobileNumber = userObject.get(MOBILE_NUMBER).toString();
+
+                User user = new User(nickname, mobileNumber);
                 Wallet wallet = new Wallet(user);
                 Account account = new Account(wallet);
                 MainStore.userStore.add(user);
                 MainStore.walletStore.add(wallet);
                 MainStore.accountStore.add(account);
-                messageToSend = "User \"" + user.toString() + "\" successfully added to database";
+                messageToSend = "User " + user.toString() + " successfully added to database";
                 break;
             case MSG_REQUEST_CLIENT_INFO:
-                String name = "alewa";
+                String name = jsonTree.get(DATA).getAsJsonObject().get(TEXT).toString();
                 long userId = MainStore.userStore.getId(name);
                 long balance = MainStore.walletStore.getBalance(userId);
                 ContentOfClientInfoMessage clientInfo = new ContentOfClientInfoMessage(name, balance);
@@ -65,7 +72,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             case MSG_REQUEST_LIST_OF_GAMES:
                 // TODO: write real parser for get list of games
                 List<Game> games = Helper.createListOfGames(8);
-
                 games.forEach(game -> {
                     try {
                         MainStore.gameStore.add(game);
@@ -73,7 +79,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                         e.printStackTrace();
                     }
                 });
-
                 List<ContentOfGameMessage> listOfGames = Helper.getListGameMessages(games);
                 JsonMessage listOfGamesMessage = new JsonMessage<>(listOfGames, MessageType.MSG_RESPONSE_LIST_OF_GAMES);
                 messageToSend = listOfGamesMessage.toJson();
@@ -98,15 +103,31 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
                 } else {
                     decision = "transaction failure";
                 }
+
+                // ADD ORACLE
                 ContentOfSimpleMessage response = new ContentOfSimpleMessage(decision);
                 JsonMessage responseOnBetTransaction = new JsonMessage<>(response, MessageType.MSG_RESPONSE_TRANSACTION);
                 messageToSend = responseOnBetTransaction.toJson();
+                break;
+            case MSG_REQUEST_ORACLE:
+                User uzver = new User("boss", "777");
+                JsonElement oracleElement = jsonTree.get(DATA).getAsJsonObject();
+                String answer = new Gson().fromJson(oracleElement, ContentOfSimpleMessage.class).getText();
+                boolean isOracleNow = answer.equals("y");
+                if (isOracleNow) {
+                    Token newToken = new Token();
+                    long tokenId = MainStore.tokenStore.add(newToken);
+                    uzver.setIsOracle(isOracleNow);
+                    uzver.setTokenId(tokenId);
+                    messageToSend = "now you are an oracle!";
+                } else {
+                    messageToSend = "client is not an oracle";
+                }
                 break;
             default:
                 messageToSend = "default";
                 break;
         }
-
         ctx.writeAndFlush(Unpooled.copiedBuffer(messageToSend, CharsetUtil.UTF_8));
         ReferenceCountUtil.release(object);
     }

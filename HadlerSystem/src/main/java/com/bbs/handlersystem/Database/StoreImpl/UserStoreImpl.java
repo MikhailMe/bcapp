@@ -3,7 +3,6 @@ package com.bbs.handlersystem.Database.StoreImpl;
 import com.bbs.handlersystem.Client.User;
 import com.bbs.handlersystem.Database.Store.UserStore;
 import com.bbs.handlersystem.Database.StoreConnection;
-import com.bbs.handlersystem.Database.UserProperties;
 import lombok.NonNull;
 
 import java.sql.PreparedStatement;
@@ -20,14 +19,15 @@ public final class UserStoreImpl implements UserStore {
     }
 
     @Override
-    public void add(@NonNull final User user) throws SQLException {
+    public long add(@NonNull final User user) throws SQLException {
         PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(ADD_USER_QUERY);
         preparedStatement.setString(1, user.getNickname());
-        preparedStatement.setBoolean(2, user.isHasToken());
+        preparedStatement.setLong(2, user.getTokenId());
         preparedStatement.setBoolean(3, user.isOracle());
         preparedStatement.setString(4, user.getMobileNumber());
         preparedStatement.execute();
         size++;
+        return size;
     }
 
     @Override
@@ -67,14 +67,40 @@ public final class UserStoreImpl implements UserStore {
     }
 
     @Override
-    public void changeUserProperties(@NonNull final UserProperties type,
-                                     @NonNull final String nickname,
-                                     final boolean value) throws SQLException {
-        boolean isToken = type.equals(UserProperties.TOKEN);
-        PreparedStatement preparedStatement =
-                StoreConnection.getConnection().prepareStatement(isToken ? SET_USER_TOKEN_QUERY : SET_USER_ORACLE_QUERY);
-        preparedStatement.setBoolean(1, value);
+    public void updateNickname(String nickname) throws SQLException {
+        PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(UPDATE_NICKNAME_QUERY);
+        preparedStatement.setString(1, nickname);
+        preparedStatement.setLong(2, getId(nickname));
+        preparedStatement.execute();
+    }
+
+    @Override
+    public void updateMobileNumber(String mobileNumber, String nickname) throws SQLException {
+        PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(UPDATE_MOBILE_NUMBER_QUERY);
+        preparedStatement.setString(1, mobileNumber);
         preparedStatement.setString(2, nickname);
         preparedStatement.execute();
+    }
+
+    @Override
+    public void updateToken(long tokenId, String nickname) throws SQLException {
+        PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(UPDATE_TOKEN_QUERY);
+        preparedStatement.setLong(1, tokenId);
+        preparedStatement.setString(2, nickname);
+        preparedStatement.execute();
+    }
+
+    @Override
+    public void updateOracle(boolean isOracle, String nickname) throws SQLException {
+        PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(UPDATE_ORACLE_QUERY);
+        preparedStatement.setBoolean(1, isOracle);
+        preparedStatement.setString(2, nickname);
+        preparedStatement.execute();
+    }
+
+    @Override
+    public void getTokenById(long id) throws SQLException {
+        PreparedStatement preparedStatement = StoreConnection.getConnection().prepareStatement(GET_TOKEN_BY_ID_QUERY);
+
     }
 }

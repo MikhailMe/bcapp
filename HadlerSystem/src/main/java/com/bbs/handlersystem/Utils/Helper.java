@@ -13,7 +13,7 @@ public final class Helper {
 
     @NonNull
     public static Team createTeam() {
-        return new Team(RandomGenerator.randomString(10));
+        return new Team(RandomGenerator.createRandomString(10));
     }
 
     @NonNull

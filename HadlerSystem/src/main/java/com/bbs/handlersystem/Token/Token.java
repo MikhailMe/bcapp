@@ -1,25 +1,35 @@
 package com.bbs.handlersystem.Token;
 
-import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
 import java.util.Objects;
 import java.util.Random;
 
-public class Token implements Tokenable {
+public final class Token {
 
-    @Getter
+    @Setter
     private String token;
 
     public Token() {
-        this.token = String.valueOf(makeToken());
+        this.token = createToken();
     }
 
-    @Override
-    public long makeToken() {
+    public Token(@NonNull final String token) {
+        this.token = token;
+    }
+
+    @NonNull
+    public String getValue() {
+        return token;
+    }
+
+    @NonNull
+    private String createToken() {
         long token = 3;
         token = 31 * token * System.currentTimeMillis() - new Random().nextLong();
         token = 31 * token + System.currentTimeMillis() / new Random().nextLong();
-        return token;
+        return String.valueOf(token);
     }
 
     @Override

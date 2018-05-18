@@ -13,7 +13,7 @@ public class ClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object object) {
         String receivedMessage = (String) object;
-        System.out.println("client received: " + receivedMessage);
+        System.out.println("\nclient received: " + receivedMessage);
         ReferenceCountUtil.release(object);
     }
 

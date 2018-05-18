@@ -21,15 +21,16 @@ public class MessageSender {
     }
 
     // for get client information (name, balance, listOfBets, listOfVisits, currentVisit)
-    static String getRequestClientInfo() {
-        ContentOfSimpleMessage contentOfSimpleMessage = new ContentOfSimpleMessage("get client info");
+    static String getRequestClientInfo(String name) {
+        ContentOfSimpleMessage contentOfSimpleMessage = new ContentOfSimpleMessage(name);
         JsonMessage jm = new JsonMessage<>(contentOfSimpleMessage, MessageType.MSG_REQUEST_CLIENT_INFO);
         return jm.toJson();
     }
 
     // for get list lis of games
     static String getListOfGames() {
-        ContentOfSimpleMessage request = new ContentOfSimpleMessage("get list of games");
+        String stringToSend = "get list of games";
+        ContentOfSimpleMessage request = new ContentOfSimpleMessage(stringToSend);
         JsonMessage jm = new JsonMessage<>(request, MessageType.MSG_REQUEST_LIST_OF_GAMES);
         return jm.toJson();
     }
@@ -46,9 +47,10 @@ public class MessageSender {
     }
 
     // for get token transaction information
-    // TODO
-    static String getTokenTransaction() {
-        return "TODO";
+    static String getTokenTransaction(@NonNull final String oracle) {
+        ContentOfSimpleMessage oracleMessage = new ContentOfSimpleMessage(oracle);
+        JsonMessage jm = new JsonMessage<>(oracleMessage, MessageType.MSG_REQUEST_ORACLE);
+        return jm.toJson();
     }
 
 }

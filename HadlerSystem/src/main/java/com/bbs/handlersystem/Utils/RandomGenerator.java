@@ -16,7 +16,7 @@ public final class RandomGenerator {
     }
 
     @NonNull
-    public static String randomString(final int length) {
+    public static String createRandomString(final int length) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; ++i) {
             if (new Random().nextDouble() > DELIMITER) {
@@ -29,7 +29,7 @@ public final class RandomGenerator {
     }
 
     @NonNull
-    public static String randomDigitsString(final int length) {
+    public static String createRandomDigitsString(final int length) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
             sb.append(randInt());

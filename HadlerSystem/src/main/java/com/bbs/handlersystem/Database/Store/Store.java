@@ -8,6 +8,7 @@ public interface Store<T> {
     String COLUMN_ID = "id";
     String COLUMN_TEAM1 = "team1";
     String COLUMN_TEAM2 = "team2";
+    String COLUMN_TOKEN = "token";
     String COLUMN_USER_ID = "user_id";
     String COLUMN_BALANCE = "balance";
     String COLUMN_GAME_ID = "game_id";
@@ -23,7 +24,7 @@ public interface Store<T> {
 
     long size();
 
-    void add(T object) throws SQLException;
+    long add(T object) throws SQLException;
 
     T getById(long id) throws SQLException;
 

@@ -33,7 +33,6 @@ public final class StoreConnection {
             String url = Config.URL;
             String name = Config.DB_USER_NAME;
             String pass = Config.DB_USER_PASSWORD;
-            System.out.println("JDBC driver connected");
             connection = DriverManager.getConnection(url, name, pass);
             System.out.println("Store: connection successful");
         } catch (Exception ex) {
