@@ -13,4 +13,15 @@
     <string name="check">Check</string>
     <string name="reset">reset</string>
     <string name="go_continue">continue</string>
+    <string name="bet">bet</string>
+    <string name="secure_message">
+        Dear user\n
+        For security reasons, we suggest that you become an oracle!
+        This means that your device will calculate the results of the event and sent to the system.
+    </string>
+    <string name="question">Will you be an oracle?</string>
+    <string name="yeap">yeap</string>
+    <string name="nope">nope</string>
+    <string name="possible_gain">possible gain</string>
+    <string name="enter_bet_sum">enter bet sum</string>
 </resources>

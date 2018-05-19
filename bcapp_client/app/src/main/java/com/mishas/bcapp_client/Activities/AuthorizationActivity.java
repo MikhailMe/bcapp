@@ -27,6 +27,12 @@ public class AuthorizationActivity extends AppCompatActivity {
     @BindView(R.id.resetBtn)
     Button mResetBtn;
 
+    @BindView(R.id.nicknameTIL)
+    TextInputLayout mNicknameTIL;
+
+    @BindView(R.id.mobileNumberTIL)
+    TextInputLayout mMobileNumberTIL;
+
     @BindView(R.id.codeTv)
     AutoCompleteTextView mCode;
 
@@ -44,7 +50,7 @@ public class AuthorizationActivity extends AppCompatActivity {
     private String mobileNumber;
 
     private static final String EMPTY = "";
-    private static final String CODE_HINT = "code";
+    private static final String CODE_HINT = "enter code here" ;
     private static final String NICKNAME = "nickname";
     private static final String MOBILE_NUMBER = "mobileNumber";
 
@@ -72,6 +78,8 @@ public class AuthorizationActivity extends AppCompatActivity {
             mNickname.setEnabled(false);
             mMobileNumber.setEnabled(false);
             mSendMessageBtn.setEnabled(false);
+            mNickname.setHintTextColor(getResources().getColor(R.color.yellow));
+            mMobileNumber.setHintTextColor(getResources().getColor(R.color.yellow));
 
             mCode.setText(EMPTY);
             codeTil.setHint(CODE_HINT);
@@ -86,7 +94,7 @@ public class AuthorizationActivity extends AppCompatActivity {
     private void check() {
         code = mCode.getText().toString();
         if (!code.isEmpty()) {
-            Intent intent = new Intent(AuthorizationActivity.this, MainActivity.class);
+            Intent intent = new Intent(AuthorizationActivity.this, BetActivity.class);
             intent.putExtra(NICKNAME, nickname);
             intent.putExtra(MOBILE_NUMBER, mobileNumber);
             startActivity(intent);

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_background_color"
-    tools:context=".Activities.BetActivity">
+    tools:context=".Activities.OracleActivity">
 
     <LinearLayout
         android:id="@+id/startingLayout"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -54,12 +54,31 @@
 
     </LinearLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:textColorHint="@color/main_text_color">
+
+        <AutoCompleteTextView
+            android:id="@+id/game_date_ATv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/main_text_color" />
+    </android.support.design.widget.TextInputLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="246dp">
+        android:layout_marginTop="120dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -72,7 +91,7 @@
                 android:layout_marginStart="40dp"
                 android:gravity="center"
                 android:text="team1 win"
-                android:textColor="@color/main_text_color" />
+                android:textColor="@color/yellow" />
 
             <TextView
                 android:id="@+id/drawTv"
@@ -80,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="draw"
-                android:textColor="@color/main_text_color" />
+                android:textColor="@color/yellow" />
 
             <TextView
                 android:id="@+id/team2winTv"
@@ -89,7 +108,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="40dp"
                 android:text="team2 win"
-                android:textColor="@color/main_text_color" />
+                android:textColor="@color/yellow" />
 
         </RelativeLayout>
 
@@ -99,7 +118,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_centerVertical="true">
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="150dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -140,63 +160,57 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="138dp">
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="220dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColorHint="@color/yellow">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="wrap_content"
+            <AutoCompleteTextView
+                android:id="@+id/betSumATv"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="20dp"
-                android:textColorHint="@color/main_text_color">
+                android:descendantFocusability="beforeDescendants"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:hint="@string/enter_bet_sum"
+                android:inputType="number"
+                android:maxLength="8"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/main_text_color" />
+        </android.support.design.widget.TextInputLayout>
 
-                <AutoCompleteTextView
-                    android:id="@+id/betSumATv"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:descendantFocusability="beforeDescendants"
-                    android:focusableInTouchMode="true"
-                    android:hint="enter bet sum"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/main_text_color" />
-            </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"
+            android:textColorHint="@color/yellow">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="wrap_content"
+            <AutoCompleteTextView
+                android:id="@+id/yourWinATv"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
-                android:textColorHint="@color/main_text_color">
+                android:gravity="center"
+                android:hint="@string/possible_gain"
+                android:inputType="number"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/main_text_color" />
+        </android.support.design.widget.TextInputLayout>
 
-                <AutoCompleteTextView
-                    android:id="@+id/yourWinATv"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:hint="your win"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/main_text_color" />
-            </android.support.design.widget.TextInputLayout>
-
-        </RelativeLayout>
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <Button
-        android:id="@+id/next_to_preview_bet"
+        android:id="@+id/next_to_oracle"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -205,7 +219,6 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/rectangle"
         android:gravity="center"
-        android:text="@string/go_continue"
+        android:text="@string/bet"
         android:textColor="@color/black" />
-
 </RelativeLayout>
