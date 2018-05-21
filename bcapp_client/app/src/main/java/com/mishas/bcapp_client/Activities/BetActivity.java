@@ -151,7 +151,7 @@ public class BetActivity extends AppCompatActivity {
                 if (!betSumATv.getText().toString().isEmpty() && !yourWinATv.getText().toString().isEmpty()) {
                     startActivity(new Intent(BetActivity.this, OracleActivity.class));
                 } else {
-                    Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Бабки забыл поставить!", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

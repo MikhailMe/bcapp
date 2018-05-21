@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:enabled="false"
-            android:hint="secure message"
             android:text="@string/secure_message"
             android:textSize="20sp"
             android:textColor="@color/secure_color" />

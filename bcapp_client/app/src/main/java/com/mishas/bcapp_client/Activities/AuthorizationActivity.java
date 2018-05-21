@@ -10,6 +10,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.balysv.materialripple.MaterialRippleLayout;
+import com.mishas.bcapp_client.Core.Data.User;
+import com.mishas.bcapp_client.Core.Instance.ClientModel;
 import com.mishas.bcapp_client.R;
 
 import butterknife.BindView;
@@ -58,13 +61,13 @@ public class AuthorizationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_auth);
         ButterKnife.bind(this);
         initView();
     }
 
-
     private void initView() {
+        ClientModel.getClientModel();
         mCode.setVisibility(View.INVISIBLE);
         mResetBtn.setVisibility(View.INVISIBLE);
         mCheckBtn.setVisibility(View.INVISIBLE);
@@ -94,9 +97,9 @@ public class AuthorizationActivity extends AppCompatActivity {
     private void check() {
         code = mCode.getText().toString();
         if (!code.isEmpty()) {
+            User user = new User(nickname, mobileNumber);
+            ClientModel.init(user);
             Intent intent = new Intent(AuthorizationActivity.this, BetActivity.class);
-            intent.putExtra(NICKNAME, nickname);
-            intent.putExtra(MOBILE_NUMBER, mobileNumber);
             startActivity(intent);
         } else {
             Toast.makeText(getApplicationContext(), "Please enter code", Toast.LENGTH_SHORT).show();
@@ -104,10 +107,7 @@ public class AuthorizationActivity extends AppCompatActivity {
     }
 
     private void reset() {
-        mCode.setVisibility(View.INVISIBLE);
-        mResetBtn.setVisibility(View.INVISIBLE);
-        mCheckBtn.setVisibility(View.INVISIBLE);
-
+        initView();
 
         codeTil.setHint(EMPTY);
         mNickname.setText(EMPTY);
