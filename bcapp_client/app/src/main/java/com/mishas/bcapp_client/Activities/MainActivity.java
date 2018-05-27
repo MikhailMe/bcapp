@@ -65,6 +65,6 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
         return true;
 
-        drawer.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.START );
     }
 }
