@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
         transaction.commit();
+        drawer.closeDrawer(GravityCompat.START );
         return true;
 
-        drawer.closeDrawer(GravityCompat.START );
     }
 }
