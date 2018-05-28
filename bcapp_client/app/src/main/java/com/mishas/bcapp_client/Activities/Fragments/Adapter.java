@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mishas.bcapp_client.Activities.Fragments.GameListFragment.SelectHandler;
 import com.mishas.bcapp_client.Core.Data.Game;
 import com.mishas.bcapp_client.Core.Data.Team;
 import com.mishas.bcapp_client.Core.Utils.Pair;
@@ -18,41 +19,47 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ListHolder> implements View.OnClickListener {
+public final class Adapter extends RecyclerView.Adapter<Adapter.GameHolder> {
 
     @NonNull
     private List<Game> mListOfGames;
 
     @NonNull
+    private SelectHandler mSelectHandler;
+
+    @NonNull
     private final WeakReference<LayoutInflater> mInflater;
 
-    public Adapter(@NonNull LayoutInflater inflater,
-                   @NonNull List<Game> listOfGames) {
+    Adapter(@NonNull LayoutInflater inflater,
+            @NonNull List<Game> listOfGames,
+            @NonNull SelectHandler selectHandler) {
         this.mListOfGames = listOfGames;
-        mInflater = new WeakReference<>(inflater);
+        this.mSelectHandler = selectHandler;
+        this.mInflater = new WeakReference<>(inflater);
     }
 
     @NonNull
     @Override
-    public ListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GameHolder onCreateViewHolder(@NonNull ViewGroup parent,
+                                         final int viewType) {
         LayoutInflater inflater = mInflater.get();
         if (inflater != null) {
-            return new ListHolder(inflater.inflate(R.layout.list, parent, false));
+            return new GameHolder(inflater.inflate(R.layout.list, parent, false));
         } else {
             throw new RuntimeException("Oops, looks like activity is dead");
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListHolder holder, int position) {
+    public void onBindViewHolder(@NonNull GameHolder holder,
+                                 final int position) {
         Game currentGame = mListOfGames.get(position);
         Pair<Team, Team> teams = currentGame.getTeams();
         String team1Name = teams.getFirst().getName();
         String team2Name = teams.getSecond().getName();
         holder.team1.setText(team1Name);
         holder.team2.setText(team2Name);
-        holder.itemView.setTag(position);
-        holder.itemView.setOnClickListener(this);
+        holder.bindGame(currentGame);
     }
 
     @Override
@@ -60,12 +67,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ListHolder> implements
         return mListOfGames.size();
     }
 
-    @Override
-    public void onClick(View v) {
-        // TODO: implement me
-    }
+    final class GameHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    class ListHolder extends RecyclerView.ViewHolder {
+        private Game mGame;
 
         @BindView(R.id.team_1_tv_in_list)
         TextView team1;
@@ -73,9 +77,24 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ListHolder> implements
         @BindView(R.id.team_2_tv_in_list)
         TextView team2;
 
-        ListHolder(View itemView) {
+        GameHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
+
+        void bindGame(@NonNull Game game) {
+            this.mGame = game;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Pair<Team, Team> teamPair = mGame.getTeams();
+            mSelectHandler.onGameSelected(
+                    teamPair.getFirst().getName(),
+                    teamPair.getSecond().getName(),
+                    mGame.getTimestamp().toString());
+        }
+
     }
 }

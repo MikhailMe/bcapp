@@ -1,11 +1,13 @@
 package com.mishas.bcapp_client.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,7 +23,7 @@ import butterknife.OnClick;
 import lombok.Getter;
 import lombok.NonNull;
 
-public class BetActivity extends AppCompatActivity {
+public final class BetActivity extends AppCompatActivity {
 
     @BindView(R.id.team1Tv)
     TextView team1Tv;
@@ -53,6 +55,15 @@ public class BetActivity extends AppCompatActivity {
     @BindView(R.id.game_date_ATv)
     AutoCompleteTextView gameDateATv;
 
+    @NonNull
+    private static final String EXTRA_TEAM_1 = "com.mishas.bcappclient.team1";
+
+    @NonNull
+    private static final String EXTRA_TEAM_2 = "com.mishas.bcappclient.team2";
+
+    @NonNull
+    private static final String EXTRA_TIMESTAMP = "com.mishas.bcappclient.timestamp";
+
     private String team1;
     private String team2;
     private String team1Win;
@@ -70,11 +81,19 @@ public class BetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bet);
         ButterKnife.bind(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         initView();
     }
 
-    private void initView() {
+    public static Intent newIntent(Context context, String team1, String team2, String timestamp) {
+        Intent intent = new Intent(context, BetActivity.class);
+        intent.putExtra(EXTRA_TEAM_1, team1);
+        intent.putExtra(EXTRA_TEAM_2, team2);
+        intent.putExtra(EXTRA_TIMESTAMP, timestamp);
+        return intent;
+    }
 
+    private void initView() {
         init();
         chooseCoef = -1.0f;
         gameDateATv.setText(gameDate);
@@ -107,15 +126,15 @@ public class BetActivity extends AppCompatActivity {
     }
 
     private void init() {
-        // here need init team1, team2, team1WinCoef, drawCoef, team2WinCoef, gameDate
-        team1 = "cska";
-        team2 = "zenit";
+        team1 = getIntent().getStringExtra(EXTRA_TEAM_1);
+        team2 = getIntent().getStringExtra(EXTRA_TEAM_2);
+        gameDate = getIntent().getStringExtra(EXTRA_TIMESTAMP);
+
         team1Win = team1 + " win";
         team2Win = team2 + " win";
         team1WinCoef = "1.3";
         drawCoef = "1.9";
         team2WinCoef = "2.6";
-        gameDate = "27.05.2018 19:00";
     }
 
     private void setTeams(@NonNull final String team1,
@@ -179,7 +198,7 @@ public class BetActivity extends AppCompatActivity {
         setChooseCoef(team2winCoefBtn);
     }
 
-    private void setChooseCoef(Button button) {
+    private void setChooseCoef(@NonNull Button button) {
         chooseCoef = Float.parseFloat(button.getText().toString());
         if (!betSumATv.getText().toString().isEmpty()) {
             float income = Integer.parseInt(betSumATv.getText().toString()) * chooseCoef;

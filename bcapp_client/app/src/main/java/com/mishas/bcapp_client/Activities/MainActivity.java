@@ -3,15 +3,12 @@ package com.mishas.bcapp_client.Activities;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mishas.bcapp_client.Activities.Fragments.AccountFragment;
@@ -22,8 +19,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import lombok.NonNull;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public final class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, GameListFragment.SelectHandler {
 
     @NonNull
     private Fragment fAccount;
@@ -66,34 +63,29 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(@android.support.annotation.NonNull Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@android.support.annotation.NonNull MenuItem item) {
-        int id = item.getItemId();
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@android.support.annotation.NonNull MenuItem item) {
-        FragmentTransaction ftrans = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
         switch (item.getItemId()) {
             case R.id.nav_account:
-                ftrans.replace(R.id.container, fAccount);
+                ft.replace(R.id.container, fAccount);
                 break;
             case R.id.nav_list_of_games:
-                ftrans.replace(R.id.container, fGameList);
+                ft.replace(R.id.container, fGameList);
                 break;
             case R.id.nav_exit:
-                finish();
+                finishAffinity();
                 System.exit(0);
                 break;
         }
-        ftrans.commit();
+        ft.commit();
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onGameSelected(@NonNull final String team1,
+                               @NonNull final String team2,
+                               @NonNull final String timestamp) {
+        startActivity(BetActivity.newIntent(this, team1, team2, timestamp));
     }
 }

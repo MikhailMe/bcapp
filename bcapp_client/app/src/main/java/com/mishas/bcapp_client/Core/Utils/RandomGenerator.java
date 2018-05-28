@@ -5,6 +5,7 @@ import com.mishas.bcapp_client.Core.Data.Team;
 
 import lombok.NonNull;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +60,8 @@ public final class RandomGenerator {
         Collections.shuffle(teams);
         for (int i = 0; i < teamNames.size(); i += 2) {
             Pair<Team, Team> pairTeam = new Pair<>(teams.get(i), teams.get(i + 1));
-            listOfGames.add(new Game(pairTeam));
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis() + new Random().nextLong());
+            listOfGames.add(new Game(pairTeam, timestamp));
         }
         return listOfGames;
     }

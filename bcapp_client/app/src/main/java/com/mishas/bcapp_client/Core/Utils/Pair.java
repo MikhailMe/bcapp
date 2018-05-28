@@ -4,9 +4,10 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public final class Pair<First, Second> {
+public final class Pair<First, Second> implements Serializable{
 
     @Getter
     @Setter
@@ -33,5 +34,4 @@ public final class Pair<First, Second> {
     public String toString() {
         return String.format("%-10s %-5s %s", first.toString(), ":", second.toString());
     }
-
 }

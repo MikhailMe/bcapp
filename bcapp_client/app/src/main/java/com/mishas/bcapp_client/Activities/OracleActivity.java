@@ -12,15 +12,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class OracleActivity extends AppCompatActivity {
+public final class OracleActivity extends AppCompatActivity {
 
     @BindView(R.id.yeapBtn)
     Button yeapBtn;
 
     @BindView(R.id.nopeBtn)
     Button nopeBtn;
-
-    private boolean isOralce;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,15 +29,6 @@ public class OracleActivity extends AppCompatActivity {
 
     @OnClick({R.id.yeapBtn, R.id.nopeBtn})
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.yeapBtn:
-                isOralce = true;
-                startActivity(new Intent(OracleActivity.this, MainActivity.class));
-                break;
-            case R.id.nopeBtn:
-                isOralce = false;
-                startActivity(new Intent(OracleActivity.this, MainActivity.class));
-                break;
-        }
+        startActivity(new Intent(OracleActivity.this, MainActivity.class));
     }
 }

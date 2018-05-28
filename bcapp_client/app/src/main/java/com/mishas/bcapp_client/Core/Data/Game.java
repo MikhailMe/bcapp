@@ -6,10 +6,11 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public final class Game {
+public final class Game implements Serializable {
 
     @Getter
     @Setter
@@ -41,6 +42,5 @@ public final class Game {
                 "\n" +
                 timestamp.toString();
     }
-
 }
 

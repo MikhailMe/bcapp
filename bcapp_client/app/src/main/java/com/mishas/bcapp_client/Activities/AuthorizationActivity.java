@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -18,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AuthorizationActivity extends AppCompatActivity {
+public final class AuthorizationActivity extends AppCompatActivity {
 
     @BindView(R.id.checkBtn)
     Button mCheckBtn;
@@ -47,18 +48,20 @@ public class AuthorizationActivity extends AppCompatActivity {
     @BindView(R.id.codeTil)
     TextInputLayout codeTil;
 
-    private String code;
-    private String nickname;
-    private String mobileNumber;
+    private String mNicknameString;
+    private String mMobileNumberString;
 
     private static final String EMPTY = "";
-    private static final String CODE_HINT = "enter code here" ;
+    private static final String CODE_HINT = "Enter code here";
+    private static final String CODE_REMINDER = "Please enter code";
+    private static final String FILL_FIELD_REMINDER = "Please fill in all fields";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         ButterKnife.bind(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         initView();
     }
 
@@ -70,10 +73,10 @@ public class AuthorizationActivity extends AppCompatActivity {
     }
 
     private void sendMessage() {
-        nickname = mNickname.getText().toString();
-        mobileNumber = mMobileNumber.getText().toString();
+        mNicknameString = mNickname.getText().toString();
+        mMobileNumberString = mMobileNumber.getText().toString();
 
-        if (!nickname.isEmpty() && !mobileNumber.isEmpty()) {
+        if (!mNicknameString.isEmpty() && !mMobileNumberString.isEmpty()) {
             mNickname.setEnabled(false);
             mMobileNumber.setEnabled(false);
             mSendMessageBtn.setEnabled(false);
@@ -86,19 +89,19 @@ public class AuthorizationActivity extends AppCompatActivity {
             mResetBtn.setVisibility(View.VISIBLE);
             mCheckBtn.setVisibility(View.VISIBLE);
         } else {
-            Toast.makeText(getApplicationContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), FILL_FIELD_REMINDER, Toast.LENGTH_SHORT).show();
         }
     }
 
     private void check() {
-        code = mCode.getText().toString();
+        String code = mCode.getText().toString();
         if (!code.isEmpty()) {
-            User user = new User(nickname, mobileNumber);
+            User user = new User(mNicknameString, mMobileNumberString);
             ClientModel.init(user);
-            Intent intent = new Intent(AuthorizationActivity.this, BetActivity.class);
+            Intent intent = new Intent(AuthorizationActivity.this, MainActivity.class);
             startActivity(intent);
         } else {
-            Toast.makeText(getApplicationContext(), "Please enter code", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), CODE_REMINDER, Toast.LENGTH_SHORT).show();
         }
     }
 
