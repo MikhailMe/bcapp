@@ -17,7 +17,6 @@ import com.mishas.bcapp_client.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import jp.co.soramitsu.iroha.android.Blob;
 
 public class AuthorizationActivity extends AppCompatActivity {
 

@@ -15,7 +15,7 @@
     <string name="go_continue">continue</string>
     <string name="bet">bet</string>
     <string name="secure_message">
-        Dear user\n
+        Dear customer\n
         For security reasons, we suggest that you become an oracle!
         This means that your device will calculate the results of the event and sent to the system.
     </string>
@@ -28,4 +28,5 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="exit_question">Do you want exit ?</string>
+    <string name="title_activity_main">MainActivity</string>
 </resources>

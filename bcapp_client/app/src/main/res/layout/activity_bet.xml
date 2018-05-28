@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/main_background_color"
     tools:context=".Activities.OracleActivity">
 
@@ -14,7 +15,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="500dp">
 
             <LinearLayout
                 android:id="@+id/startingLayout"
@@ -134,36 +135,67 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <Button
-                        android:id="@+id/team1winCoefBtn"
+                    <com.balysv.materialripple.MaterialRippleLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:layout_marginStart="30dp"
-                        android:background="@drawable/rectangle"
-                        android:text="1.0"
-                        android:textColor="@color/black" />
+                        app:mrl_rippleOverlay="true"
+                        app:mrl_rippleColor="@color/main_background_color"
+                        app:mrl_rippleDelayClick="false"
+                        app:mrl_rippleHover="true">
 
-                    <Button
-                        android:id="@+id/drawCoefBtn"
+                        <Button
+                            android:id="@+id/team1winCoefBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:text="1.0"
+                            android:textColor="@color/black" />
+
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+
+                    <com.balysv.materialripple.MaterialRippleLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:background="@drawable/rectangle"
-                        android:text="3.0"
-                        android:textColor="@color/black" />
+                        app:mrl_rippleOverlay="true"
+                        app:mrl_rippleColor="@color/main_background_color"
+                        app:mrl_rippleDelayClick="false"
+                        app:mrl_rippleHover="true">
+
+                        <Button
+                            android:id="@+id/drawCoefBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:text="3.0"
+                            android:textColor="@color/black" />
+
+                    </com.balysv.materialripple.MaterialRippleLayout>
 
 
-                    <Button
-                        android:id="@+id/team2winCoefBtn"
+                    <com.balysv.materialripple.MaterialRippleLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="30dp"
-                        android:background="@drawable/rectangle"
-                        android:text="2.0"
-                        android:textColor="@color/black" />
+                        app:mrl_rippleOverlay="true"
+                        app:mrl_rippleColor="@color/main_background_color"
+                        app:mrl_rippleDelayClick="false"
+                        app:mrl_rippleHover="true">
+
+                        <Button
+                            android:id="@+id/team2winCoefBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle"
+                            android:text="2.0"
+                            android:textColor="@color/black" />
+
+                    </com.balysv.materialripple.MaterialRippleLayout>
 
                 </RelativeLayout>
 
@@ -218,20 +250,36 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:mrl_rippleOverlay="true"
+                    app:mrl_rippleColor="@color/main_background_color"
+                    app:mrl_rippleDelayClick="false"
+                    app:mrl_rippleHover="true">
+
+                    <Button
+                        android:id="@+id/next_to_oracle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rectangle"
+                        android:text="@string/bet"
+                        android:textColor="@color/black" />
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+            </RelativeLayout>
+
         </RelativeLayout>
 
     </ScrollView>
-
-    <Button
-        android:id="@+id/next_to_oracle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:background="@drawable/rectangle"
-        android:gravity="center"
-        android:text="@string/bet"
-        android:textColor="@color/black" />
 
 </RelativeLayout>

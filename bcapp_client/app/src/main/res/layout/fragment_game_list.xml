@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_background_color"
     android:id="@+id/fragment_game_list"
     tools:context=".Activities.Fragments.GameListFragment">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view_games"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="32sp"
-        android:text="games" />
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>
