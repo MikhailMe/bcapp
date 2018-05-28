@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">bcapp_client</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="nickname">nickname</string>
+    <string name="code">code</string>
+    <string name="mobile_number">mobile number</string>
+    <string name="send_sms">Send message</string>
+    <string name="check">Check</string>
+    <string name="reset">reset</string>
+    <string name="go_continue">continue</string>
+    <string name="bet">bet</string>
+    <string name="secure_message">
+        Dear user\n
+        For security reasons, we suggest that you become an oracle!
+        This means that your device will calculate the results of the event and sent to the system.
+    </string>
+    <string name="question">Will you be an oracle?</string>
+    <string name="yeap">yeap</string>
+    <string name="nope">nope</string>
+    <string name="possible_gain">possible gain</string>
+    <string name="enter_bet_sum">enter bet sum</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="exit_question">Do you want exit ?</string>
+</resources>
