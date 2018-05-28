@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mishas.bcapp_client.Core.Data.Game;
-import com.mishas.bcapp_client.Core.Utils.GamesGenerator;
+import com.mishas.bcapp_client.Core.Utils.RandomGenerator;
 import com.mishas.bcapp_client.R;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public final class GameListFragment extends Fragment {
         Context context = getActivity().getApplicationContext();
         listOfGames.setLayoutManager(new LinearLayoutManager(context));
         listOfGames.setHasFixedSize(true);
-        List<Game> games = GamesGenerator.generateList();
+        List<Game> games = RandomGenerator.generateList();
         listOfGames.setAdapter(new Adapter(LayoutInflater.from(context), games));
         return view;
     }
