@@ -10,7 +10,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.balysv.materialripple.MaterialRippleLayout;
 import com.mishas.bcapp_client.Core.Data.User;
 import com.mishas.bcapp_client.Core.Instance.ClientModel;
 import com.mishas.bcapp_client.R;
@@ -18,6 +17,7 @@ import com.mishas.bcapp_client.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import jp.co.soramitsu.iroha.android.Blob;
 
 public class AuthorizationActivity extends AppCompatActivity {
 
@@ -54,9 +54,6 @@ public class AuthorizationActivity extends AppCompatActivity {
 
     private static final String EMPTY = "";
     private static final String CODE_HINT = "enter code here" ;
-    private static final String NICKNAME = "nickname";
-    private static final String MOBILE_NUMBER = "mobileNumber";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

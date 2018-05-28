@@ -65,4 +65,7 @@ dependencies {
     // for riple effect
     implementation 'com.balysv:material-ripple:1.0.2'
 
+    // for access to Iroha API
+    implementation 'jp.co.soramitsu.iroha.android:iroha-android-bindings:1.0'
+
 }
