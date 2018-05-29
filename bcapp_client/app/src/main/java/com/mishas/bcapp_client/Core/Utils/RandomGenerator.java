@@ -15,6 +15,7 @@ import java.util.Random;
 
 public final class RandomGenerator {
 
+    private static final int CONST = 1_000_000_000;
     private static final double DELIMITER = 0.5d;
     private static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String lower = upper.toLowerCase(Locale.ROOT);
@@ -60,7 +61,7 @@ public final class RandomGenerator {
         Collections.shuffle(teams);
         for (int i = 0; i < teamNames.size(); i += 2) {
             Pair<Team, Team> pairTeam = new Pair<>(teams.get(i), teams.get(i + 1));
-            Timestamp timestamp = new Timestamp(System.currentTimeMillis() + new Random().nextLong());
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis() + new Random().nextInt(CONST + 1000000));
             listOfGames.add(new Game(pairTeam, timestamp));
         }
         return listOfGames;

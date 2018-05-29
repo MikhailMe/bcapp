@@ -19,6 +19,10 @@
         For security reasons, we suggest that you become an oracle!
         This means that your device will calculate the results of the event and sent to the system.
     </string>
+    <string name="welcomeMessage">
+        Dear customer,\n
+        Welcome to Blockchain Bet System!
+    </string>
     <string name="question">Will you be an oracle?</string>
     <string name="yeap">yeap</string>
     <string name="nope">nope</string>

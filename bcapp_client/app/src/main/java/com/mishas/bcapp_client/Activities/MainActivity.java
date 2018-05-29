@@ -10,6 +10,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.mishas.bcapp_client.Activities.Fragments.AccountFragment;
 import com.mishas.bcapp_client.Activities.Fragments.GameListFragment;
@@ -39,6 +41,7 @@ public final class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        toolbar.setTitle("bcapp_client");
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -50,6 +53,8 @@ public final class MainActivity extends AppCompatActivity
 
         fAccount = new AccountFragment();
         fGameList = new GameListFragment();
+
+        getFragmentManager().beginTransaction().replace(R.id.container, fGameList).commit();
     }
 
     @Override
@@ -57,8 +62,6 @@ public final class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
     }
 
