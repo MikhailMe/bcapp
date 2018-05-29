@@ -34,11 +34,11 @@
                         android:id="@+id/team1Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="40dp"
+                        android:layout_marginStart="20dp"
                         android:gravity="center"
                         android:text="TEAM 1"
                         android:textColor="@color/main_text_color"
-                        android:textSize="30sp" />
+                        android:textSize="24sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -48,17 +48,17 @@
                         android:gravity="center"
                         android:text="VS"
                         android:textColor="@color/main_text_color"
-                        android:textSize="30sp" />
+                        android:textSize="24sp" />
 
                     <TextView
                         android:id="@+id/team2Tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="40dp"
+                        android:layout_marginEnd="20dp"
                         android:text="TEAM 2"
                         android:textColor="@color/main_text_color"
-                        android:textSize="30sp" />
+                        android:textSize="24sp" />
 
                 </RelativeLayout>
 
