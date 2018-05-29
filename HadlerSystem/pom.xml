@@ -121,6 +121,40 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- for grpc -->
+<!--        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-okhttp</artifactId>
+            <version>1.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+            <version>1.11.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+            <version>1.11.0</version>
+        </dependency>
+
+      <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-testing</artifactId>
+            <version>1.11.0</version>
+            <scope>test</scope>
+        </dependency>-->
+
+        <!-- for iroha -->
+        <dependency>
+            <groupId>jp.co.soramitsu</groupId>
+            <artifactId>iroha</artifactId>
+            <version>0.0.8</version>
+            <systemPath>${project.basedir}/src/main/resources/iroha_lib.jar</systemPath>
+        </dependency>
+
     </dependencies>
 
 </project>

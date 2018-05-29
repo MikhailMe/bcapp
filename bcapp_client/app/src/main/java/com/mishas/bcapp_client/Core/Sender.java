@@ -1,6 +1,6 @@
 package com.mishas.bcapp_client.Core;
 
-import com.google.protobuf.Empty;
+    import com.google.protobuf.Empty;
 import com.mishas.bcapp_client.iroha.protocol.Block;
 import com.mishas.bcapp_client.iroha.protocol.CommandServiceGrpc;
 import com.mishas.bcapp_client.iroha.protocol.Commands;
@@ -20,9 +20,6 @@ public class Sender {
     private final ManagedChannel channel;
     private final CommandServiceGrpc.CommandServiceBlockingStub blockingStub;
 
-    /**
-     * Construct client connecting to HelloWorld server at {@code host:port}.
-     */
     public Sender(String host, int port) {
         this(ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext()
