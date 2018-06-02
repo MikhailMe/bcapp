@@ -21,7 +21,7 @@
     hyperledger/iroha:develop
        
        
-## Congratulations! Now we are ready to start system
+## Congratulations! Now you are ready to start system
       
 ## How to start system
 * docker start iroha
