@@ -1,0 +1,53 @@
+<resources>
+    <string name="app_name">Iroha-Android</string>
+    <string name="to">To</string>
+    <string name="amount">Amount</string>
+    <string name="or">OR</string>
+    <string name="send">send</string>
+    <string name="registration_title">I R O H A</string>
+    <string name="registration_subtitle">Blockchain technologies for business</string>
+    <string name="username_hint">Username (use small latin letters and digits)</string>
+    <string name="button_register">Register</string>
+    <string name="error_dialog_title">Failure</string>
+    <string name="username_empty_error_dialog_message">Username can\'t be empty</string>
+    <string name="username_already_exists_error_dialog_message">Username already exists</string>
+    <string name="username_doesnt_exists">No such user</string>
+    <string name="fields_cant_be_empty">Fields can not be empty</string>
+    <string name="server_is_not_reachable">Server is not reachable</string>
+    <string name="please_wait">Please, wait…</string>
+    <string name="general_error">Problem with connection to server</string>
+    <string name="logout">Logout</string>
+    <string name="logout_description">Are you sure? Account will be lost</string>
+    <string name="account_details">Account details</string>
+    <string name="account_details_error">Failed to set account details</string>
+    <string name="not_enough_balance_error">Not enough amount on balance</string>
+    <string name="bio">Any details such as age, profession.</string>
+    <string name="transaction_successful">Transaction successful.</string>
+    <string name="info">Info</string>
+
+
+    <string name="secure_message">
+        Dear customer\n
+        For security reasons, we suggest that you become an oracle!
+        This means that your device will calculate the results of the event and sent to the system.
+    </string>
+    <string name="welcomeMessage">
+        Dear customer,\n
+        Welcome\n
+        to\n
+        Blockchain Bet System!
+    </string>
+    <string name="question">Will you be an oracle?</string>
+    <string name="yeap">yeap</string>
+    <string name="nope">nope</string>
+    <string name="possible_gain">possible gain</string>
+    <string name="enter_bet_sum">enter bet sum</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="exit_question">Do you want exit ?</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="vs">vs</string>
+    <string name="username">username</string>
+    <string name="signup">sign up</string>
+</resources>
