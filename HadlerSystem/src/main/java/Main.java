@@ -13,7 +13,7 @@ public class Main {
             sender = new Sender("localhost", 50051);
             String comment = "comment";
             String verifierId = "test@test";
-            sender.sendVerifierUpdate(verifierId, sensorid, status, comment);
+            //sender.sendVerifierUpdate(verifierId, sensorid, status, comment);
             System.out.println("Sending message succeed! verifierId: " + verifierId + ", sensorId: " + sensorid + ", status: " + status + ", comment: " + comment);
         } catch (Exception e) {
             System.out.println("Error while sending message: " + e.getMessage());

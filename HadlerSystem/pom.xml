@@ -152,7 +152,7 @@
             <groupId>jp.co.soramitsu</groupId>
             <artifactId>iroha</artifactId>
             <version>0.0.8</version>
-            <systemPath>${project.basedir}/src/main/resources/iroha_lib.jar</systemPath>
+            <!--<systemPath>${project.basedir}/src/main/resources/iroha_lib.jar</systemPath>-->
         </dependency>
 
     </dependencies>

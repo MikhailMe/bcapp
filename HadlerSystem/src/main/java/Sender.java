@@ -36,7 +36,7 @@ public class Sender {
         channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
     }
 
-    public void sendVerifierUpdate(String verifierId, String sensorId, Boolean sensorIsWorking, String status) throws StatusRuntimeException {
+    /*public void sendVerifierUpdate(String verifierId, String sensorId, Boolean sensorIsWorking, String status) throws StatusRuntimeException {
         logger.info("Will try to send verifier update...");
         Commands.Command command =
                 Commands.Command.newBuilder().setTransferAsset(
@@ -91,5 +91,5 @@ public class Sender {
         } catch (StatusRuntimeException e) {
             logger.log(Level.WARNING, "RPC failed: {0}", e.getStatus());
         }
-    }
+    }*/
 }
