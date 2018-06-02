@@ -14,8 +14,13 @@ import jp.co.soramitsu.iroha.android.ModelCrypto;
 
 @Module
 public class ApplicationModule {
+
     public static final String JOB = "JOB";
     public static final String UI = "UI";
+
+    private static final int PORT = 50051;
+    private static final String HOME_IP = "172.16.0.7";
+    private static final String BROVKI_IP = "192.168.43.81";
 
     @Provides
     @Singleton
@@ -34,9 +39,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     public ManagedChannel provideManagedChannel() {
-        String brovkiIP = "192.168.43.81";
-        int port = 50051;
-        return ManagedChannelBuilder.forAddress(brovkiIP, port).usePlaintext(true).build();
+        return ManagedChannelBuilder.forAddress(HOME_IP, PORT).usePlaintext().build();
     }
 
     @Provides
