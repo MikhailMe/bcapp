@@ -29,4 +29,5 @@
     <color name="yellow">#FFF917</color>
     <color name="secure_color">#FF1040</color>
     <color name="positiveAmount">#078B75</color>
+    <color name="hint">#A0AF0F</color>
 </resources>

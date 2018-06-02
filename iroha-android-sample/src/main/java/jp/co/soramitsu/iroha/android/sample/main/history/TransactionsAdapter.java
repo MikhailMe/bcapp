@@ -50,7 +50,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             transactionItem.username.setText(transaction.username);
             if (transaction.prettyAmount.contains("-")) {
                 transactionItem.amount.setText("- " + transaction.prettyAmount.substring(1, transaction.prettyAmount.length()));
-                transactionItem.amount.setTextColor(SampleApplication.instance.getResources().getColor(R.color.text));
+                transactionItem.amount.setTextColor(SampleApplication.instance.getResources().getColor(R.color.black));
             } else {
                 transactionItem.amount.setText("+ " + transaction.prettyAmount);
                 transactionItem.amount.setTextColor(SampleApplication.instance.getResources().getColor(R.color.positiveAmount));
