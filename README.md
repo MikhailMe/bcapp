@@ -28,6 +28,6 @@
 * docker start some-postgres
 * docker exec -it iroha /bin/bash
 * irohad --config config.docker --genesis_block genesis.block --keypair_name node0
-* set IP-address in the Constants.java
+* set IP-address in the ApplicationModule.java
 * run android application
 * enjoy
