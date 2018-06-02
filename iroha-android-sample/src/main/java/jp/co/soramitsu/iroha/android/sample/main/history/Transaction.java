@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class Transaction {
+
     public final long id;
     public final Date date;
     public final String username;

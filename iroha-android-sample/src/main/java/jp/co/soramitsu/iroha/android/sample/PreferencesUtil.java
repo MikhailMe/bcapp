@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import jp.co.soramitsu.iroha.android.Keypair;
 import jp.co.soramitsu.iroha.android.ModelCrypto;
 import lombok.Getter;
+import lombok.NonNull;
 
 public class PreferencesUtil {
 
@@ -25,12 +26,12 @@ public class PreferencesUtil {
     private final ModelCrypto modelCrypto;
 
     @Inject
-    public PreferencesUtil(ModelCrypto modelCrypto) {
+    public PreferencesUtil(@NonNull ModelCrypto modelCrypto) {
         this.modelCrypto = modelCrypto;
         preferences = SampleApplication.instance.getSharedPreferences(SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
     }
 
-    public void saveUsername(String username) {
+    public void saveUsername(@NonNull final String username) {
         preferences.edit().putString(SAVED_USERNAME, username).apply();
     }
 
@@ -38,7 +39,7 @@ public class PreferencesUtil {
         return preferences.getString(SAVED_USERNAME, "");
     }
 
-    public void saveKeys(Keypair keyPair) {
+    public void saveKeys(@NonNull Keypair keyPair) {
         preferences.edit().putString(SAVED_PUBLIC_KEY, keyPair.publicKey().hex()).apply();
         preferences.edit().putString(SAVED_PRIVATE_KEY, keyPair.privateKey().hex()).apply();
     }

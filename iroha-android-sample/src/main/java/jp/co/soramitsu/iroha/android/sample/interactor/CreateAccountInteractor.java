@@ -1,6 +1,5 @@
 package jp.co.soramitsu.iroha.android.sample.interactor;
 
-
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.math.BigInteger;
@@ -22,6 +21,7 @@ import jp.co.soramitsu.iroha.android.ModelTransactionBuilder;
 import jp.co.soramitsu.iroha.android.UnsignedTx;
 import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
 import jp.co.soramitsu.iroha.android.sample.injection.ApplicationModule;
+import lombok.NonNull;
 
 import static jp.co.soramitsu.iroha.android.sample.Constants.CONNECTION_TIMEOUT_SECONDS;
 import static jp.co.soramitsu.iroha.android.sample.Constants.CREATOR;
@@ -40,8 +40,9 @@ public class CreateAccountInteractor extends CompletableInteractor<String> {
     @Inject
     CreateAccountInteractor(@Named(ApplicationModule.JOB) Scheduler jobScheduler,
                             @Named(ApplicationModule.UI) Scheduler uiScheduler,
-                            ManagedChannel managedChannel, ModelCrypto crypto,
-                            PreferencesUtil preferencesUtil) {
+                            @NonNull ManagedChannel managedChannel,
+                            @NonNull ModelCrypto crypto,
+                            @NonNull PreferencesUtil preferencesUtil) {
         super(jobScheduler, uiScheduler);
         this.channel = managedChannel;
         this.crypto = crypto;
@@ -49,7 +50,7 @@ public class CreateAccountInteractor extends CompletableInteractor<String> {
     }
 
     @Override
-    protected Completable build(String username) {
+    protected Completable build(@NonNull String username) {
         return Completable.create(emitter -> {
             long currentTime = System.currentTimeMillis();
             Keypair userKeys = crypto.generateKeypair();
@@ -61,9 +62,7 @@ public class CreateAccountInteractor extends CompletableInteractor<String> {
                     .createAccount(username, DOMAIN_ID, userKeys.publicKey())
                     .build();
 
-            // sign transaction and get its binary representation (Blob)
             ByteVector txblob = protoTxHelper.signAndAddSignature(createAccount, adminKeys).blob();
-            // Convert ByteVector to byte array
             byte bs[] = toByteArray(txblob);
 
             // create proto object
@@ -79,7 +78,6 @@ public class CreateAccountInteractor extends CompletableInteractor<String> {
                     .withDeadlineAfter(CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             stub.torii(protoTx);
 
-            // Check if it was successful
             if (!isTransactionSuccessful(stub, createAccount)) {
                 emitter.onError(new RuntimeException("Transaction failed"));
             } else {

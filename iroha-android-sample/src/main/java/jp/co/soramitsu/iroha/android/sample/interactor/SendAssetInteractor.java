@@ -1,10 +1,8 @@
 package jp.co.soramitsu.iroha.android.sample.interactor;
 
-
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -22,6 +20,7 @@ import jp.co.soramitsu.iroha.android.ModelTransactionBuilder;
 import jp.co.soramitsu.iroha.android.UnsignedTx;
 import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
 import jp.co.soramitsu.iroha.android.sample.injection.ApplicationModule;
+import lombok.NonNull;
 
 import static jp.co.soramitsu.iroha.android.sample.Constants.ASSET_ID;
 import static jp.co.soramitsu.iroha.android.sample.Constants.CONNECTION_TIMEOUT_SECONDS;
@@ -37,14 +36,15 @@ public class SendAssetInteractor extends CompletableInteractor<String[]> {
     @Inject
     SendAssetInteractor(@Named(ApplicationModule.JOB) Scheduler jobScheduler,
                         @Named(ApplicationModule.UI) Scheduler uiScheduler,
-                        ManagedChannel managedChannel, PreferencesUtil preferencesUtil) {
+                        @NonNull ManagedChannel managedChannel,
+                        @NonNull PreferencesUtil preferencesUtil) {
         super(jobScheduler, uiScheduler);
         this.channel = managedChannel;
         this.preferenceUtils = preferencesUtil;
     }
 
     @Override
-    protected Completable build(String[] data) {
+    protected Completable build(@NonNull String[] data) {
         return Completable.create(emitter -> {
             long currentTime = System.currentTimeMillis();
             Keypair userKeys = preferenceUtils.retrieveKeys();
@@ -70,7 +70,6 @@ public class SendAssetInteractor extends CompletableInteractor<String[]> {
                     .withDeadlineAfter(CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             stub.torii(protoTx);
 
-            // Check if it was successful
             if (!isTransactionSuccessful(stub, sendAssetTx)) {
                 emitter.onError(new RuntimeException("Transaction failed"));
             } else {

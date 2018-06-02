@@ -4,11 +4,14 @@ import android.support.v7.util.DiffUtil;
 
 import java.util.List;
 
+import lombok.NonNull;
+
 public class TransactionDiffChecker extends DiffUtil.Callback {
     private final List oldTransactions;
     private final List newTransactions;
 
-    TransactionDiffChecker(List oldTransactions, List newTransactions) {
+    TransactionDiffChecker(@NonNull final List oldTransactions,
+                           @NonNull final List newTransactions) {
         this.oldTransactions = oldTransactions;
         this.newTransactions = newTransactions;
     }
@@ -24,7 +27,8 @@ public class TransactionDiffChecker extends DiffUtil.Callback {
     }
 
     @Override
-    public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
+    public boolean areItemsTheSame(final int oldItemPosition,
+                                   final int newItemPosition) {
         if (oldTransactions.get(oldItemPosition) instanceof TransactionVM) {
             TransactionVM oldItem = (TransactionVM) oldTransactions.get(oldItemPosition);
             TransactionVM newItem = (TransactionVM) newTransactions.get(newItemPosition);
@@ -35,7 +39,8 @@ public class TransactionDiffChecker extends DiffUtil.Callback {
     }
 
     @Override
-    public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
+    public boolean areContentsTheSame(final int oldItemPosition,
+                                      final int newItemPosition) {
         if (oldTransactions.get(oldItemPosition) instanceof TransactionVM) {
             TransactionVM oldItem = (TransactionVM) oldTransactions.get(oldItemPosition);
             TransactionVM newItem = (TransactionVM) newTransactions.get(newItemPosition);

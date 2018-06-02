@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.view.RxView;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import jp.co.soramitsu.iroha.android.sample.R;
@@ -48,7 +50,7 @@ public class SendFragment extends Fragment implements SendView {
 
     @Override
     public void didSendSuccess() {
-        ((MainActivity) getActivity()).refreshData(false);
+        ((MainActivity) Objects.requireNonNull(getActivity())).refreshData(false);
         binding.amount.setText("");
         binding.to.setText("");
         ((MainActivity) getActivity()).hideProgress();
@@ -56,13 +58,13 @@ public class SendFragment extends Fragment implements SendView {
     }
 
     private void sendTransaction(String username, String amount) {
-        ((MainActivity) getActivity()).showProgress();
+        ((MainActivity) Objects.requireNonNull(getActivity())).showProgress();
         presenter.sendTransaction(username, amount);
     }
 
     @Override
     public void didSendError(Throwable error) {
-        ((MainActivity) getActivity()).hideProgress();
+        ((MainActivity) Objects.requireNonNull(getActivity())).hideProgress();
         ((MainActivity) getActivity()).showError(error);
     }
 

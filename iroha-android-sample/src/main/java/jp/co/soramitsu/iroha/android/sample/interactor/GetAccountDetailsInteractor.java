@@ -24,6 +24,7 @@ import jp.co.soramitsu.iroha.android.UnsignedQuery;
 import jp.co.soramitsu.iroha.android.sample.Constants;
 import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
 import jp.co.soramitsu.iroha.android.sample.injection.ApplicationModule;
+import lombok.NonNull;
 
 import static jp.co.soramitsu.iroha.android.sample.Constants.DOMAIN_ID;
 import static jp.co.soramitsu.iroha.android.sample.Constants.QUERY_COUNTER;
@@ -38,7 +39,8 @@ public class GetAccountDetailsInteractor extends SingleInteractor<String, Void> 
     @Inject
     GetAccountDetailsInteractor(@Named(ApplicationModule.JOB) Scheduler jobScheduler,
                                 @Named(ApplicationModule.UI) Scheduler uiScheduler,
-                                PreferencesUtil preferenceUtils, ManagedChannel channel) {
+                                @NonNull PreferencesUtil preferenceUtils,
+                                @NonNull ManagedChannel channel) {
         super(jobScheduler, uiScheduler);
         this.preferenceUtils = preferenceUtils;
         this.channel = channel;

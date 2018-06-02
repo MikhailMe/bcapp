@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class TransactionVM {
+
     public final long id;
     public final String prettyDate;
     public final String username;

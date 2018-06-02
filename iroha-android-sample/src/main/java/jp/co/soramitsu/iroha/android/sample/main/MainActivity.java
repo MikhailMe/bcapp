@@ -31,6 +31,7 @@ import jp.co.soramitsu.iroha.android.sample.databinding.ActivityMainBinding;
 import jp.co.soramitsu.iroha.android.sample.main.history.HistoryFragment;
 import jp.co.soramitsu.iroha.android.sample.main.send.SendFragment;
 import jp.co.soramitsu.iroha.android.sample.registration.RegistrationActivity;
+import lombok.NonNull;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
@@ -137,17 +138,17 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     @Override
-    public void setUsername(String username) {
+    public void setUsername(@NonNull final String username) {
         binding.username.setText(username);
     }
 
     @Override
-    public void setAccountDetails(String details) {
+    public void setAccountDetails(@NonNull final String details) {
         binding.bio.setText(details.isEmpty() ? getString(R.string.bio) : details);
     }
 
     @Override
-    public void setAccountBalance(String balance) {
+    public void setAccountBalance(@NonNull final String balance) {
         binding.balance.setText(balance);
     }
 

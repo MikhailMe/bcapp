@@ -20,6 +20,7 @@ import jp.co.soramitsu.iroha.android.ModelTransactionBuilder;
 import jp.co.soramitsu.iroha.android.UnsignedTx;
 import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
 import jp.co.soramitsu.iroha.android.sample.injection.ApplicationModule;
+import lombok.NonNull;
 
 import static jp.co.soramitsu.iroha.android.sample.Constants.ACCOUNT_DETAILS;
 import static jp.co.soramitsu.iroha.android.sample.Constants.CONNECTION_TIMEOUT_SECONDS;
@@ -35,14 +36,15 @@ public class SetAccountDetailsInteractor extends CompletableInteractor<String> {
     @Inject
     SetAccountDetailsInteractor(@Named(ApplicationModule.JOB) Scheduler jobScheduler,
                                 @Named(ApplicationModule.UI) Scheduler uiScheduler,
-                                ManagedChannel managedChannel, PreferencesUtil preferencesUtil) {
+                                @NonNull ManagedChannel managedChannel,
+                                @NonNull PreferencesUtil preferencesUtil) {
         super(jobScheduler, uiScheduler);
         this.channel = managedChannel;
         this.preferenceUtils = preferencesUtil;
     }
 
     @Override
-    protected Completable build(String details) {
+    protected Completable build(@NonNull final String details) {
         return Completable.create(emitter -> {
             long currentTime = System.currentTimeMillis();
             Keypair userKeys = preferenceUtils.retrieveKeys();
@@ -68,7 +70,6 @@ public class SetAccountDetailsInteractor extends CompletableInteractor<String> {
 
             stub.torii(protoTx);
 
-            // Check if it was successful
             if (!isTransactionSuccessful(stub, setDetailsTransaction)) {
                 emitter.onError(new RuntimeException("Transaction failed"));
             } else {

@@ -22,6 +22,7 @@ import jp.co.soramitsu.iroha.android.ModelTransactionBuilder;
 import jp.co.soramitsu.iroha.android.UnsignedTx;
 import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
 import jp.co.soramitsu.iroha.android.sample.injection.ApplicationModule;
+import lombok.NonNull;
 
 import static jp.co.soramitsu.iroha.android.sample.Constants.ASSET_ID;
 import static jp.co.soramitsu.iroha.android.sample.Constants.CONNECTION_TIMEOUT_SECONDS;
@@ -49,7 +50,7 @@ public class AddAssetInteractor extends CompletableInteractor<String> {
     }
 
     @Override
-    protected Completable build(String details) {
+    protected Completable build(@NonNull final String details) {
         return Completable.create(emitter -> {
             long currentTime = System.currentTimeMillis();
             Keypair adminKeys = crypto.convertFromExisting(PUB_KEY, PRIV_KEY);
@@ -77,7 +78,6 @@ public class AddAssetInteractor extends CompletableInteractor<String> {
 
             stub.torii(protoTx);
 
-            // Check if it was successful
             if (!isTransactionSuccessful(stub, addAssetTx)) {
                 emitter.onError(new RuntimeException("Transaction failed"));
             } else {

@@ -1,5 +1,6 @@
 package jp.co.soramitsu.iroha.android.sample.main.history;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof TransactionItem) {

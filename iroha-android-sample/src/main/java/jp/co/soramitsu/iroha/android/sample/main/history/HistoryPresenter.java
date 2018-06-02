@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import jp.co.soramitsu.iroha.android.sample.interactor.GetAccountTransactionsInteractor;
+import lombok.NonNull;
 import lombok.Setter;
 
 public class HistoryPresenter {
@@ -23,9 +24,12 @@ public class HistoryPresenter {
     @Setter
     private HistoryFragment fragment;
 
+    @NonNull
+    private TransactionsViewModel transactionsViewModel;
+
+    @NonNull
     private final GetAccountTransactionsInteractor getAccountTransactionsInteractor;
 
-    private TransactionsViewModel transactionsViewModel;
 
     @Inject
     public HistoryPresenter(GetAccountTransactionsInteractor getAccountTransactionsInteractor) {
@@ -46,7 +50,7 @@ public class HistoryPresenter {
                 throwable -> fragment.didError(throwable));
     }
 
-    private List transformTransactions(List<Transaction> transactions) {
+    private List transformTransactions(@NonNull final List<Transaction> transactions) {
         if (transactions.isEmpty()) {
             return Collections.emptyList();
         }
@@ -106,7 +110,10 @@ public class HistoryPresenter {
         return listItems;
     }
 
-    private String getHeader(Date date, SimpleDateFormat dateFormat, Date today, Date yesterday) {
+    private String getHeader(@NonNull Date date,
+                             @NonNull SimpleDateFormat dateFormat,
+                             @NonNull Date today,
+                             @NonNull Date yesterday) {
         if (DateUtils.isToday(date.getTime())) {
             return "Today";
         } else if (date.before(today) && date.after(yesterday)) {

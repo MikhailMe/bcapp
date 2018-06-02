@@ -1,6 +1,5 @@
 package jp.co.soramitsu.iroha.android.sample.main;
 
-
 import javax.inject.Inject;
 
 import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
@@ -10,6 +9,7 @@ import jp.co.soramitsu.iroha.android.sample.interactor.GetAccountBalanceInteract
 import jp.co.soramitsu.iroha.android.sample.interactor.GetAccountDetailsInteractor;
 import jp.co.soramitsu.iroha.android.sample.interactor.GetAccountInteractor;
 import jp.co.soramitsu.iroha.android.sample.interactor.SetAccountDetailsInteractor;
+import lombok.NonNull;
 import lombok.Setter;
 
 public class MainPresenter {
@@ -24,11 +24,11 @@ public class MainPresenter {
     private MainView view;
 
     @Inject
-    public MainPresenter(PreferencesUtil preferencesUtil,
-                         SetAccountDetailsInteractor setAccountDetails,
-                         GetAccountDetailsInteractor getAccountDetails,
-                         GetAccountInteractor getAccountInteractor,
-                         GetAccountBalanceInteractor getAccountBalanceInteractor) {
+    public MainPresenter(@NonNull PreferencesUtil preferencesUtil,
+                         @NonNull SetAccountDetailsInteractor setAccountDetails,
+                         @NonNull GetAccountDetailsInteractor getAccountDetails,
+                         @NonNull GetAccountInteractor getAccountInteractor,
+                         @NonNull GetAccountBalanceInteractor getAccountBalanceInteractor) {
         this.preferencesUtil = preferencesUtil;
         this.setAccountDetails = setAccountDetails;
         this.getAccountDetails = getAccountDetails;
@@ -73,7 +73,7 @@ public class MainPresenter {
         view.showRegistrationScreen();
     }
 
-    void setAccountDetails(String details) {
+    void setAccountDetails(@NonNull final String details) {
         view.showProgress();
         setAccountDetails.execute(details, () -> {
             view.hideProgress();

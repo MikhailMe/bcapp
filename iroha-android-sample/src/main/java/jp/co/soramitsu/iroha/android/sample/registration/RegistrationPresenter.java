@@ -10,6 +10,7 @@ import jp.co.soramitsu.iroha.android.sample.SampleApplication;
 import jp.co.soramitsu.iroha.android.sample.interactor.AddAssetInteractor;
 import jp.co.soramitsu.iroha.android.sample.interactor.CreateAccountInteractor;
 import jp.co.soramitsu.iroha.android.sample.interactor.GetAccountInteractor;
+import lombok.NonNull;
 import lombok.Setter;
 
 public class RegistrationPresenter {
@@ -26,17 +27,17 @@ public class RegistrationPresenter {
     public boolean isRequestFinished;
 
     @Inject
-    public RegistrationPresenter(CreateAccountInteractor createAccountInteractor,
-                                 GetAccountInteractor getAccountInteractor,
-                                 AddAssetInteractor addAssetInteractor,
-                                 PreferencesUtil preferencesUtil) {
+    public RegistrationPresenter(@NonNull CreateAccountInteractor createAccountInteractor,
+                                 @NonNull GetAccountInteractor getAccountInteractor,
+                                 @NonNull AddAssetInteractor addAssetInteractor,
+                                 @NonNull PreferencesUtil preferencesUtil) {
         this.createAccountInteractor = createAccountInteractor;
         this.getAccountInteractor = getAccountInteractor;
         this.preferencesUtil = preferencesUtil;
         this.addAssetInteractor = addAssetInteractor;
     }
 
-    void createAccount(String username) {
+    void createAccount(@NonNull final String username) {
         isRequestFinished = false;
 
         if (!username.isEmpty()) {

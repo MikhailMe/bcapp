@@ -12,6 +12,7 @@ import iroha.protocol.Endpoint;
 import iroha.protocol.Primitive;
 import jp.co.soramitsu.iroha.android.ByteVector;
 import jp.co.soramitsu.iroha.android.UnsignedTx;
+import lombok.NonNull;
 
 class Interactor {
 
@@ -19,7 +20,8 @@ class Interactor {
     final Scheduler jobScheduler;
     final Scheduler uiScheduler;
 
-    Interactor(Scheduler jobScheduler, Scheduler uiScheduler) {
+    Interactor(@NonNull Scheduler jobScheduler,
+               @NonNull Scheduler uiScheduler) {
         this.jobScheduler = jobScheduler;
         this.uiScheduler = uiScheduler;
     }
@@ -28,7 +30,7 @@ class Interactor {
         subscriptions.clear();
     }
 
-    static byte[] toByteArray(ByteVector blob) {
+    static byte[] toByteArray(@NonNull ByteVector blob) {
         byte bs[] = new byte[(int) blob.size()];
         for (int i = 0; i < blob.size(); ++i) {
             bs[i] = (byte) blob.get(i);
@@ -36,7 +38,8 @@ class Interactor {
         return bs;
     }
 
-    static boolean isTransactionSuccessful(CommandServiceGrpc.CommandServiceBlockingStub stub, UnsignedTx utx) {
+    static boolean isTransactionSuccessful(@NonNull CommandServiceGrpc.CommandServiceBlockingStub stub,
+                                           @NonNull UnsignedTx utx) {
         ByteVector txhash = utx.hash().blob();
         byte bshash[] = toByteArray(txhash);
 
@@ -51,7 +54,7 @@ class Interactor {
         return response.getTxStatus() == Endpoint.TxStatus.COMMITTED;
     }
 
-    static String getIntBalance(Primitive.Amount amount) {
+    static String getIntBalance(@NonNull Primitive.Amount amount) {
         StringBuilder stringBuilder = new StringBuilder();
         if (amount.getValue().getFirst() != 0) {
             stringBuilder.append(amount.getValue().getFirst());

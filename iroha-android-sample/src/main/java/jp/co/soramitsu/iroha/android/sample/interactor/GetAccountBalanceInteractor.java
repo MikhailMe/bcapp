@@ -20,6 +20,7 @@ import jp.co.soramitsu.iroha.android.ModelQueryBuilder;
 import jp.co.soramitsu.iroha.android.UnsignedQuery;
 import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
 import jp.co.soramitsu.iroha.android.sample.injection.ApplicationModule;
+import lombok.NonNull;
 
 import static jp.co.soramitsu.iroha.android.sample.Constants.ASSET_ID;
 import static jp.co.soramitsu.iroha.android.sample.Constants.DOMAIN_ID;
@@ -35,7 +36,8 @@ public class GetAccountBalanceInteractor extends SingleInteractor<String, Void> 
     @Inject
     GetAccountBalanceInteractor(@Named(ApplicationModule.JOB) Scheduler jobScheduler,
                                 @Named(ApplicationModule.UI) Scheduler uiScheduler,
-                                PreferencesUtil preferenceUtils, ManagedChannel channel) {
+                                @NonNull PreferencesUtil preferenceUtils,
+                                @NonNull ManagedChannel channel) {
         super(jobScheduler, uiScheduler);
         this.preferenceUtils = preferenceUtils;
         this.channel = channel;

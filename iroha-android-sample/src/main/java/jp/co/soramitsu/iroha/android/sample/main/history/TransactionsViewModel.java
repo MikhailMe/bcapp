@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.NonNull;
 
 
 public class TransactionsViewModel extends ViewModel {
 
     @Getter
+    @NonNull
     private MutableLiveData<List> transactions;
 
     public TransactionsViewModel() {

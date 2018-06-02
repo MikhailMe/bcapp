@@ -25,6 +25,7 @@ import jp.co.soramitsu.iroha.android.UnsignedQuery;
 import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
 import jp.co.soramitsu.iroha.android.sample.injection.ApplicationModule;
 import jp.co.soramitsu.iroha.android.sample.main.history.Transaction;
+import lombok.NonNull;
 
 import static iroha.protocol.Commands.Command.CommandCase.TRANSFER_ASSET;
 import static jp.co.soramitsu.iroha.android.sample.Constants.ASSET_ID;
@@ -41,7 +42,8 @@ public class GetAccountTransactionsInteractor extends SingleInteractor<List<Tran
     @Inject
     GetAccountTransactionsInteractor(@Named(ApplicationModule.JOB) Scheduler jobScheduler,
                                      @Named(ApplicationModule.UI) Scheduler uiScheduler,
-                                     PreferencesUtil preferenceUtils, ManagedChannel channel) {
+                                     @NonNull PreferencesUtil preferenceUtils,
+                                     @NonNull ManagedChannel channel) {
         super(jobScheduler, uiScheduler);
         this.preferenceUtils = preferenceUtils;
         this.channel = channel;

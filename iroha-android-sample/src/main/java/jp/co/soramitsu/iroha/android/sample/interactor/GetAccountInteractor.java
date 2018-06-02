@@ -21,6 +21,7 @@ import jp.co.soramitsu.iroha.android.ModelProtoQuery;
 import jp.co.soramitsu.iroha.android.ModelQueryBuilder;
 import jp.co.soramitsu.iroha.android.UnsignedQuery;
 import jp.co.soramitsu.iroha.android.sample.injection.ApplicationModule;
+import lombok.NonNull;
 
 import static jp.co.soramitsu.iroha.android.sample.Constants.CONNECTION_TIMEOUT_SECONDS;
 import static jp.co.soramitsu.iroha.android.sample.Constants.CREATOR;
@@ -39,19 +40,19 @@ public class GetAccountInteractor extends SingleInteractor<Responses.Account, St
     @Inject
     GetAccountInteractor(@Named(ApplicationModule.JOB) Scheduler jobScheduler,
                          @Named(ApplicationModule.UI) Scheduler uiScheduler,
-                         ModelCrypto crypto, ManagedChannel channel) {
+                         @NonNull ModelCrypto crypto,
+                         @NonNull ManagedChannel channel) {
         super(jobScheduler, uiScheduler);
         this.crypto = crypto;
         this.channel = channel;
     }
 
     @Override
-    protected Single<Responses.Account> build(String accountId) {
+    protected Single<Responses.Account> build(@NonNull final String accountId) {
         return Single.create(emitter -> {
             long currentTime = System.currentTimeMillis();
             Keypair adminKeys = crypto.convertFromExisting(PUB_KEY, PRIV_KEY);
 
-            // GetAccount
             UnsignedQuery query = modelQueryBuilder
                     .createdTime(BigInteger.valueOf(currentTime))
                     .queryCounter(BigInteger.valueOf(QUERY_COUNTER))
@@ -60,7 +61,6 @@ public class GetAccountInteractor extends SingleInteractor<Responses.Account, St
                     .build();
 
 
-            // sign transaction and get its binary representation (Blob)
             ByteVector queryBlob = protoQueryHelper.signAndAddSignature(query, adminKeys).blob();
             byte bquery[] = toByteArray(queryBlob);
 

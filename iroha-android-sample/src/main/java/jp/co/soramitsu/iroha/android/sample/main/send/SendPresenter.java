@@ -6,6 +6,7 @@ import jp.co.soramitsu.iroha.android.sample.R;
 import jp.co.soramitsu.iroha.android.sample.SampleApplication;
 import jp.co.soramitsu.iroha.android.sample.interactor.GetAccountInteractor;
 import jp.co.soramitsu.iroha.android.sample.interactor.SendAssetInteractor;
+import lombok.NonNull;
 import lombok.Setter;
 
 public class SendPresenter {
@@ -24,7 +25,8 @@ public class SendPresenter {
         this.getAccountInteractor = getAccountInteractor;
     }
 
-    void sendTransaction(String username, String amount) {
+    void sendTransaction(@NonNull final String username,
+                         @NonNull final String amount) {
         String[] data = {username, amount};
 
         if (!username.isEmpty() && !amount.isEmpty()) {
@@ -42,7 +44,7 @@ public class SendPresenter {
         }
     }
 
-    private void checkAccountAndSendTransaction(String[] data) {
+    private void checkAccountAndSendTransaction(@NonNull String[] data) {
         getAccountInteractor.execute(data[0],
                 account -> {
                     if (account.getAccountId().isEmpty()) {
@@ -53,14 +55,14 @@ public class SendPresenter {
                 }, throwable -> fragment.didSendError(throwable));
     }
 
-    private void executeSend(String[] data) {
+    private void executeSend(@NonNull String[] data) {
         sendAssetInteractor.execute(data,
                 () -> fragment.didSendSuccess(),
                 error -> fragment.didSendError(error)
         );
     }
 
-    private boolean isEnoughBalance(long amount) {
+    private boolean isEnoughBalance(final long amount) {
         return SampleApplication.instance.account.getBalance() >= amount;
     }
 
