@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/list_layout"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:clickable="true"
+    android:background="@color/main_background_color"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/team_1_tv_in_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/main_text_color"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/vs"
+        android:textColor="@color/main_text_color"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/team_2_tv_in_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/main_text_color"
+        android:textSize="24sp" />
+
+</RelativeLayout>
