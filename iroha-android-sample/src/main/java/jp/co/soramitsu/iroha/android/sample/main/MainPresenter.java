@@ -1,6 +1,5 @@
 package jp.co.soramitsu.iroha.android.sample.main;
 
-
 import javax.inject.Inject;
 
 import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;

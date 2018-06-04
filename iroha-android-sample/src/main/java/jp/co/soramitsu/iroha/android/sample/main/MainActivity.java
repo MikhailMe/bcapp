@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import jp.co.soramitsu.iroha.android.sample.Constants;
 import jp.co.soramitsu.iroha.android.sample.R;
 import jp.co.soramitsu.iroha.android.sample.SampleApplication;
 import jp.co.soramitsu.iroha.android.sample.databinding.ActivityMainBinding;
+import jp.co.soramitsu.iroha.android.sample.list.Fragments.GameListFragment;
 import jp.co.soramitsu.iroha.android.sample.main.history.HistoryFragment;
 import jp.co.soramitsu.iroha.android.sample.main.send.SendFragment;
 import jp.co.soramitsu.iroha.android.sample.registration.RegistrationActivity;
@@ -117,7 +119,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private void setupViewPager() {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new SendFragment(), "SEND");
+        //adapter.addFragment(new SendFragment(), "SEND");
+        adapter.addFragment(new GameListFragment(), "GAME");
         adapter.addFragment(new HistoryFragment(), "HISTORY");
         binding.content.setAdapter(adapter);
 
@@ -211,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
     public static class Adapter extends FragmentPagerAdapter {
+
         private final List<Fragment> fragments = new ArrayList<>();
         private final List<String> titles = new ArrayList<>();
 
@@ -228,7 +232,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
             return fragments.size();
         }
 
-        void addFragment(Fragment fragment, String title) {
+        void addFragment(@NonNull Fragment fragment,
+                         @NonNull String title) {
             fragments.add(fragment);
             titles.add(title);
         }

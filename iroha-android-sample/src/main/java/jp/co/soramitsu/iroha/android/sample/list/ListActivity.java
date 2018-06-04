@@ -1,7 +1,7 @@
 package jp.co.soramitsu.iroha.android.sample.list;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -52,7 +52,7 @@ public final class ListActivity extends AppCompatActivity
         fAccount = new AccountFragment();
         fGameList = new GameListFragment();
 
-        getFragmentManager().beginTransaction().replace(R.id.container, fGameList).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fGameList).commit();
     }
 
     @Override
@@ -65,7 +65,7 @@ public final class ListActivity extends AppCompatActivity
 
     @Override
     public boolean onNavigationItemSelected(@android.support.annotation.NonNull MenuItem item) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         switch (item.getItemId()) {
             case R.id.nav_account:
                 ft.replace(R.id.container, fAccount);

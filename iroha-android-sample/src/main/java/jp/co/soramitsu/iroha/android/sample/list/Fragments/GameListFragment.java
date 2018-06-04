@@ -1,7 +1,7 @@
 package jp.co.soramitsu.iroha.android.sample.list.Fragments;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -10,12 +10,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+import java.util.Objects;
 
 import jp.co.soramitsu.iroha.android.sample.R;
 import jp.co.soramitsu.iroha.android.sample.RandomGenerator;
@@ -41,7 +41,7 @@ public final class GameListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_game_list, container, false);
         mRecyclerViewListOfGames = view.findViewById(R.id.recycler_view_games);
-        Context context = getActivity().getApplicationContext();
+        Context context = Objects.requireNonNull(getActivity()).getApplicationContext();
         LinearLayoutManager llr = new LinearLayoutManager(context);
         mRecyclerViewListOfGames.setLayoutManager(llr);
         mRecyclerViewListOfGames.setHasFixedSize(true);
