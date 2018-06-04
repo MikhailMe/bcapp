@@ -23,14 +23,14 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.GameHolder> {
     private List<Game> mListOfGames;
 
     @NonNull
-    private GameListFragment.SelectHandler mSelectHandler;
+    private SelectHandler mSelectHandler;
 
     @NonNull
     private final WeakReference<LayoutInflater> mInflater;
 
     Adapter(@NonNull LayoutInflater inflater,
             @NonNull List<Game> listOfGames,
-            @NonNull GameListFragment.SelectHandler selectHandler) {
+            @NonNull SelectHandler selectHandler) {
         this.mListOfGames = listOfGames;
         this.mSelectHandler = selectHandler;
         this.mInflater = new WeakReference<>(inflater);

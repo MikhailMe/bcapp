@@ -1,6 +1,5 @@
 package jp.co.soramitsu.iroha.android.sample.list.Fragments;
 
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -19,7 +18,9 @@ import java.util.Objects;
 
 import jp.co.soramitsu.iroha.android.sample.R;
 import jp.co.soramitsu.iroha.android.sample.RandomGenerator;
+import jp.co.soramitsu.iroha.android.sample.SampleApplication;
 import jp.co.soramitsu.iroha.android.sample.core.Game;
+import jp.co.soramitsu.iroha.android.sample.main.MainActivity;
 import lombok.NonNull;
 
 public final class GameListFragment extends Fragment {
@@ -40,6 +41,7 @@ public final class GameListFragment extends Fragment {
                              @NonNull final ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_game_list, container, false);
+        SampleApplication.instance.getApplicationComponent().inject(this);
         mRecyclerViewListOfGames = view.findViewById(R.id.recycler_view_games);
         Context context = Objects.requireNonNull(getActivity()).getApplicationContext();
         LinearLayoutManager llr = new LinearLayoutManager(context);
@@ -61,16 +63,16 @@ public final class GameListFragment extends Fragment {
         return view;
     }
 
-    public interface SelectHandler {
-        void onGameSelected(@NonNull final String team1,
-                            @NonNull final String team2,
-                            @NonNull final String timestamp);
-    }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        mSelectHandler = (SelectHandler) activity;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        MainActivity activity = null;
+        if (context instanceof MainActivity){
+            activity = (MainActivity) context;
+        }
+
+        mSelectHandler = activity;
     }
 
     @Override

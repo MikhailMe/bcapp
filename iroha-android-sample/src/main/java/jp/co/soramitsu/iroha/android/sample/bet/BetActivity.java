@@ -55,14 +55,14 @@ public final class BetActivity extends AppCompatActivity {
     @BindView(R.id.game_date_ATv)
     AutoCompleteTextView gameDateATv;
 
-    @NonNull
+    private static final String FORGET_MESSAGE = "You forget enter a bet sum!";
+
     private static final String EXTRA_TEAM_1 = "com.mishas.bcappclient.team1";
-
-    @NonNull
     private static final String EXTRA_TEAM_2 = "com.mishas.bcappclient.team2";
-
-    @NonNull
     private static final String EXTRA_TIMESTAMP = "com.mishas.bcappclient.timestamp";
+
+    //private static final String EXTRA_BET_SUM= "com.mishas.bcappclient.betsum";
+    //private static final String EXTRA_COEFFCIENT= "com.mishas.bcappclient.coefficient";
 
     private String team1;
     private String team2;
@@ -71,7 +71,7 @@ public final class BetActivity extends AppCompatActivity {
     private String team1WinCoef;
     private String drawCoef;
     private String team2WinCoef;
-    private String gameDate;
+    private String timestamp;
 
     @Getter
     private float chooseCoef;
@@ -96,7 +96,7 @@ public final class BetActivity extends AppCompatActivity {
     private void initView() {
         init();
         chooseCoef = -1.0f;
-        gameDateATv.setText(gameDate);
+        gameDateATv.setText(timestamp);
         yourWinATv.setEnabled(false);
         setTeams(team1, team2);
         setCoefs(team1WinCoef, drawCoef, team2WinCoef);
@@ -128,7 +128,7 @@ public final class BetActivity extends AppCompatActivity {
     private void init() {
         team1 = getIntent().getStringExtra(EXTRA_TEAM_1);
         team2 = getIntent().getStringExtra(EXTRA_TEAM_2);
-        gameDate = getIntent().getStringExtra(EXTRA_TIMESTAMP);
+        timestamp = getIntent().getStringExtra(EXTRA_TIMESTAMP);
 
         team1Win = team1 + " win";
         team2Win = team2 + " win";
@@ -144,7 +144,6 @@ public final class BetActivity extends AppCompatActivity {
         team1WinTv.setText(team1Win);
         team2WinTv.setText(team2Win);
     }
-
 
     private void setCoefs(@NonNull final String team1winCoef,
                           @NonNull final String drawCoef,
@@ -170,7 +169,7 @@ public final class BetActivity extends AppCompatActivity {
                 if (!betSumATv.getText().toString().isEmpty() && !yourWinATv.getText().toString().isEmpty()) {
                     startActivity(new Intent(this, OracleActivity.class));
                 } else {
-                    Toast.makeText(getApplicationContext(), "Бабки забыл поставить!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), FORGET_MESSAGE, Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

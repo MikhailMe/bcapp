@@ -45,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="70dp"
-                    android:textColorHint="@color/yellow">
+                    android:textColorHint="@color/main_text_color">
 
                     <AutoCompleteTextView
                         android:id="@+id/username"
@@ -53,13 +53,16 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:hint="@string/username"
+                        android:hint="@string/username_hint"
                         android:inputType="text"
                         android:maxLength="10"
                         android:maxLines="1"
                         android:singleLine="true"
+                        android:focusable="true"
+                        android:focusedByDefault="false"
+                        android:focusableInTouchMode="true"
                         android:textColor="@color/main_text_color"
-                        android:textColorHint="@color/yellow" />
+                        android:textColorHint="@color/main_text_color" />
 
                 </android.support.design.widget.TextInputLayout>
 

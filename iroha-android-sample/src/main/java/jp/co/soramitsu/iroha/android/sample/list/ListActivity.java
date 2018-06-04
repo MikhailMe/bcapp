@@ -17,10 +17,11 @@ import jp.co.soramitsu.iroha.android.sample.list.Fragments.AccountFragment;
 import jp.co.soramitsu.iroha.android.sample.list.Fragments.GameListFragment;
 import jp.co.soramitsu.iroha.android.sample.R;
 import jp.co.soramitsu.iroha.android.sample.bet.BetActivity;
+import jp.co.soramitsu.iroha.android.sample.list.Fragments.SelectHandler;
 import lombok.NonNull;
 
 public final class ListActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, GameListFragment.SelectHandler {
+        implements NavigationView.OnNavigationItemSelectedListener, SelectHandler {
 
     @NonNull
     private Fragment fAccount;

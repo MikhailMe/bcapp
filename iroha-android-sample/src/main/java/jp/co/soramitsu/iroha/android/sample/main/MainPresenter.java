@@ -2,6 +2,7 @@ package jp.co.soramitsu.iroha.android.sample.main;
 
 import javax.inject.Inject;
 
+import io.reactivex.functions.Consumer;
 import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
 import jp.co.soramitsu.iroha.android.sample.SampleApplication;
 import jp.co.soramitsu.iroha.android.sample.data.Account;

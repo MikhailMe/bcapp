@@ -20,6 +20,8 @@ public class ApplicationModule {
     private static final int PORT = 50051;
     private static final String HOME_IP = "172.16.0.7";
     private static final String BROVKI_IP = "192.168.43.81";
+    private static final String VAGABUNDOS_IP = "192.168.2.44";
+
 
     @Provides
     @Singleton
