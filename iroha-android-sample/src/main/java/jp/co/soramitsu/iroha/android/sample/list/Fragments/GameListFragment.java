@@ -10,17 +10,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
-import jp.co.soramitsu.iroha.android.sample.core.Game;
 import jp.co.soramitsu.iroha.android.sample.R;
 import jp.co.soramitsu.iroha.android.sample.RandomGenerator;
+import jp.co.soramitsu.iroha.android.sample.core.Game;
 import lombok.NonNull;
-
 
 public final class GameListFragment extends Fragment {
 
@@ -46,6 +46,7 @@ public final class GameListFragment extends Fragment {
         mRecyclerViewListOfGames.setLayoutManager(llr);
         mRecyclerViewListOfGames.setHasFixedSize(true);
 
+
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(mRecyclerViewListOfGames.getContext(), llr.getOrientation());
         Drawable drawable = getActivity().getResources().getDrawable(R.drawable.line_divider);
@@ -56,6 +57,7 @@ public final class GameListFragment extends Fragment {
         snapHelper.attachToRecyclerView(mRecyclerViewListOfGames);
         List<Game> games = RandomGenerator.generateList();
         mRecyclerViewListOfGames.setAdapter(new Adapter(LayoutInflater.from(context), games, mSelectHandler));
+
         return view;
     }
 

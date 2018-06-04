@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Objects;
+
 import javax.inject.Inject;
 
 import jp.co.soramitsu.iroha.android.sample.R;
@@ -29,7 +31,8 @@ public class HistoryFragment extends Fragment implements HistoryView {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false);
         SampleApplication.instance.getApplicationComponent().inject(this);
@@ -79,6 +82,6 @@ public class HistoryFragment extends Fragment implements HistoryView {
     @Override
     public void didError(Throwable error) {
         binding.refresh.setRefreshing(false);
-        ((MainActivity) getActivity()).showError(error);
+        ((MainActivity) Objects.requireNonNull(getActivity())).showError(error);
     }
 }

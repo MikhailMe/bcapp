@@ -2,8 +2,8 @@ package jp.co.soramitsu.iroha.android.sample.bet;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -18,8 +18,8 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import jp.co.soramitsu.iroha.android.sample.oracle.OracleActivity;
 import jp.co.soramitsu.iroha.android.sample.R;
+import jp.co.soramitsu.iroha.android.sample.oracle.OracleActivity;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -126,12 +126,9 @@ public final class BetActivity extends AppCompatActivity {
     }
 
     private void init() {
-        team1 = "alo";
-        team2 = "halo";
-        gameDate = "now";
-        //team1 = getIntent().getStringExtra(EXTRA_TEAM_1);
-        //team2 = getIntent().getStringExtra(EXTRA_TEAM_2);
-        //gameDate = getIntent().getStringExtra(EXTRA_TIMESTAMP);
+        team1 = getIntent().getStringExtra(EXTRA_TEAM_1);
+        team2 = getIntent().getStringExtra(EXTRA_TEAM_2);
+        gameDate = getIntent().getStringExtra(EXTRA_TIMESTAMP);
 
         team1Win = team1 + " win";
         team2Win = team2 + " win";

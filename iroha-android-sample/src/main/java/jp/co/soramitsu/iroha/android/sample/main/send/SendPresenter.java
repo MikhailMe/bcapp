@@ -17,8 +17,6 @@ public class SendPresenter {
     private final SendAssetInteractor sendAssetInteractor;
     private final GetAccountInteractor getAccountInteractor;
 
-    public static final int REQUEST_CODE_QR_SCAN = 101;
-
     @Inject
     public SendPresenter(SendAssetInteractor sendAssetInteractor, GetAccountInteractor getAccountInteractor) {
         this.sendAssetInteractor = sendAssetInteractor;
@@ -44,7 +42,7 @@ public class SendPresenter {
         }
     }
 
-    private void checkAccountAndSendTransaction(@NonNull String[] data) {
+    private void checkAccountAndSendTransaction(@NonNull final String[] data) {
         getAccountInteractor.execute(data[0],
                 account -> {
                     if (account.getAccountId().isEmpty()) {
@@ -55,7 +53,7 @@ public class SendPresenter {
                 }, throwable -> fragment.didSendError(throwable));
     }
 
-    private void executeSend(@NonNull String[] data) {
+    private void executeSend(@NonNull final String[] data) {
         sendAssetInteractor.execute(data,
                 () -> fragment.didSendSuccess(),
                 error -> fragment.didSendError(error)

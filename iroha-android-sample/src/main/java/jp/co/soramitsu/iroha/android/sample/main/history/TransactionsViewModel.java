@@ -9,7 +9,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NonNull;
 
-
 public class TransactionsViewModel extends ViewModel {
 
     @Getter

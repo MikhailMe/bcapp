@@ -1,9 +1,9 @@
 package jp.co.soramitsu.iroha.android.sample.core;
 
+import java.util.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Objects;
 
 public final class Coefficient {
 

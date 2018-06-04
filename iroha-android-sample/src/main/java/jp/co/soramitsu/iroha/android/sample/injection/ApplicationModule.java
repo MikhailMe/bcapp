@@ -14,7 +14,6 @@ import jp.co.soramitsu.iroha.android.ModelCrypto;
 
 @Module
 public class ApplicationModule {
-
     public static final String JOB = "JOB";
     public static final String UI = "UI";
 

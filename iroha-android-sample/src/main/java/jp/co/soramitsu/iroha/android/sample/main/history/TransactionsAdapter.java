@@ -1,6 +1,5 @@
 package jp.co.soramitsu.iroha.android.sample.main.history;
 
-import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -43,7 +42,6 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         throw new RuntimeException("there is no type that matches the type " + viewType + " + make sure your using types correctly");
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof TransactionItem) {
@@ -52,7 +50,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             transactionItem.username.setText(transaction.username);
             if (transaction.prettyAmount.contains("-")) {
                 transactionItem.amount.setText("- " + transaction.prettyAmount.substring(1, transaction.prettyAmount.length()));
-                transactionItem.amount.setTextColor(SampleApplication.instance.getResources().getColor(R.color.black));
+                transactionItem.amount.setTextColor(SampleApplication.instance.getResources().getColor(R.color.main_background_color));
             } else {
                 transactionItem.amount.setText("+ " + transaction.prettyAmount);
                 transactionItem.amount.setTextColor(SampleApplication.instance.getResources().getColor(R.color.positiveAmount));

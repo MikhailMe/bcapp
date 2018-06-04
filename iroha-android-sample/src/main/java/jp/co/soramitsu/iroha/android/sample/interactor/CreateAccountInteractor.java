@@ -1,5 +1,6 @@
 package jp.co.soramitsu.iroha.android.sample.interactor;
 
+
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.math.BigInteger;
@@ -50,13 +51,12 @@ public class CreateAccountInteractor extends CompletableInteractor<String> {
     }
 
     @Override
-    protected Completable build(@NonNull String username) {
+    protected Completable build(@NonNull final String username) {
         return Completable.create(emitter -> {
             long currentTime = System.currentTimeMillis();
             Keypair userKeys = crypto.generateKeypair();
             Keypair adminKeys = crypto.convertFromExisting(PUB_KEY, PRIV_KEY);
 
-            // Create account
             UnsignedTx createAccount = txBuilder.creatorAccountId(CREATOR)
                     .createdTime(BigInteger.valueOf(currentTime))
                     .createAccount(username, DOMAIN_ID, userKeys.publicKey())
@@ -65,7 +65,6 @@ public class CreateAccountInteractor extends CompletableInteractor<String> {
             ByteVector txblob = protoTxHelper.signAndAddSignature(createAccount, adminKeys).blob();
             byte bs[] = toByteArray(txblob);
 
-            // create proto object
             BlockOuterClass.Transaction protoTx = null;
             try {
                 protoTx = BlockOuterClass.Transaction.parseFrom(bs);
@@ -73,7 +72,6 @@ public class CreateAccountInteractor extends CompletableInteractor<String> {
                 emitter.onError(e);
             }
 
-            // Send transaction to iroha
             CommandServiceGrpc.CommandServiceBlockingStub stub = CommandServiceGrpc.newBlockingStub(channel)
                     .withDeadlineAfter(CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
             stub.torii(protoTx);

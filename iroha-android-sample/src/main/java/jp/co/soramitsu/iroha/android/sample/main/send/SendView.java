@@ -5,5 +5,4 @@ public interface SendView {
     void didSendSuccess();
 
     void didSendError(Throwable error);
-
 }

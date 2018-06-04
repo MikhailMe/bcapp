@@ -1,5 +1,8 @@
 package jp.co.soramitsu.iroha.android.sample.main.send;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,7 +32,8 @@ public class SendFragment extends Fragment implements SendView {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_send, container, false);
         SampleApplication.instance.getApplicationComponent().inject(this);
@@ -57,7 +61,8 @@ public class SendFragment extends Fragment implements SendView {
         Toast.makeText(getActivity(), getString(R.string.transaction_successful), Toast.LENGTH_LONG).show();
     }
 
-    private void sendTransaction(String username, String amount) {
+    private void sendTransaction(@NonNull final String username,
+                                 @NonNull final String amount) {
         ((MainActivity) Objects.requireNonNull(getActivity())).showProgress();
         presenter.sendTransaction(username, amount);
     }
@@ -67,5 +72,4 @@ public class SendFragment extends Fragment implements SendView {
         ((MainActivity) Objects.requireNonNull(getActivity())).hideProgress();
         ((MainActivity) getActivity()).showError(error);
     }
-
 }

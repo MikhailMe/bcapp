@@ -1,6 +1,5 @@
 package jp.co.soramitsu.iroha.android.sample.interactor;
 
-
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import java.math.BigInteger;
@@ -42,7 +41,9 @@ public class AddAssetInteractor extends CompletableInteractor<String> {
     @Inject
     AddAssetInteractor(@Named(ApplicationModule.JOB) Scheduler jobScheduler,
                        @Named(ApplicationModule.UI) Scheduler uiScheduler,
-                       ManagedChannel managedChannel, PreferencesUtil preferencesUtil, ModelCrypto crypto) {
+                       @NonNull ManagedChannel managedChannel,
+                       @NonNull PreferencesUtil preferencesUtil,
+                       @NonNull ModelCrypto crypto) {
         super(jobScheduler, uiScheduler);
         this.channel = managedChannel;
         this.preferenceUtils = preferencesUtil;
@@ -56,7 +57,6 @@ public class AddAssetInteractor extends CompletableInteractor<String> {
             Keypair adminKeys = crypto.convertFromExisting(PUB_KEY, PRIV_KEY);
             String username = preferenceUtils.retrieveUsername();
 
-            //Adding asset
             UnsignedTx addAssetTx = txBuilder.creatorAccountId(CREATOR)
                     .createdTime(BigInteger.valueOf(currentTime))
                     .addAssetQuantity(CREATOR, ASSET_ID, "100")

@@ -2,10 +2,6 @@ package jp.co.soramitsu.iroha.android.sample;
 
 import android.util.Pair;
 
-import jp.co.soramitsu.iroha.android.sample.core.Game;
-import jp.co.soramitsu.iroha.android.sample.core.Team;
-import lombok.NonNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,8 +9,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import jp.co.soramitsu.iroha.android.sample.core.Game;
+import jp.co.soramitsu.iroha.android.sample.core.Team;
+import lombok.NonNull;
+
+import java.sql.Timestamp;
+
 public final class RandomGenerator {
 
+    private static final int DELTA= 1_000_000;
+    private static final int CONST = 1_000_000_000;
     private static final double DELIMITER = 0.5d;
     private static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String lower = upper.toLowerCase(Locale.ROOT);
@@ -60,7 +64,8 @@ public final class RandomGenerator {
         Collections.shuffle(teams);
         for (int i = 0; i < teamNames.size(); i += 2) {
             Pair<Team, Team> pairTeam = new Pair<>(teams.get(i), teams.get(i + 1));
-            listOfGames.add(new Game(pairTeam));
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis() + new Random().nextInt(CONST + DELTA));
+            listOfGames.add(new Game(pairTeam, timestamp));
         }
         return listOfGames;
     }

@@ -1,5 +1,6 @@
 package jp.co.soramitsu.iroha.android.sample.main;
 
+
 import javax.inject.Inject;
 
 import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
@@ -40,7 +41,6 @@ public class MainPresenter {
         updateData(false);
     }
 
-
     void updateData(boolean fromRefresh) {
         view.hideRefresh();
         String username = preferencesUtil.retrieveUsername();
@@ -57,14 +57,14 @@ public class MainPresenter {
                                 view.setAccountBalance(balance + " IRH");
                                 SampleApplication.instance.account.setBalance(Long.parseLong(balance));
                             },
-                            throwable -> view.showError(throwable));
+                            view::showError);
                 },
-                throwable -> view.showError(throwable)
+                view::showError
         );
 
         getAccountDetails.execute(
-                details -> view.setAccountDetails(details),
-                throwable -> view.showError(throwable)
+                view::setAccountDetails,
+                view::showError
         );
     }
 

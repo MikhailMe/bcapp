@@ -9,13 +9,15 @@ public class Account {
 
     @Setter
     @Getter
+    @NonNull
     private Responses.Account irohaAccount;
 
     @Setter
     @Getter
     private long balance;
 
-    public Account(@NonNull Responses.Account account, long balance) {
+    public Account(@NonNull Responses.Account account,
+                   final long balance) {
         this.irohaAccount = account;
         this.balance = balance;
     }

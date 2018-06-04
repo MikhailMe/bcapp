@@ -10,8 +10,8 @@ public class TransactionDiffChecker extends DiffUtil.Callback {
     private final List oldTransactions;
     private final List newTransactions;
 
-    TransactionDiffChecker(@NonNull final List oldTransactions,
-                           @NonNull final List newTransactions) {
+    TransactionDiffChecker(@NonNull List oldTransactions,
+                           @NonNull List newTransactions) {
         this.oldTransactions = oldTransactions;
         this.newTransactions = newTransactions;
     }

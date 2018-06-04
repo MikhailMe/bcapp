@@ -1,11 +1,11 @@
 package jp.co.soramitsu.iroha.android.sample.core;
 
+import java.time.LocalDate;
+import java.util.Objects;
+
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-
-import java.time.LocalDate;
-import java.util.Objects;
 
 public final class Tour {
 

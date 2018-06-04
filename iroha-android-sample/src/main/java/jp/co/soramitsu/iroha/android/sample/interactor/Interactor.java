@@ -1,6 +1,5 @@
 package jp.co.soramitsu.iroha.android.sample.interactor;
 
-
 import com.google.protobuf.ByteString;
 
 import java.util.Iterator;
@@ -30,7 +29,7 @@ class Interactor {
         subscriptions.clear();
     }
 
-    static byte[] toByteArray(@NonNull ByteVector blob) {
+    static byte[] toByteArray(ByteVector blob) {
         byte bs[] = new byte[(int) blob.size()];
         for (int i = 0; i < blob.size(); ++i) {
             bs[i] = (byte) blob.get(i);

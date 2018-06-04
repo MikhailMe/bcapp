@@ -68,7 +68,6 @@ public class GetAccountBalanceInteractor extends SingleInteractor<String, Void> 
             QueryServiceGrpc.QueryServiceBlockingStub queryStub = QueryServiceGrpc.newBlockingStub(channel);
             Responses.QueryResponse queryResponse = queryStub.find(protoQuery);
 
-
             emitter.onSuccess(getIntBalance(queryResponse.getAccountAssetsResponse().getAccountAsset().getBalance()));
         });
     }

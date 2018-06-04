@@ -14,7 +14,7 @@ public abstract class SingleInteractor<ResultType, ParameterType> extends Intera
 
     protected abstract Single<ResultType> build(ParameterType parameter);
 
-    public void execute(ParameterType parameter,
+    public void execute(@NonNull ParameterType parameter,
                         @NonNull Consumer<ResultType> onSuccess,
                         @NonNull Consumer<Throwable> onError) {
         subscriptions.add(build(parameter)
@@ -23,8 +23,8 @@ public abstract class SingleInteractor<ResultType, ParameterType> extends Intera
                 .subscribe(onSuccess, onError));
     }
 
-    public void execute(Consumer<ResultType> onSuccess,
-                        Consumer<Throwable> onError) {
+    public void execute(@NonNull Consumer<ResultType> onSuccess,
+                        @NonNull Consumer<Throwable> onError) {
         execute(null, onSuccess, onError);
     }
 }

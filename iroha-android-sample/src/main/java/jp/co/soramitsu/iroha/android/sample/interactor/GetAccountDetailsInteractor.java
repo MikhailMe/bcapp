@@ -72,7 +72,7 @@ public class GetAccountDetailsInteractor extends SingleInteractor<String, Void> 
             Responses.QueryResponse queryResponse = queryStub.find(protoQuery);
 
             JsonElement jsonElement = new Gson().fromJson(queryResponse.getAccountDetailResponse().getDetail(), JsonObject.class).get(username + "@" + DOMAIN_ID);
-            ;
+
             String detail = jsonElement != null ? jsonElement.getAsJsonObject().get(Constants.ACCOUNT_DETAILS).getAsString() : "";
 
             emitter.onSuccess(detail);

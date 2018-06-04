@@ -44,12 +44,12 @@ public class SendAssetInteractor extends CompletableInteractor<String[]> {
     }
 
     @Override
-    protected Completable build(@NonNull String[] data) {
+    protected Completable build(@NonNull final String[] data) {
         return Completable.create(emitter -> {
             long currentTime = System.currentTimeMillis();
             Keypair userKeys = preferenceUtils.retrieveKeys();
             String username = preferenceUtils.retrieveUsername();
-            //Sending asset
+
             UnsignedTx sendAssetTx = txBuilder.creatorAccountId(username + "@" + DOMAIN_ID)
                     .createdTime(BigInteger.valueOf(currentTime))
                     .transferAsset(username + "@" + DOMAIN_ID,

@@ -8,11 +8,12 @@ import lombok.NonNull;
 
 public abstract class CompletableInteractor<ParameterType> extends Interactor {
 
-    CompletableInteractor(@NonNull Scheduler jobScheduler, @NonNull Scheduler uiScheduler) {
+    CompletableInteractor(@NonNull Scheduler jobScheduler,
+                          @NonNull Scheduler uiScheduler) {
         super(jobScheduler, uiScheduler);
     }
 
-    protected abstract Completable build(ParameterType parameter);
+    protected abstract Completable build(@NonNull ParameterType parameter);
 
     public void execute(@NonNull ParameterType parameter,
                         @NonNull Action onSuccess,

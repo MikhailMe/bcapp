@@ -13,9 +13,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.co.soramitsu.iroha.android.sample.R;
 import jp.co.soramitsu.iroha.android.sample.core.Game;
 import jp.co.soramitsu.iroha.android.sample.core.Team;
-import jp.co.soramitsu.iroha.android.sample.R;
 
 public final class Adapter extends RecyclerView.Adapter<Adapter.GameHolder> {
 
@@ -81,7 +81,7 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.GameHolder> {
             itemView.setOnClickListener(this);
         }
 
-        void bindGame(@NonNull Game game) {
+        void bindGame(@NonNull final Game game) {
             this.mGame = game;
         }
 
@@ -92,6 +92,7 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.GameHolder> {
                     teamPair.first.getName(),
                     teamPair.second.getName(),
                     mGame.getTimestamp().toString());
+
         }
 
     }

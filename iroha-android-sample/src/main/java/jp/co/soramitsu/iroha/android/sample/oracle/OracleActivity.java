@@ -1,14 +1,14 @@
 package jp.co.soramitsu.iroha.android.sample.oracle;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import jp.co.soramitsu.iroha.android.sample.list.ListActivity;
 import jp.co.soramitsu.iroha.android.sample.R;
+import jp.co.soramitsu.iroha.android.sample.list.ListActivity;
 
 public final class OracleActivity extends AppCompatActivity {
 

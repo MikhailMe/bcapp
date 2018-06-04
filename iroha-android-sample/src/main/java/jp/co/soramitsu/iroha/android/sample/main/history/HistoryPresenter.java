@@ -24,15 +24,12 @@ public class HistoryPresenter {
     @Setter
     private HistoryFragment fragment;
 
-    @NonNull
-    private TransactionsViewModel transactionsViewModel;
-
-    @NonNull
     private final GetAccountTransactionsInteractor getAccountTransactionsInteractor;
 
+    private TransactionsViewModel transactionsViewModel;
 
     @Inject
-    public HistoryPresenter(GetAccountTransactionsInteractor getAccountTransactionsInteractor) {
+    public HistoryPresenter(@NonNull GetAccountTransactionsInteractor getAccountTransactionsInteractor) {
         this.getAccountTransactionsInteractor = getAccountTransactionsInteractor;
     }
 
@@ -50,7 +47,7 @@ public class HistoryPresenter {
                 throwable -> fragment.didError(throwable));
     }
 
-    private List transformTransactions(@NonNull final List<Transaction> transactions) {
+    private List transformTransactions(@NonNull List<Transaction> transactions) {
         if (transactions.isEmpty()) {
             return Collections.emptyList();
         }
@@ -101,7 +98,6 @@ public class HistoryPresenter {
             } else {
                 prettyDate = hoursDateFormat.format(transaction.date);
             }
-
 
             TransactionVM vm = new TransactionVM(transaction.id, prettyDate, transaction.username, prettyAmount);
 
