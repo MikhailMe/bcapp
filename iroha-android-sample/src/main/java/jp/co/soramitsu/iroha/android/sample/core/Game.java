@@ -2,12 +2,12 @@ package jp.co.soramitsu.iroha.android.sample.core;
 
 import android.util.Pair;
 
-import java.sql.Timestamp;
 import java.util.Objects;
+import java.sql.Timestamp;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
+import lombok.NonNull;
 
 public final class Game {
 

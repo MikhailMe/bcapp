@@ -4,54 +4,57 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.VisibleForTesting;
 
+import lombok.Getter;
+import lombok.NonNull;
+
 import javax.inject.Inject;
 
 import jp.co.soramitsu.iroha.android.Keypair;
 import jp.co.soramitsu.iroha.android.ModelCrypto;
-import lombok.Getter;
-import lombok.NonNull;
 
 public class PreferencesUtil {
 
     @VisibleForTesting
     public static final String SHARED_PREFERENCES_FILE = "shared_preferences_file";
+
     @VisibleForTesting
     public static final String SAVED_USERNAME = "saved_username";
+
     private static final String SAVED_PRIVATE_KEY = "saved_private_key";
     private static final String SAVED_PUBLIC_KEY = "saved_public_key";
 
-    @Getter
-    private final SharedPreferences preferences;
+    private final ModelCrypto mModelCrypto;
 
-    private final ModelCrypto modelCrypto;
+    @Getter
+    private final SharedPreferences mPreferences;
 
     @Inject
     public PreferencesUtil(@NonNull ModelCrypto modelCrypto) {
-        this.modelCrypto = modelCrypto;
-        preferences = SampleApplication.instance.getSharedPreferences(SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
+        this.mModelCrypto = modelCrypto;
+        mPreferences = SampleApplication.instance.getSharedPreferences(SHARED_PREFERENCES_FILE, Context.MODE_PRIVATE);
     }
 
     public void saveUsername(@NonNull final String username) {
-        preferences.edit().putString(SAVED_USERNAME, username).apply();
+        mPreferences.edit().putString(SAVED_USERNAME, username).apply();
     }
 
     public String retrieveUsername() {
-        return preferences.getString(SAVED_USERNAME, "");
+        return mPreferences.getString(SAVED_USERNAME, "");
     }
 
     public void saveKeys(@NonNull Keypair keyPair) {
-        preferences.edit().putString(SAVED_PUBLIC_KEY, keyPair.publicKey().hex()).apply();
-        preferences.edit().putString(SAVED_PRIVATE_KEY, keyPair.privateKey().hex()).apply();
+        mPreferences.edit().putString(SAVED_PUBLIC_KEY, keyPair.publicKey().hex()).apply();
+        mPreferences.edit().putString(SAVED_PRIVATE_KEY, keyPair.privateKey().hex()).apply();
     }
 
     public Keypair retrieveKeys() {
-        return modelCrypto.convertFromExisting(
-                preferences.getString(SAVED_PUBLIC_KEY, ""),
-                preferences.getString(SAVED_PRIVATE_KEY, "")
+        return mModelCrypto.convertFromExisting(
+                mPreferences.getString(SAVED_PUBLIC_KEY, ""),
+                mPreferences.getString(SAVED_PRIVATE_KEY, "")
         );
     }
 
     public void clear() {
-        preferences.edit().clear().apply();
+        mPreferences.edit().clear().apply();
     }
 }

@@ -1,9 +1,9 @@
-package jp.co.soramitsu.iroha.android.sample.list.Fragments;
+package jp.co.soramitsu.iroha.android.sample.main.games;
 
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
@@ -25,13 +25,13 @@ import lombok.NonNull;
 public final class GameListFragment extends Fragment {
 
     @NonNull
-    private RecyclerView mRecyclerViewListOfGames;
+    private String mName;
 
     @NonNull
     private SelectHandler mSelectHandler;
 
     @NonNull
-    private String mName;
+    private RecyclerView mRecyclerViewListOfGames;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,6 @@ public final class GameListFragment extends Fragment {
     public View onCreateView(@android.support.annotation.NonNull final LayoutInflater inflater,
                              @NonNull final ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_game_list, container, false);
         // init recycler view
         mRecyclerViewListOfGames = view.findViewById(R.id.recycler_view_games);
@@ -61,9 +60,7 @@ public final class GameListFragment extends Fragment {
         snapHelper.attachToRecyclerView(mRecyclerViewListOfGames);
         // generate games
         List<Game> games = RandomGenerator.generateList();
-
         mRecyclerViewListOfGames.setAdapter(new GameAdapter(LayoutInflater.from(context), mName, games, mSelectHandler));
-
         return view;
     }
 
@@ -73,7 +70,7 @@ public final class GameListFragment extends Fragment {
         if (context instanceof MainActivity){
             activity = (MainActivity) context;
         }
-        mName = activity.getMName();
+        mName = Objects.requireNonNull(activity).getMName();
         mSelectHandler = activity;
     }
 

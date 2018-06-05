@@ -1,50 +1,61 @@
 package jp.co.soramitsu.iroha.android.sample.main.history;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.text.format.DateUtils;
+import android.arch.lifecycle.ViewModelProviders;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Calendar;
+import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
+
+import lombok.NonNull;
+import lombok.Setter;
 
 import javax.inject.Inject;
 
 import jp.co.soramitsu.iroha.android.sample.interactor.GetAccountTransactionsInteractor;
-import lombok.NonNull;
-import lombok.Setter;
+import jp.co.soramitsu.iroha.android.sample.transaction.Transaction;
+import jp.co.soramitsu.iroha.android.sample.transaction.TransactionVM;
+import jp.co.soramitsu.iroha.android.sample.transaction.TransactionsViewModel;
 
 public class HistoryPresenter {
 
     @Setter
-    private HistoryFragment fragment;
+    private HistoryFragment mHistoryFragment;
 
-    private final GetAccountTransactionsInteractor getAccountTransactionsInteractor;
+    private TransactionsViewModel mTransactionsViewModel;
 
-    private TransactionsViewModel transactionsViewModel;
+    private final GetAccountTransactionsInteractor mGetAccountTransactionsInteractor;
+
+    private static final String TODAY = "Today";
+    private static final String JUST_NOW = "just now";
+    private static final String YESTERDAY = "Yesterday";
+    private static final String MINUTES_AGO = "minutes ago";
+    private static final String HOURS_DATE_FORMAT = "HH:mm";
+    private static final String HEADER_DATE_FORMAT = "MMMM, dd";
 
     @Inject
     public HistoryPresenter(@NonNull GetAccountTransactionsInteractor getAccountTransactionsInteractor) {
-        this.getAccountTransactionsInteractor = getAccountTransactionsInteractor;
+        this.mGetAccountTransactionsInteractor = getAccountTransactionsInteractor;
     }
 
     void onCreateView() {
-        transactionsViewModel = ViewModelProviders.of(fragment).get(TransactionsViewModel.class);
+        mTransactionsViewModel = ViewModelProviders.of(mHistoryFragment).get(TransactionsViewModel.class);
     }
 
     void getTransactions() {
-        getAccountTransactionsInteractor.execute(
+        mGetAccountTransactionsInteractor.execute(
                 transactions -> {
                     Collections.sort(transactions, (o1, o2) -> o2.date.compareTo(o1.date));
-                    transactionsViewModel.getTransactions().postValue(transformTransactions(transactions));
-                    fragment.finishRefresh();
+                    mTransactionsViewModel.getMTransactions().postValue(transformTransactions(transactions));
+                    mHistoryFragment.finishRefresh();
                 },
-                throwable -> fragment.didError(throwable));
+                throwable -> mHistoryFragment.didError(throwable));
     }
 
     private List transformTransactions(@NonNull List<Transaction> transactions) {
@@ -67,8 +78,8 @@ public class HistoryPresenter {
         c.set(Calendar.HOUR, -1);
         Date oneHourBefore = c.getTime();
 
-        SimpleDateFormat headerDateFormat = new SimpleDateFormat("MMMM, dd", Locale.getDefault());
-        SimpleDateFormat hoursDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        SimpleDateFormat headerDateFormat = new SimpleDateFormat(HEADER_DATE_FORMAT, Locale.getDefault());
+        SimpleDateFormat hoursDateFormat = new SimpleDateFormat(HOURS_DATE_FORMAT, Locale.getDefault());
 
         String currentPrettyDate = getHeader(transactions.get(0).date, headerDateFormat,
                 today, yesterday);
@@ -87,13 +98,13 @@ public class HistoryPresenter {
             String prettyAmount = amount.toString();
 
             String prettyDate;
-            if (currentPrettyDate.equals("Today") && transaction.date.after(oneHourBefore)) {
+            if (currentPrettyDate.equals(TODAY) && transaction.date.after(oneHourBefore)) {
                 long duration = new Date().getTime() - transaction.date.getTime();
                 long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration);
                 if (diffInMinutes == 0) {
-                    prettyDate = "just now";
+                    prettyDate = JUST_NOW;
                 } else {
-                    prettyDate = diffInMinutes + " minutes ago";
+                    prettyDate = diffInMinutes + " " + MINUTES_AGO;
                 }
             } else {
                 prettyDate = hoursDateFormat.format(transaction.date);
@@ -111,16 +122,16 @@ public class HistoryPresenter {
                              @NonNull Date today,
                              @NonNull Date yesterday) {
         if (DateUtils.isToday(date.getTime())) {
-            return "Today";
+            return TODAY;
         } else if (date.before(today) && date.after(yesterday)) {
-            return "Yesterday";
+            return YESTERDAY;
         } else {
             return dateFormat.format(date);
         }
     }
 
     void onStop() {
-        fragment = null;
-        getAccountTransactionsInteractor.unsubscribe();
+        mHistoryFragment = null;
+        mGetAccountTransactionsInteractor.unsubscribe();
     }
 }

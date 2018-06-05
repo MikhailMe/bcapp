@@ -1,15 +1,16 @@
 package jp.co.soramitsu.iroha.android.sample;
 
+import lombok.Getter;
+
 import android.app.Application;
 import android.support.annotation.VisibleForTesting;
 
-import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.AndroidLogAdapter;
 
 import jp.co.soramitsu.iroha.android.sample.data.Account;
 import jp.co.soramitsu.iroha.android.sample.injection.ApplicationComponent;
 import jp.co.soramitsu.iroha.android.sample.injection.DaggerApplicationComponent;
-import lombok.Getter;
 
 public class SampleApplication extends Application {
     static {
@@ -20,9 +21,9 @@ public class SampleApplication extends Application {
         }
     }
 
-    public static SampleApplication instance;
-
     public Account account;
+
+    public static SampleApplication instance;
 
     @Getter
     @VisibleForTesting

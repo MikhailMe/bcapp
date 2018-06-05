@@ -4,9 +4,9 @@ import lombok.NonNull;
 
 public class AccountDetail {
 
-    public final String detail;
+    public final String mDetail;
 
     public AccountDetail(@NonNull String detail) {
-        this.detail = detail;
+        this.mDetail = detail;
     }
 }

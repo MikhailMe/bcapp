@@ -6,7 +6,6 @@ import dagger.Component;
 import dagger.android.AndroidInjector;
 import jp.co.soramitsu.iroha.android.sample.bet.BetActivity;
 import jp.co.soramitsu.iroha.android.sample.main.MainActivity;
-import jp.co.soramitsu.iroha.android.sample.main.send.SendFragment;
 import jp.co.soramitsu.iroha.android.sample.main.history.HistoryFragment;
 import jp.co.soramitsu.iroha.android.sample.registration.RegistrationActivity;
 
@@ -15,8 +14,6 @@ import jp.co.soramitsu.iroha.android.sample.registration.RegistrationActivity;
 public interface ApplicationComponent extends AndroidInjector {
 
     void inject(BetActivity betActivity);
-
-    void inject(SendFragment sendFragment);
 
     void inject(MainActivity mainActivity);
 

@@ -1,9 +1,9 @@
 package jp.co.soramitsu.iroha.android.sample.interactor;
 
-import io.reactivex.Scheduler;
-import io.reactivex.Single;
-import io.reactivex.functions.Consumer;
 import lombok.NonNull;
+import io.reactivex.Single;
+import io.reactivex.Scheduler;
+import io.reactivex.functions.Consumer;
 
 public abstract class SingleInteractor<ResultType, ParameterType> extends Interactor {
 

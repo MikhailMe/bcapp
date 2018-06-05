@@ -1,34 +1,37 @@
 package jp.co.soramitsu.iroha.android.sample.main.history;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
+import android.view.View;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.view.ViewGroup;
+import android.view.LayoutInflater;
 import android.support.v4.app.Fragment;
 import android.support.v7.util.DiffUtil;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.databinding.DataBindingUtil;
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.util.Objects;
 
 import javax.inject.Inject;
 
 import jp.co.soramitsu.iroha.android.sample.R;
-import jp.co.soramitsu.iroha.android.sample.SampleApplication;
-import jp.co.soramitsu.iroha.android.sample.databinding.FragmentHistoryBinding;
 import jp.co.soramitsu.iroha.android.sample.main.MainActivity;
+import jp.co.soramitsu.iroha.android.sample.SampleApplication;
+import jp.co.soramitsu.iroha.android.sample.transaction.TransactionsAdapter;
+import jp.co.soramitsu.iroha.android.sample.transaction.TransactionsViewModel;
+import jp.co.soramitsu.iroha.android.sample.databinding.FragmentHistoryBinding;
+import jp.co.soramitsu.iroha.android.sample.transaction.TransactionDiffChecker;
 
 public class HistoryFragment extends Fragment implements HistoryView {
 
+    @Inject
+    HistoryPresenter mHistoryPresenter;
+
     private FragmentHistoryBinding binding;
 
-    @Inject
-    HistoryPresenter presenter;
-
-    private TransactionsAdapter adapter;
+    private TransactionsAdapter mTransactionsAdapter;
 
     @Nullable
     @Override
@@ -38,41 +41,41 @@ public class HistoryFragment extends Fragment implements HistoryView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_history, container, false);
         SampleApplication.instance.getApplicationComponent().inject(this);
 
-        presenter.setFragment(this);
-        presenter.onCreateView();
-        presenter.getTransactions();
+        mHistoryPresenter.setMHistoryFragment(this);
+        mHistoryPresenter.onCreateView();
+        mHistoryPresenter.getTransactions();
 
         TransactionsViewModel transactionsViewModel = ViewModelProviders.of(this).get(TransactionsViewModel.class);
-        transactionsViewModel.getTransactions().observe(this, transactions -> {
+        transactionsViewModel.getMTransactions().observe(this, transactions -> {
             DiffUtil.Callback transactionDiffChecker =
-                    new TransactionDiffChecker(adapter.getTransactions(), transactions);
+                    new TransactionDiffChecker(mTransactionsAdapter.getMTransactions(), transactions);
             DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(transactionDiffChecker);
-            adapter.setTransactions(transactions);
-            diffResult.dispatchUpdatesTo(adapter);
+            mTransactionsAdapter.setMTransactions(transactions);
+            diffResult.dispatchUpdatesTo(mTransactionsAdapter);
         });
 
         configureRecycler();
-        binding.refresh.setOnRefreshListener(() -> presenter.getTransactions());
+        binding.refresh.setOnRefreshListener(() -> mHistoryPresenter.getTransactions());
         return binding.getRoot();
     }
 
     private void configureRecycler() {
         binding.transactions.setHasFixedSize(true);
         binding.transactions.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new TransactionsAdapter();
-        binding.transactions.setAdapter(adapter);
+        mTransactionsAdapter = new TransactionsAdapter();
+        binding.transactions.setAdapter(mTransactionsAdapter);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        presenter.setFragment(this);
+        mHistoryPresenter.setMHistoryFragment(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenter.onStop();
+        mHistoryPresenter.onStop();
     }
 
     @Override

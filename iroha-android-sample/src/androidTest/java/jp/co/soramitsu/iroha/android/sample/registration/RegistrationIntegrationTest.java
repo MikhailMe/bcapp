@@ -69,7 +69,7 @@ public class RegistrationIntegrationTest {
         IdlingPolicies.setIdlingResourceTimeout(NETWORK_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         IdlingPolicies.setMasterPolicyTimeout(NETWORK_TIMEOUT_SECONDS * 2, TimeUnit.SECONDS);
 
-        IdlingResource idlingResource = new NetworkRequestIdlingResources(rule.getActivity().registrationPresenter);
+        IdlingResource idlingResource = new NetworkRequestIdlingResources(rule.getActivity().mRegistrationPresenter);
         IdlingRegistry.getInstance().register(idlingResource);
 
         onView(withText(R.string.error_dialog_title))
@@ -95,7 +95,7 @@ public class RegistrationIntegrationTest {
         IdlingPolicies.setIdlingResourceTimeout(NETWORK_TIMEOUT_SECONDS, TimeUnit.SECONDS);
         IdlingPolicies.setMasterPolicyTimeout(NETWORK_TIMEOUT_SECONDS * 2, TimeUnit.SECONDS);
 
-        IdlingResource idlingResource = new NetworkRequestIdlingResources(rule.getActivity().registrationPresenter);
+        IdlingResource idlingResource = new NetworkRequestIdlingResources(rule.getActivity().mRegistrationPresenter);
         IdlingRegistry.getInstance().register(idlingResource);
 
         intended(hasComponent(MainActivity.class.getName()));

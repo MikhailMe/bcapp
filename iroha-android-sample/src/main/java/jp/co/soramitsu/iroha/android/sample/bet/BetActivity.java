@@ -1,54 +1,56 @@
 package jp.co.soramitsu.iroha.android.sample.bet;
 
-import android.content.Context;
-import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.Toast;
+import android.text.Editable;
+import android.widget.Button;
+import android.content.Intent;
+import android.content.Context;
+import android.text.TextWatcher;
+import android.view.WindowManager;
+import android.support.v7.app.AlertDialog;
+import android.databinding.DataBindingUtil;
+import android.support.v7.app.AppCompatActivity;
 
-import java.net.ConnectException;
 import java.util.Locale;
+import java.net.ConnectException;
+
+import lombok.Getter;
+import lombok.NonNull;
 
 import javax.inject.Inject;
 
 import jp.co.soramitsu.iroha.android.sample.R;
 import jp.co.soramitsu.iroha.android.sample.SampleApplication;
-import jp.co.soramitsu.iroha.android.sample.databinding.ActivityBetBinding;
 import jp.co.soramitsu.iroha.android.sample.oracle.OracleActivity;
-import lombok.Getter;
-import lombok.NonNull;
+import jp.co.soramitsu.iroha.android.sample.transaction.TransactionData;
+import jp.co.soramitsu.iroha.android.sample.databinding.ActivityBetBinding;
 
 public final class BetActivity extends AppCompatActivity implements BetView, View.OnClickListener {
-
-    private static final String FORGET_MESSAGE = "You forget enter a bet sum!";
 
     private static final String EXTRA_NAME = "com.mishas.bcappclient.name";
     private static final String EXTRA_TEAM_1 = "com.mishas.bcappclient.team1";
     private static final String EXTRA_TEAM_2 = "com.mishas.bcappclient.team2";
     private static final String EXTRA_TIMESTAMP = "com.mishas.bcappclient.timestamp";
 
+    private static final String FORGET_MESSAGE = "You forget enter a bet sum!";
+
     private String name;
     private String team1;
     private String team2;
     private String drawCoef;
+    private String timestamp;
     private String team1WinCoef;
     private String team2WinCoef;
-    private String timestamp;
+
+    @Getter
+    private float chooseCoef;
 
     @Inject
     BetPresenter mBetPresenter;
 
     private ActivityBetBinding binding;
-
-    @Getter
-    private float chooseCoef;
 
     public static Intent newIntent(@NonNull Context context,
                                    @NonNull final String name,
@@ -87,6 +89,7 @@ public final class BetActivity extends AppCompatActivity implements BetView, Vie
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!s.toString().isEmpty() && getChooseCoef() != -1) {
@@ -97,6 +100,7 @@ public final class BetActivity extends AppCompatActivity implements BetView, Vie
                     binding.yourWinATv.setText("");
                 }
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -111,8 +115,8 @@ public final class BetActivity extends AppCompatActivity implements BetView, Vie
     }
 
     private void getGameCoefs() {
-        team1WinCoef = "1.3";
         drawCoef = "1.9";
+        team1WinCoef = "1.3";
         team2WinCoef = "2.6";
     }
 
@@ -152,9 +156,28 @@ public final class BetActivity extends AppCompatActivity implements BetView, Vie
                 break;
             case R.id.next_to_oracle:
                 if (!binding.betSumATv.getText().toString().isEmpty() && !binding.yourWinATv.getText().toString().isEmpty()) {
+                    // send transaction to Iroha
 
-                    mBetPresenter.sendTransaction(name, binding.betSumATv.getText().toString());
+                    /*
+                     * Transaction consist:
+                     *                       - username
+                     *                       - bet sum
+                     *                       - bet coefficient
+                     *                       - first team name
+                     *                       - second team name
+                     *                       - timestamp of game
+                     * */
 
+                    TransactionData transactionData = new TransactionData(
+                            name,
+                            binding.betSumATv.getText().toString().trim(),
+                            String.valueOf(chooseCoef),
+                            team1,
+                            team2,
+                            timestamp
+                    );
+
+                    mBetPresenter.sendTransaction(transactionData);
                 } else {
                     Toast.makeText(getApplicationContext(), FORGET_MESSAGE, Toast.LENGTH_SHORT).show();
                 }
@@ -220,5 +243,4 @@ public final class BetActivity extends AppCompatActivity implements BetView, Vie
                 .create();
         alertDialog.show();
     }
-
 }

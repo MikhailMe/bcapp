@@ -1,4 +1,4 @@
-package jp.co.soramitsu.iroha.android.sample.list.Fragments;
+package jp.co.soramitsu.iroha.android.sample.main.games;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;

@@ -3,8 +3,8 @@ package jp.co.soramitsu.iroha.android.sample.core;
 import java.util.Objects;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
+import lombok.NonNull;
 
 public final class Team {
 

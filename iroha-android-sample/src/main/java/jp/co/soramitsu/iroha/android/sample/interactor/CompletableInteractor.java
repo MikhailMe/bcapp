@@ -1,10 +1,10 @@
 package jp.co.soramitsu.iroha.android.sample.interactor;
 
-import io.reactivex.Completable;
+import lombok.NonNull;
 import io.reactivex.Scheduler;
+import io.reactivex.Completable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import lombok.NonNull;
 
 public abstract class CompletableInteractor<ParameterType> extends Interactor {
 

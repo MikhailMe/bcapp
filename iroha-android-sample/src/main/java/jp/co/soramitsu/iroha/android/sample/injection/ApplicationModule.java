@@ -6,14 +6,15 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.grpc.ManagedChannelBuilder;
 import io.reactivex.schedulers.Schedulers;
 import jp.co.soramitsu.iroha.android.ModelCrypto;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 @Module
 public class ApplicationModule {
+
     public static final String JOB = "JOB";
     public static final String UI = "UI";
 
@@ -40,7 +41,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     public ManagedChannel provideManagedChannel() {
-        return ManagedChannelBuilder.forAddress(HOME_IP, PORT).usePlaintext().build();
+        return ManagedChannelBuilder.forAddress(BROVKI_IP, PORT).usePlaintext().build();
     }
 
     @Provides

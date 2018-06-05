@@ -1,4 +1,4 @@
-package jp.co.soramitsu.iroha.android.sample.main.history;
+package jp.co.soramitsu.iroha.android.sample.transaction;
 
 import java.util.Date;
 

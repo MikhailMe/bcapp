@@ -1,23 +1,24 @@
 package jp.co.soramitsu.iroha.android.sample;
 
+import lombok.NonNull;
+
 import android.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Random;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import jp.co.soramitsu.iroha.android.sample.core.Game;
 import jp.co.soramitsu.iroha.android.sample.core.Team;
-import lombok.NonNull;
 
 import java.sql.Timestamp;
 
 public final class RandomGenerator {
 
-    private static final int DELTA= 1_000_000;
+    private static final int DELTA = 1_000_000;
     private static final int CONST = 1_000_000_000;
     private static final double DELIMITER = 0.5d;
     private static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

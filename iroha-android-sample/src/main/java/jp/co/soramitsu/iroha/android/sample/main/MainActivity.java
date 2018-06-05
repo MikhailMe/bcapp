@@ -1,55 +1,62 @@
 package jp.co.soramitsu.iroha.android.sample.main;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.content.Intent;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.app.ProgressDialog;
+import android.view.LayoutInflater;
+import android.annotation.SuppressLint;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
+import android.databinding.DataBindingUtil;
+import android.support.v7.app.AppCompatActivity;
 
 import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.net.ConnectException;
 
-import javax.inject.Inject;
-
-import jp.co.soramitsu.iroha.android.sample.Constants;
-import jp.co.soramitsu.iroha.android.sample.R;
-import jp.co.soramitsu.iroha.android.sample.SampleApplication;
-import jp.co.soramitsu.iroha.android.sample.bet.BetActivity;
-import jp.co.soramitsu.iroha.android.sample.databinding.ActivityMainBinding;
-import jp.co.soramitsu.iroha.android.sample.list.Fragments.GameListFragment;
-import jp.co.soramitsu.iroha.android.sample.list.Fragments.SelectHandler;
-import jp.co.soramitsu.iroha.android.sample.main.history.HistoryFragment;
-import jp.co.soramitsu.iroha.android.sample.registration.RegistrationActivity;
 import lombok.Getter;
 import lombok.NonNull;
 
+import javax.inject.Inject;
+
+import jp.co.soramitsu.iroha.android.sample.R;
+import jp.co.soramitsu.iroha.android.sample.Constants;
+import jp.co.soramitsu.iroha.android.sample.bet.BetActivity;
+import jp.co.soramitsu.iroha.android.sample.SampleApplication;
+import jp.co.soramitsu.iroha.android.sample.main.games.SelectHandler;
+import jp.co.soramitsu.iroha.android.sample.main.games.GameListFragment;
+import jp.co.soramitsu.iroha.android.sample.main.history.HistoryFragment;
+import jp.co.soramitsu.iroha.android.sample.databinding.ActivityMainBinding;
+import jp.co.soramitsu.iroha.android.sample.registration.RegistrationActivity;
+
 public class MainActivity extends AppCompatActivity implements MainView, SelectHandler {
-
-    private ActivityMainBinding binding;
-
-    @NonNull
-    private ProgressDialog dialog;
 
     @Getter
     @NonNull
     private String mName;
 
     @Inject
-    MainPresenter presenter;
+    MainPresenter mMainPresenter;
 
+    @NonNull
+    private ProgressDialog dialog;
+
+    private ActivityMainBinding binding;
+
+    private static final String FRAGMENT_GAME_CAPTION = "LIST OF GAMES";
+    private static final String FRAGMENT_HISTORY_CAPTION = "BET HISTORY";
+
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         SampleApplication.instance.getApplicationComponent().inject(this);
-        presenter.setView(this);
+        mMainPresenter.setMView(this);
 
         createProgressDialog();
         configureRefreshLayout();
@@ -60,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SelectH
                             .setTitle(getString(R.string.logout))
                             .setMessage(getString(R.string.logout_description))
                             .setCancelable(true)
-                            .setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.logout())
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> mMainPresenter.logout())
                             .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
                             .create();
                     alertDialog.setOnShowListener(arg0 ->
@@ -90,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SelectH
                             .setTitle(getString(R.string.account_details))
                             .setMessage(getString(R.string.bio))
                             .setCancelable(true)
-                            .setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.setAccountDetails(details.getText().toString()))
+                            .setPositiveButton(android.R.string.ok, (dialog, which) -> mMainPresenter.setAccountDetails(details.getText().toString()))
                             .setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss())
                             .create();
 
@@ -108,19 +115,33 @@ public class MainActivity extends AppCompatActivity implements MainView, SelectH
 
         setupViewPager();
         binding.tabs.setupWithViewPager(binding.content);
-
-        presenter.onCreate();
+        mMainPresenter.onCreate();
     }
 
     private void configureRefreshLayout() {
-        binding.swiperefresh.setOnRefreshListener(presenter::updateData);
+        binding.swiperefresh.setOnRefreshListener(() -> mMainPresenter.updateData(true));
     }
 
     private void setupViewPager() {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new GameListFragment(), "LIST OF GAMES");
-        adapter.addFragment(new HistoryFragment(), "HISTORY");
+        adapter.addFragment(new GameListFragment(), FRAGMENT_GAME_CAPTION);
+        adapter.addFragment(new HistoryFragment(), FRAGMENT_HISTORY_CAPTION);
         binding.content.setAdapter(adapter);
+
+        binding.content.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                binding.swiperefresh.setEnabled(!(adapter.getItem(position) instanceof HistoryFragment));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
     @Override
@@ -177,12 +198,18 @@ public class MainActivity extends AppCompatActivity implements MainView, SelectH
     @Override
     public void onStop() {
         super.onStop();
-        presenter.onStop();
+        mMainPresenter.onStop();
+    }
+
+    @Override
+    public void hideRefresh() {
+        binding.swiperefresh.setRefreshing(false);
     }
 
     @Override
     public void refreshData(boolean animate) {
-        presenter.updateData();
+        binding.swiperefresh.setRefreshing(animate);
+        mMainPresenter.updateData(animate);
     }
 
     private void createProgressDialog() {

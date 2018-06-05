@@ -2,26 +2,26 @@ package jp.co.soramitsu.iroha.android.sample.registration;
 
 import android.support.annotation.VisibleForTesting;
 
+import lombok.Setter;
+import lombok.NonNull;
+
 import javax.inject.Inject;
 
-import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
 import jp.co.soramitsu.iroha.android.sample.R;
+import jp.co.soramitsu.iroha.android.sample.PreferencesUtil;
 import jp.co.soramitsu.iroha.android.sample.SampleApplication;
 import jp.co.soramitsu.iroha.android.sample.interactor.AddAssetInteractor;
 import jp.co.soramitsu.iroha.android.sample.interactor.CreateAccountInteractor;
 import jp.co.soramitsu.iroha.android.sample.interactor.GetAccountInteractor;
-import lombok.NonNull;
-import lombok.Setter;
 
 public class RegistrationPresenter {
 
     @Setter
-    private RegistrationView view;
-    private final PreferencesUtil preferencesUtil;
-
-    private final CreateAccountInteractor createAccountInteractor;
-    private final GetAccountInteractor getAccountInteractor;
-    private final AddAssetInteractor addAssetInteractor;
+    private RegistrationView mView;
+    private final PreferencesUtil mPreferencesUtil;
+    private final AddAssetInteractor mAddAssetInteractor;
+    private final GetAccountInteractor mGetAccountInteractor;
+    private final CreateAccountInteractor mCreateAccountInteractor;
 
     @VisibleForTesting
     public boolean isRequestFinished;
@@ -31,23 +31,23 @@ public class RegistrationPresenter {
                                  @NonNull GetAccountInteractor getAccountInteractor,
                                  @NonNull AddAssetInteractor addAssetInteractor,
                                  @NonNull PreferencesUtil preferencesUtil) {
-        this.createAccountInteractor = createAccountInteractor;
-        this.getAccountInteractor = getAccountInteractor;
-        this.preferencesUtil = preferencesUtil;
-        this.addAssetInteractor = addAssetInteractor;
+        this.mPreferencesUtil = preferencesUtil;
+        this.mAddAssetInteractor = addAssetInteractor;
+        this.mGetAccountInteractor = getAccountInteractor;
+        this.mCreateAccountInteractor = createAccountInteractor;
     }
 
     void createAccount(@NonNull final String username) {
         isRequestFinished = false;
 
         if (!username.isEmpty()) {
-            getAccountInteractor.execute(username, account -> {
+            mGetAccountInteractor.execute(username, account -> {
                 if (account.getAccountId().isEmpty()) {
-                    createAccountInteractor.execute(username,
-                            () -> addAssetInteractor.execute(username,
+                    mCreateAccountInteractor.execute(username,
+                            () -> mAddAssetInteractor.execute(username,
                                     () -> {
                                         isRequestFinished = true;
-                                        view.didRegistrationSuccess();
+                                        mView.didRegistrationSuccess();
                                     },
                                     this::didRegistrationError
                             ),
@@ -64,18 +64,18 @@ public class RegistrationPresenter {
 
     private void didRegistrationError(Throwable throwable) {
         isRequestFinished = true;
-        preferencesUtil.clear();
-        view.didRegistrationError(throwable);
+        mPreferencesUtil.clear();
+        mView.didRegistrationError(throwable);
     }
 
     boolean isRegistered() {
-        return !preferencesUtil.retrieveUsername().isEmpty();
+        return !mPreferencesUtil.retrieveUsername().isEmpty();
     }
 
     void onStop() {
-        view = null;
-        createAccountInteractor.unsubscribe();
-        getAccountInteractor.unsubscribe();
-        addAssetInteractor.unsubscribe();
+        mView = null;
+        mAddAssetInteractor.unsubscribe();
+        mGetAccountInteractor.unsubscribe();
+        mCreateAccountInteractor.unsubscribe();
     }
 }

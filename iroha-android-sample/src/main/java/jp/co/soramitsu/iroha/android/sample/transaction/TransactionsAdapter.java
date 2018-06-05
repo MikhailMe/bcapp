@@ -1,30 +1,32 @@
-package jp.co.soramitsu.iroha.android.sample.main.history;
+package jp.co.soramitsu.iroha.android.sample.transaction;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import jp.co.soramitsu.iroha.android.sample.R;
-import jp.co.soramitsu.iroha.android.sample.SampleApplication;
 import lombok.Getter;
 import lombok.Setter;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+
+import java.util.List;
+import java.util.ArrayList;
+
+import jp.co.soramitsu.iroha.android.sample.R;
+import jp.co.soramitsu.iroha.android.sample.SampleApplication;
+
 public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
     @Getter
     @Setter
-    private List transactions;
+    private List mTransactions;
 
-    TransactionsAdapter() {
-        this.transactions = new ArrayList<>();
+    public TransactionsAdapter() {
+        this.mTransactions = new ArrayList<>();
     }
 
     @NonNull
@@ -45,7 +47,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof TransactionItem) {
-            TransactionVM transaction = (TransactionVM) transactions.get(position);
+            TransactionVM transaction = (TransactionVM) mTransactions.get(position);
             TransactionItem transactionItem = (TransactionItem) holder;
             transactionItem.username.setText(transaction.username);
             if (transaction.prettyAmount.contains("-")) {
@@ -58,13 +60,13 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             transactionItem.date.setText(transaction.prettyDate);
         } else if (holder instanceof TransactionHeaderItem) {
             TransactionHeaderItem headerItem = (TransactionHeaderItem) holder;
-            headerItem.date.setText(transactions.get(position).toString());
+            headerItem.date.setText(mTransactions.get(position).toString());
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (transactions.get(position) instanceof TransactionVM) {
+        if (mTransactions.get(position) instanceof TransactionVM) {
             return TYPE_ITEM;
         }
         return TYPE_HEADER;
@@ -72,7 +74,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return transactions.size();
+        return mTransactions.size();
     }
 
     static class TransactionItem extends RecyclerView.ViewHolder {

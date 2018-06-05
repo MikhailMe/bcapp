@@ -4,25 +4,26 @@ import com.google.protobuf.ByteString;
 
 import java.util.Iterator;
 
+import lombok.NonNull;
+
 import io.reactivex.Scheduler;
-import io.reactivex.disposables.CompositeDisposable;
-import iroha.protocol.CommandServiceGrpc;
 import iroha.protocol.Endpoint;
 import iroha.protocol.Primitive;
+import iroha.protocol.CommandServiceGrpc;
 import jp.co.soramitsu.iroha.android.ByteVector;
 import jp.co.soramitsu.iroha.android.UnsignedTx;
-import lombok.NonNull;
+import io.reactivex.disposables.CompositeDisposable;
 
 class Interactor {
 
-    final CompositeDisposable subscriptions = new CompositeDisposable();
-    final Scheduler jobScheduler;
     final Scheduler uiScheduler;
+    final Scheduler jobScheduler;
+    final CompositeDisposable subscriptions = new CompositeDisposable();
 
     Interactor(@NonNull Scheduler jobScheduler,
                @NonNull Scheduler uiScheduler) {
-        this.jobScheduler = jobScheduler;
         this.uiScheduler = uiScheduler;
+        this.jobScheduler = jobScheduler;
     }
 
     public void unsubscribe() {

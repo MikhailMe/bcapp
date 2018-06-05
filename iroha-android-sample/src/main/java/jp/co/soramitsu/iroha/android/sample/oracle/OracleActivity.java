@@ -1,12 +1,12 @@
 package jp.co.soramitsu.iroha.android.sample.oracle;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 
-import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.ButterKnife;
 import jp.co.soramitsu.iroha.android.sample.R;
 import jp.co.soramitsu.iroha.android.sample.main.MainActivity;
 

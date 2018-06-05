@@ -1,13 +1,13 @@
 package jp.co.soramitsu.iroha.android.sample.registration;
 
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.app.ProgressDialog;
 import android.view.WindowManager;
+import android.annotation.SuppressLint;
+import android.support.v7.app.AlertDialog;
+import android.databinding.DataBindingUtil;
+import android.support.v7.app.AppCompatActivity;
 
 import com.jakewharton.rxbinding2.view.RxView;
 
@@ -17,18 +17,17 @@ import javax.inject.Inject;
 
 import jp.co.soramitsu.iroha.android.sample.R;
 import jp.co.soramitsu.iroha.android.sample.SampleApplication;
-import jp.co.soramitsu.iroha.android.sample.databinding.ActivityRegistrationBinding;
 import jp.co.soramitsu.iroha.android.sample.main.MainActivity;
+import jp.co.soramitsu.iroha.android.sample.databinding.ActivityRegistrationBinding;
 
 public class RegistrationActivity extends AppCompatActivity implements RegistrationView {
+
+    private ProgressDialog mProgressDialog;
 
     private ActivityRegistrationBinding binding;
 
     @Inject
-    RegistrationPresenter registrationPresenter;
-
-    private ProgressDialog dialog;
-
+    RegistrationPresenter mRegistrationPresenter;
 
     @SuppressLint("CheckResult")
     @Override
@@ -36,9 +35,9 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration);
         SampleApplication.instance.getApplicationComponent().inject(this);
-        registrationPresenter.setView(this);
+        mRegistrationPresenter.setMView(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        if (registrationPresenter.isRegistered()) {
+        if (mRegistrationPresenter.isRegistered()) {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -49,7 +48,7 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
         RxView.clicks(binding.singup)
                 .subscribe(view -> {
                     showProgressDialog();
-                    registrationPresenter.createAccount(binding.username.getText().toString().trim());
+                    mRegistrationPresenter.createAccount(binding.username.getText().toString().trim());
                 });
     }
 
@@ -79,24 +78,24 @@ public class RegistrationActivity extends AppCompatActivity implements Registrat
     }
 
     private void createProgressDialog() {
-        dialog = new ProgressDialog(this);
-        dialog.setCancelable(false);
-        dialog.setMessage(getString(R.string.please_wait));
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setMessage(getString(R.string.please_wait));
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        registrationPresenter.onStop();
+        mRegistrationPresenter.onStop();
     }
 
     @Override
     public void showProgressDialog() {
-        dialog.show();
+        mProgressDialog.show();
     }
 
     @Override
     public void dismissProgressDialog() {
-        dialog.dismiss();
+        mProgressDialog.dismiss();
     }
 }
