@@ -8,7 +8,7 @@ import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jp.co.soramitsu.iroha.android.sample.R;
-import jp.co.soramitsu.iroha.android.sample.list.ListActivity;
+import jp.co.soramitsu.iroha.android.sample.main.MainActivity;
 
 public final class OracleActivity extends AppCompatActivity {
 
@@ -21,6 +21,6 @@ public final class OracleActivity extends AppCompatActivity {
 
     @OnClick({R.id.yeapBtn, R.id.nopeBtn})
     public void onClick(View v) {
-        startActivity(new Intent(this, ListActivity.class));
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

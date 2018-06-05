@@ -38,11 +38,10 @@ public class MainPresenter {
     }
 
     void onCreate() {
-        updateData(false);
+        updateData();
     }
 
-    void updateData(boolean fromRefresh) {
-        view.hideRefresh();
+    void updateData() {
         String username = preferencesUtil.retrieveUsername();
         view.setUsername(username);
 
@@ -51,9 +50,6 @@ public class MainPresenter {
                     SampleApplication.instance.account = new Account(account, -1);
                     getAccountBalanceInteractor.execute(
                             balance -> {
-                                if (fromRefresh) {
-                                    view.hideRefresh();
-                                }
                                 view.setAccountBalance(balance + " IRH");
                                 SampleApplication.instance.account.setBalance(Long.parseLong(balance));
                             },

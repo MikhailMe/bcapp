@@ -4,10 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -19,8 +15,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.net.ConnectException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -33,13 +27,19 @@ import jp.co.soramitsu.iroha.android.sample.list.Fragments.GameListFragment;
 import jp.co.soramitsu.iroha.android.sample.list.Fragments.SelectHandler;
 import jp.co.soramitsu.iroha.android.sample.main.history.HistoryFragment;
 import jp.co.soramitsu.iroha.android.sample.registration.RegistrationActivity;
+import lombok.Getter;
 import lombok.NonNull;
 
 public class MainActivity extends AppCompatActivity implements MainView, SelectHandler {
 
     private ActivityMainBinding binding;
 
+    @NonNull
     private ProgressDialog dialog;
+
+    @Getter
+    @NonNull
+    private String mName;
 
     @Inject
     MainPresenter presenter;
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements MainView, SelectH
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
         SampleApplication.instance.getApplicationComponent().inject(this);
         presenter.setView(this);
 
@@ -114,34 +113,20 @@ public class MainActivity extends AppCompatActivity implements MainView, SelectH
     }
 
     private void configureRefreshLayout() {
-        binding.swiperefresh.setOnRefreshListener(() -> presenter.updateData(true));
+        binding.swiperefresh.setOnRefreshListener(presenter::updateData);
     }
 
     private void setupViewPager() {
         Adapter adapter = new Adapter(getSupportFragmentManager());
-        adapter.addFragment(new GameListFragment(), "GAME");
+        adapter.addFragment(new GameListFragment(), "LIST OF GAMES");
         adapter.addFragment(new HistoryFragment(), "HISTORY");
         binding.content.setAdapter(adapter);
-
-        binding.content.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                binding.swiperefresh.setEnabled(!(adapter.getItem(position) instanceof HistoryFragment));
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
     }
 
     @Override
     public void setUsername(@NonNull final String username) {
         binding.username.setText(username);
+        mName = username;
     }
 
     @Override
@@ -190,11 +175,6 @@ public class MainActivity extends AppCompatActivity implements MainView, SelectH
     }
 
     @Override
-    public void hideRefresh() {
-        binding.swiperefresh.setRefreshing(false);
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         presenter.onStop();
@@ -202,8 +182,7 @@ public class MainActivity extends AppCompatActivity implements MainView, SelectH
 
     @Override
     public void refreshData(boolean animate) {
-        binding.swiperefresh.setRefreshing(animate);
-        presenter.updateData(animate);
+        presenter.updateData();
     }
 
     private void createProgressDialog() {
@@ -213,41 +192,10 @@ public class MainActivity extends AppCompatActivity implements MainView, SelectH
     }
 
     @Override
-    public void onGameSelected(@NonNull final String team1,
+    public void onGameSelected(@NonNull final String name,
+                               @NonNull final String team1,
                                @NonNull final String team2,
                                @NonNull final String timestamp) {
-        startActivity(BetActivity.newIntent(this, team1, team2, timestamp));
+        startActivity(BetActivity.newIntent(this, name, team1, team2, timestamp));
     }
-
-    public static class Adapter extends FragmentPagerAdapter {
-
-        private final List<Fragment> fragments = new ArrayList<>();
-        private final List<String> titles = new ArrayList<>();
-
-        Adapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return fragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return fragments.size();
-        }
-
-        void addFragment(@NonNull Fragment fragment,
-                         @NonNull String title) {
-            fragments.add(fragment);
-            titles.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return titles.get(position);
-        }
-    }
-
 }

@@ -1,4 +1,4 @@
-package jp.co.soramitsu.iroha.android.sample.main.send;
+package jp.co.soramitsu.iroha.android.sample.bet;
 
 import javax.inject.Inject;
 
@@ -9,16 +9,16 @@ import jp.co.soramitsu.iroha.android.sample.interactor.SendAssetInteractor;
 import lombok.NonNull;
 import lombok.Setter;
 
-public class SendPresenter {
+public class BetPresenter {
 
     @Setter
-    private SendFragment fragment;
+    private BetActivity mBetActivity;
 
     private final SendAssetInteractor sendAssetInteractor;
     private final GetAccountInteractor getAccountInteractor;
 
     @Inject
-    public SendPresenter(SendAssetInteractor sendAssetInteractor,
+    public BetPresenter(SendAssetInteractor sendAssetInteractor,
                          GetAccountInteractor getAccountInteractor) {
         this.sendAssetInteractor = sendAssetInteractor;
         this.getAccountInteractor = getAccountInteractor;
@@ -33,13 +33,13 @@ public class SendPresenter {
                 if (isEnoughBalance(Long.parseLong(amount))) {
                     checkAccountAndSendTransaction(data);
                 } else {
-                    fragment.didSendError(new Throwable(fragment.getString(R.string.not_enough_balance_error)));
+                    mBetActivity.didSendError(new Throwable(mBetActivity.getString(R.string.not_enough_balance_error)));
                 }
             } else {
-                fragment.didSendError(new Throwable(SampleApplication.instance.getString(R.string.server_is_not_reachable)));
+                mBetActivity.didSendError(new Throwable(SampleApplication.instance.getString(R.string.server_is_not_reachable)));
             }
         } else {
-            fragment.didSendError(new Throwable(SampleApplication.instance.getString(R.string.fields_cant_be_empty)));
+            mBetActivity.didSendError(new Throwable(SampleApplication.instance.getString(R.string.fields_cant_be_empty)));
         }
     }
 
@@ -47,27 +47,21 @@ public class SendPresenter {
         getAccountInteractor.execute(data[0],
                 account -> {
                     if (account.getAccountId().isEmpty()) {
-                        fragment.didSendError(new Throwable(SampleApplication.instance.getString(R.string.username_doesnt_exists)));
+                        mBetActivity.didSendError(new Throwable(SampleApplication.instance.getString(R.string.username_doesnt_exists)));
                     } else {
                         executeSend(data);
                     }
-                }, throwable -> fragment.didSendError(throwable));
+                }, throwable -> mBetActivity.didSendError(throwable));
     }
 
     private void executeSend(@NonNull final String[] data) {
         sendAssetInteractor.execute(data,
-                null,
-                error -> fragment.didSendError(error)
+                mBetActivity::didSendSuccess,
+                mBetActivity::didSendError
         );
     }
 
     private boolean isEnoughBalance(final long amount) {
         return SampleApplication.instance.account.getBalance() >= amount;
-    }
-
-    void onStop() {
-        fragment = null;
-        sendAssetInteractor.unsubscribe();
-        getAccountInteractor.unsubscribe();
     }
 }

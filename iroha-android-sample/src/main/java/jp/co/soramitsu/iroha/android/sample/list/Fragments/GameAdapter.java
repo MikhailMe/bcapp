@@ -17,7 +17,7 @@ import jp.co.soramitsu.iroha.android.sample.R;
 import jp.co.soramitsu.iroha.android.sample.core.Game;
 import jp.co.soramitsu.iroha.android.sample.core.Team;
 
-public final class Adapter extends RecyclerView.Adapter<Adapter.GameHolder> {
+public final class GameAdapter extends RecyclerView.Adapter<GameAdapter.GameHolder> {
 
     @NonNull
     private List<Game> mListOfGames;
@@ -28,9 +28,14 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.GameHolder> {
     @NonNull
     private final WeakReference<LayoutInflater> mInflater;
 
-    Adapter(@NonNull LayoutInflater inflater,
-            @NonNull List<Game> listOfGames,
-            @NonNull SelectHandler selectHandler) {
+    @NonNull
+    private String name;
+
+    GameAdapter(@NonNull LayoutInflater inflater,
+                @NonNull String name,
+                @NonNull List<Game> listOfGames,
+                @NonNull SelectHandler selectHandler) {
+        this.name = name;
         this.mListOfGames = listOfGames;
         this.mSelectHandler = selectHandler;
         this.mInflater = new WeakReference<>(inflater);
@@ -58,6 +63,7 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.GameHolder> {
         holder.team1.setText(team1Name);
         holder.team2.setText(team2Name);
         holder.bindGame(currentGame);
+        holder.bindName(name);
     }
 
     @Override
@@ -67,7 +73,10 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.GameHolder> {
 
     final class GameHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+
         private Game mGame;
+
+        private String mName;
 
         @BindView(R.id.team_1_tv_in_list)
         TextView team1;
@@ -85,10 +94,15 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.GameHolder> {
             this.mGame = game;
         }
 
+        void bindName(@NonNull final String name) {
+            this.mName = name;
+        }
+
         @Override
         public void onClick(View v) {
             Pair<Team, Team> teamPair = mGame.getTeams();
             mSelectHandler.onGameSelected(
+                    mName,
                     teamPair.first.getName(),
                     teamPair.second.getName(),
                     mGame.getTimestamp().toString());

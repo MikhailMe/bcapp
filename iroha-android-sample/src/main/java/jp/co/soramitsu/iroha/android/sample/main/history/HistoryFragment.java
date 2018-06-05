@@ -22,6 +22,7 @@ import jp.co.soramitsu.iroha.android.sample.databinding.FragmentHistoryBinding;
 import jp.co.soramitsu.iroha.android.sample.main.MainActivity;
 
 public class HistoryFragment extends Fragment implements HistoryView {
+
     private FragmentHistoryBinding binding;
 
     @Inject

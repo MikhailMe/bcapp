@@ -22,6 +22,7 @@ import jp.co.soramitsu.iroha.android.sample.databinding.FragmentSendBinding;
 import jp.co.soramitsu.iroha.android.sample.main.MainActivity;
 
 public class SendFragment extends Fragment implements SendView {
+
     private FragmentSendBinding binding;
 
     @Inject

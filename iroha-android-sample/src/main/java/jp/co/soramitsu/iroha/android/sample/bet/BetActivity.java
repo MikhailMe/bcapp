@@ -2,158 +2,143 @@ package jp.co.soramitsu.iroha.android.sample.bet;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.ConnectException;
 import java.util.Locale;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+import javax.inject.Inject;
+
 import jp.co.soramitsu.iroha.android.sample.R;
+import jp.co.soramitsu.iroha.android.sample.SampleApplication;
+import jp.co.soramitsu.iroha.android.sample.databinding.ActivityBetBinding;
 import jp.co.soramitsu.iroha.android.sample.oracle.OracleActivity;
 import lombok.Getter;
 import lombok.NonNull;
 
-public final class BetActivity extends AppCompatActivity {
-
-    @BindView(R.id.team1Tv)
-    TextView team1Tv;
-
-    @BindView(R.id.team2Tv)
-    TextView team2Tv;
-
-    @BindView(R.id.team1winTv)
-    TextView team1WinTv;
-
-    @BindView(R.id.team2winTv)
-    TextView team2WinTv;
-
-    @BindView(R.id.team1winCoefBtn)
-    Button team1winCoefBtn;
-
-    @BindView(R.id.drawCoefBtn)
-    Button drawCoefBtn;
-
-    @BindView(R.id.team2winCoefBtn)
-    Button team2winCoefBtn;
-
-    @BindView(R.id.betSumATv)
-    AutoCompleteTextView betSumATv;
-
-    @BindView(R.id.yourWinATv)
-    AutoCompleteTextView yourWinATv;
-
-    @BindView(R.id.game_date_ATv)
-    AutoCompleteTextView gameDateATv;
+public final class BetActivity extends AppCompatActivity implements BetView, View.OnClickListener {
 
     private static final String FORGET_MESSAGE = "You forget enter a bet sum!";
 
+    private static final String EXTRA_NAME = "com.mishas.bcappclient.name";
     private static final String EXTRA_TEAM_1 = "com.mishas.bcappclient.team1";
     private static final String EXTRA_TEAM_2 = "com.mishas.bcappclient.team2";
     private static final String EXTRA_TIMESTAMP = "com.mishas.bcappclient.timestamp";
 
-    //private static final String EXTRA_BET_SUM= "com.mishas.bcappclient.betsum";
-    //private static final String EXTRA_COEFFCIENT= "com.mishas.bcappclient.coefficient";
-
+    private String name;
     private String team1;
     private String team2;
-    private String team1Win;
-    private String team2Win;
-    private String team1WinCoef;
     private String drawCoef;
+    private String team1WinCoef;
     private String team2WinCoef;
     private String timestamp;
+
+    @Inject
+    BetPresenter mBetPresenter;
+
+    private ActivityBetBinding binding;
 
     @Getter
     private float chooseCoef;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bet);
-        ButterKnife.bind(this);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
-        initView();
-    }
-
-    public static Intent newIntent(Context context, String team1, String team2, String timestamp) {
+    public static Intent newIntent(@NonNull Context context,
+                                   @NonNull final String name,
+                                   @NonNull final String team1,
+                                   @NonNull final String team2,
+                                   @NonNull final String timestamp) {
         Intent intent = new Intent(context, BetActivity.class);
+        intent.putExtra(EXTRA_NAME, name);
         intent.putExtra(EXTRA_TEAM_1, team1);
         intent.putExtra(EXTRA_TEAM_2, team2);
         intent.putExtra(EXTRA_TIMESTAMP, timestamp);
         return intent;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_bet);
+        SampleApplication.instance.getApplicationComponent().inject(this);
+        mBetPresenter.setMBetActivity(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        initView();
+        initListeners();
+    }
+
     private void initView() {
-        init();
+        getGamesParams();
+        getGameCoefs();
         chooseCoef = -1.0f;
-        gameDateATv.setText(timestamp);
-        yourWinATv.setEnabled(false);
+        binding.gameDateATv.setText(timestamp);
+        binding.yourWinATv.setEnabled(false);
         setTeams(team1, team2);
         setCoefs(team1WinCoef, drawCoef, team2WinCoef);
 
-        betSumATv.addTextChangedListener(new TextWatcher() {
-
+        binding.betSumATv.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!s.toString().isEmpty() && getChooseCoef() != -1) {
                     int money = Integer.parseInt(s.toString());
                     float income = money * getChooseCoef();
-                    yourWinATv.setText(String.format(Locale.ENGLISH, "%.2f", income));
+                    binding.yourWinATv.setText(String.format(Locale.ENGLISH, "%.2f", income));
                 } else if (s.toString().isEmpty()) {
-                    yourWinATv.setText("");
+                    binding.yourWinATv.setText("");
                 }
             }
-
             @Override
             public void afterTextChanged(Editable s) {
             }
         });
-
     }
 
-    private void init() {
+    private void getGamesParams() {
+        name = getIntent().getStringExtra(EXTRA_NAME);
         team1 = getIntent().getStringExtra(EXTRA_TEAM_1);
         team2 = getIntent().getStringExtra(EXTRA_TEAM_2);
         timestamp = getIntent().getStringExtra(EXTRA_TIMESTAMP);
+    }
 
-        team1Win = team1 + " win";
-        team2Win = team2 + " win";
+    private void getGameCoefs() {
         team1WinCoef = "1.3";
         drawCoef = "1.9";
         team2WinCoef = "2.6";
     }
 
+    private void initListeners() {
+        binding.team1winCoefBtn.setOnClickListener(this);
+        binding.drawCoefBtn.setOnClickListener(this);
+        binding.team2winCoefBtn.setOnClickListener(this);
+        binding.nextToOracle.setOnClickListener(this);
+    }
+
     private void setTeams(@NonNull final String team1,
                           @NonNull final String team2) {
-        team1Tv.setText(team1);
-        team2Tv.setText(team2);
-        team1WinTv.setText(team1Win);
-        team2WinTv.setText(team2Win);
+        binding.team1Tv.setText(team1);
+        binding.team2Tv.setText(team2);
+        binding.team1winTv.setText(String.format("%s win", team1));
+        binding.team2winTv.setText(String.format("%s win", team2));
     }
 
     private void setCoefs(@NonNull final String team1winCoef,
                           @NonNull final String drawCoef,
                           @NonNull final String team2winCoef) {
-        team1winCoefBtn.setText(team1winCoef);
-        drawCoefBtn.setText(drawCoef);
-        team2winCoefBtn.setText(team2winCoef);
+        binding.team1winCoefBtn.setText(team1winCoef);
+        binding.drawCoefBtn.setText(drawCoef);
+        binding.team2winCoefBtn.setText(team2winCoef);
     }
 
-    @OnClick({R.id.team1winCoefBtn, R.id.drawCoefBtn, R.id.team2winCoefBtn, R.id.next_to_oracle})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.team1winCoefBtn:
@@ -166,8 +151,10 @@ public final class BetActivity extends AppCompatActivity {
                 pushTeam2Win();
                 break;
             case R.id.next_to_oracle:
-                if (!betSumATv.getText().toString().isEmpty() && !yourWinATv.getText().toString().isEmpty()) {
-                    startActivity(new Intent(this, OracleActivity.class));
+                if (!binding.betSumATv.getText().toString().isEmpty() && !binding.yourWinATv.getText().toString().isEmpty()) {
+
+                    mBetPresenter.sendTransaction(name, binding.betSumATv.getText().toString());
+
                 } else {
                     Toast.makeText(getApplicationContext(), FORGET_MESSAGE, Toast.LENGTH_SHORT).show();
                 }
@@ -176,36 +163,62 @@ public final class BetActivity extends AppCompatActivity {
     }
 
     private void pushTeam1Win() {
-        team1winCoefBtn.setBackground(getResources().getDrawable(R.drawable.choose_rectangle));
-        team2winCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
-        drawCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
-        setChooseCoef(team1winCoefBtn);
-
+        binding.team1winCoefBtn.setBackground(getResources().getDrawable(R.drawable.choose_rectangle));
+        binding.team2winCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
+        binding.drawCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
+        setChooseCoef(binding.team1winCoefBtn);
     }
 
     private void pushDraw() {
-        team1winCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
-        team2winCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
-        drawCoefBtn.setBackground(getResources().getDrawable(R.drawable.choose_rectangle));
-        setChooseCoef(drawCoefBtn);
+        binding.team1winCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
+        binding.team2winCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
+        binding.drawCoefBtn.setBackground(getResources().getDrawable(R.drawable.choose_rectangle));
+        setChooseCoef(binding.drawCoefBtn);
     }
 
     private void pushTeam2Win() {
-        team1winCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
-        team2winCoefBtn.setBackground(getResources().getDrawable(R.drawable.choose_rectangle));
-        drawCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
-        setChooseCoef(team2winCoefBtn);
+        binding.team1winCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
+        binding.team2winCoefBtn.setBackground(getResources().getDrawable(R.drawable.choose_rectangle));
+        binding.drawCoefBtn.setBackground(getResources().getDrawable(R.drawable.rectangle));
+        setChooseCoef(binding.team2winCoefBtn);
     }
 
     private void setChooseCoef(@NonNull Button button) {
         chooseCoef = Float.parseFloat(button.getText().toString());
-        if (!betSumATv.getText().toString().isEmpty()) {
-            float income = Integer.parseInt(betSumATv.getText().toString()) * chooseCoef;
-            yourWinATv.setText(String.format(Locale.ENGLISH, "%.2f", income));
+        if (!binding.betSumATv.getText().toString().isEmpty()) {
+            float income = Integer.parseInt(binding.betSumATv.getText().toString()) * chooseCoef;
+            binding.yourWinATv.setText(String.format(Locale.ENGLISH, "%.2f", income));
         } else {
-            betSumATv.setText("");
-            yourWinATv.setText("");
+            binding.betSumATv.setText("");
+            binding.yourWinATv.setText("");
         }
+    }
+
+    @Override
+    public void didSendSuccess() {
+        binding.betSumATv.setText("");
+        binding.yourWinATv.setText("");
+        Toast.makeText(this, getString(R.string.transaction_successful), Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, OracleActivity.class));
+    }
+
+    @Override
+    public void didSendError(Throwable error) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.error_dialog_title))
+                .setMessage(
+                        error.getCause() instanceof ConnectException ?
+                                getString(R.string.general_error) :
+                                error.getLocalizedMessage()
+                )
+                .setCancelable(true)
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    if (error.getCause() instanceof ConnectException) {
+                        finish();
+                    }
+                })
+                .create();
+        alertDialog.show();
     }
 
 }

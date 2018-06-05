@@ -4,23 +4,23 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import dagger.android.AndroidInjector;
+import jp.co.soramitsu.iroha.android.sample.bet.BetActivity;
 import jp.co.soramitsu.iroha.android.sample.main.MainActivity;
 import jp.co.soramitsu.iroha.android.sample.main.send.SendFragment;
 import jp.co.soramitsu.iroha.android.sample.main.history.HistoryFragment;
-import jp.co.soramitsu.iroha.android.sample.list.Fragments.GameListFragment;
 import jp.co.soramitsu.iroha.android.sample.registration.RegistrationActivity;
 
 @Singleton
 @Component(modules = {ApplicationModule.class})
 public interface ApplicationComponent extends AndroidInjector {
 
-    void inject(HistoryFragment historyFragment);
+    void inject(BetActivity betActivity);
 
     void inject(SendFragment sendFragment);
 
-    void inject(GameListFragment gameListFragment);
+    void inject(MainActivity mainActivity);
+
+    void inject(HistoryFragment historyFragment);
 
     void inject(RegistrationActivity registrationActivity);
-
-    void inject(MainActivity mainActivity);
 }
